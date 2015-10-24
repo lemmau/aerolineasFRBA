@@ -27,7 +27,13 @@ DROP TABLE [HAY_TABLA].FUNCIONALIDAD
 DROP PROCEDURE [HAY_TABLA].[sp_get_rol_by_id]
 DROP PROCEDURE [HAY_TABLA].[sp_insertar_rol]
 DROP PROCEDURE [HAY_TABLA].[sp_baja_rol]
+DROP PROCEDURE [HAY_TABLA].[sp_modificacion_rol]
 DROP PROCEDURE [HAY_TABLA].[sp_select_roles]
+DROP PROCEDURE [HAY_TABLA].[sp_select_funcionalidades_de_rol]
+DROP PROCEDURE [HAY_TABLA].[sp_select_funcionalidades_de_rol_nuevo]
+DROP PROCEDURE [HAY_TABLA].[sp_insertar_funcionalidad_a_rol]
+DROP PROCEDURE [HAY_TABLA].[sp_borrar_funcionalidades_de_rol]
+
 DROP PROCEDURE [HAY_TABLA].[sp_get_usuario_by_id]
 DROP PROCEDURE [HAY_TABLA].[sp_get_usuario_by_login]
 DROP PROCEDURE [HAY_TABLA].[sp_get_usuario_intentos]
@@ -148,7 +154,7 @@ GO
 
 CREATE TABLE [HAY_TABLA].RUTA (
 ID 					INT IDENTITY(1,1) NOT NULL,
-CODIGO 				INT UNIQUE NOT NULL,
+CODIGO 				INT NOT NULL, -- UNIQUE 
 ID_CDADORIGEN		INT NOT NULL,
 ID_CDADDESTINO		INT NOT NULL,
 ID_SERVICIO			INT NOT NULL,
@@ -199,14 +205,15 @@ GO
 
 CREATE TABLE [HAY_TABLA].VIAJE (
 ID 						INT IDENTITY(1,1) NOT NULL,
-NUMEROAERONAVE			INT NOT NULL,
+ID_AERONAVE				INT NOT NULL,
 CODIGORUTA 				INT NOT NULL,
 FECHASALIDA 			DATETIME NOT NULL,
 FECHALLEGADA 			DATETIME NOT NULL,
 FECHALLEGADAESTIMADA 	DATETIME NOT NULL,
 STATUS 					BIT NOT NULL DEFAULT 0, -- no realizado / realizado
 
-PRIMARY KEY (ID)
+PRIMARY KEY (ID),
+FOREIGN KEY (ID_AERONAVE) REFERENCES [HAY_TABLA].AERONAVE
 );
 GO
 
@@ -237,7 +244,7 @@ GO
 
 CREATE TABLE [HAY_TABLA].COMPRA (
 ID 						INT IDENTITY(1,1) NOT NULL,
-NUMEROCOMPRA 			INT NOT NULL,
+--NUMEROCOMPRA 			INT NOT NULL, -- UNIQUE
 ID_CLIENTE				INT NOT NULL,
 ID_TARJETA				INT NOT NULL,
 ID_VIAJE				INT NOT NULL,
@@ -253,7 +260,7 @@ GO
 
 CREATE TABLE [HAY_TABLA].ENCOMIENDA (
 ID 						INT IDENTITY(1,1) NOT NULL,
-NUMERO 					INT NOT NULL,
+NUMERO 					INT NOT NULL, -- UNIQUE
 CODIGORUTA				INT NOT NULL,
 ID_CLIENTE				INT NOT NULL,
 ID_COMPRA				INT NOT NULL,
@@ -268,18 +275,16 @@ GO
 
 CREATE TABLE [HAY_TABLA].PASAJE (
 ID 						INT IDENTITY(1,1) NOT NULL,
-NUMERO 					INT NOT NULL,
+NUMERO 					INT NOT NULL, -- UNIQUE
 NUMEROCOMPRA			INT NOT NULL,
 ID_CLIENTE				INT NOT NULL,
-ID_TARJETA				INT NOT NULL,
-ID_VIAJE				INT NOT NULL,
+ID_BUTACA				INT NOT NULL,
+CODIGORUTA				INT NOT NULL,
 FECHA 					DATETIME NOT NULL,
-IMPORTE 				INT NOT NULL,
 
 PRIMARY KEY (ID),
 FOREIGN KEY (ID_CLIENTE) REFERENCES [HAY_TABLA].CLIENTE,
-FOREIGN KEY (ID_TARJETA) REFERENCES [HAY_TABLA].TARJETA,
-FOREIGN KEY (ID_VIAJE) REFERENCES [HAY_TABLA].VIAJE
+FOREIGN KEY (ID_BUTACA) REFERENCES [HAY_TABLA].BUTACA
 );
 GO
 
@@ -678,6 +683,7 @@ GO
 	print 'Clientes migrados!'
 
 --- MIGRACION - AERONAVES (Un total de  30 registros en tabla MASTER)
+--- nota: NUMERO DE AERONAVE = ID (DE LA TABLA)
 	INSERT INTO [HAY_TABLA].AERONAVE
 				(ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACAS, ESPACIOKGENCOMIENDAS)
    	SELECT 	SERVICIO.ID as "ID_SERVICIO", Aeronave_Modelo, Aeronave_Matricula, Aeronave_Fabricante, 
@@ -704,4 +710,51 @@ GO
   	GROUP BY 
   		Butaca_Nro, Butaca_Tipo, Butaca_Piso, A.ID
   	print 'Butacas migradas!'
+
+--- MIGRACION - RUTAS (Un total de 136 registros en tabla MASTER)
+--- nota: originalmente NO hay rutas dadas de bajas, por lo que STATUS = 1 para TODOS los registros !
+		INSERT INTO [HAY_TABLA].RUTA
+					(CODIGO, PRECIOBASEPASAJE, PRECIOBASEKG, ID_CDADORIGEN, ID_CDADDESTINO, ID_SERVICIO)
+		SELECT 	
+				Ruta_Codigo, Ruta_Precio_BasePasaje, Ruta_Precio_BaseKG, C1.ID, C2.ID, SERVICIO.ID
+		FROM 
+			gd_esquema.Maestra 
+			JOIN [HAY_TABLA].CIUDAD C1 ON Ruta_Ciudad_Origen = C1.NOMBRE 
+			JOIN [HAY_TABLA].CIUDAD C2 ON Ruta_Ciudad_Destino = C2.NOMBRE
+			JOIN [HAY_TABLA].SERVICIO ON Tipo_Servicio = SERVICIO.TIPOSERVICIO
+		GROUP BY 
+			Ruta_Codigo, Ruta_Precio_BaseKG, Ruta_Precio_BasePasaje, Ruta_Ciudad_Destino, Ruta_Ciudad_Origen, Tipo_Servicio, C1.ID, C2.ID, SERVICIO.ID
+  	print 'Rutas migradas!'
   	
+--- MIGRACION - VIAJES (Un total de 8509 registros en tabla MASTER)
+--- nota: consultar si originalmente hay viajes tildados como "registrados"/arribados
+		INSERT INTO [HAY_TABLA].VIAJE
+					(ID_AERONAVE, CODIGORUTA, FECHASALIDA, FECHALLEGADA, FECHALLEGADAESTIMADA)
+		SELECT	
+				(SELECT ID FROM [HAY_TABLA].AERONAVE WHERE Aeronave_Matricula = AERONAVE.MATRICULA),
+				(SELECT TOP 1 ID FROM [HAY_TABLA].RUTA WHERE Ruta_Codigo = RUTA.CODIGO),
+				FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
+  		FROM gd_esquema.Maestra
+  		GROUP BY FechaSalida, FechaLLegada, Fecha_LLegada_Estimada, Ruta_Codigo, Aeronave_Matricula
+--		ORDER BY 2,3
+--		,Ruta_Ciudad_Origen, Ruta_Ciudad_Destino
+  	print 'Viajes migrados!'
+
+/*
+--- MIGRACION - COMPRA (Un total de XXX registros en tabla MASTER)
+	INSERT INTO [HAY_TABLA].COMPRA
+				(ID_CLIENTE, ID_VIAJE, ID_TARJETA, FECHA, IMPORTE)
+	SELECT 	(SELECT CL.ID FROM [HAY_TABLA].CLIENTE CL ...)
+			Pasaje_FechaCompra, Paquete_FechaCompra, Pasaje_Precio, Paquete_Precio
+
+--- MIGRACION - PASAJE (Un total de XXX registros en tabla MASTER)
+	INSERT INTO [HAY_TABLA].PASAJE
+				(NUMERO, FECHA, CODIGORUTA, ID_CLIENTE, ID_COMPRA, ID_BUTACA)
+	SELECT Pasaje_Codigo, Ruta_Codigo, 
+
+--- MIGRACION - ENCOMIENDA (Un total de XXX registros en tabla MASTER)
+	INSERT INTO [HAY_TABLA].ENCOMIENDA
+				(NUMERO, FECHA, PESO, CODIGORUTA, ID_CLIENTE, ID_COMPRA)
+	SELECT 	Paquete_Codigo, Paquete_KG, Ruta_Codigo,
+
+*/
