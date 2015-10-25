@@ -6,12 +6,14 @@
 * `sql`: scripts de creacrion de tablas, stored procedures, etc.
 * `entrega`: struct con estrategia y demas (según se especifica en enunciado).
 
+DER actualizado: https://drive.draw.io/#G0B9xE2Vns3l-xUFJMWDNWX3lGYlk
+
 ## Datos de Contacto
 
-Legajo | Apellido, Nombre | email | 
- ------------- | ------------- | -------------
-138.822-8 | Mauro, Leandro | lemmau@hotmail.com.
-117.197-5 | Safran, Maximiliano | maxizero@gmail.com.
-137.791-7 | Pomajulca Gonzales, Melyna | mel.pg@gmail.com.
-114.959-3 | Wieja, Marcelo | mdw.arg@gmail.com.
+Legajo | Apellido, Nombre | 
+ ------------- | ------------- 
+138.822-8 | Mauro, Leandro 
+117.197-5 | Safran, Maximiliano 
+137.791-7 | Pomajulca Gonzales, Melyna 
+114.959-3 | Wieja, Marcelo 
 
