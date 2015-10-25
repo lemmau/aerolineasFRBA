@@ -184,7 +184,7 @@ GO
 
 CREATE TABLE [HAY_TABLA].AERONAVE (
 ID 						INT IDENTITY(1,1) NOT NULL,
-FECHAALTA				DATETIME,
+FECHAALTA				DATETIME NOT NULL,
 ID_SERVICIO				INT NOT NULL,
 MODELO					NVARCHAR(255) NOT NULL,
 MATRICULA				NVARCHAR(255) NOT NULL, -- UNIQUE
@@ -223,7 +223,7 @@ NUMERO 					INT NOT NULL,
 ID_AERONAVE				INT NOT NULL,
 TIPO 					NVARCHAR(255) NOT NULL,	-- pasillo / ventanilla / 0 (cuando se trata de una encomienda)
 PISO					BIT NOT NULL, -- TODAS estan en el piso '1' !!
-STATUS					BIT NOT NULL DEFAULT 0,	-- libre / ocupada
+STATUS					BIT NOT NULL DEFAULT 1,	-- libre (0) / ocupada (1)
 
 PRIMARY KEY (ID),
 FOREIGN KEY (ID_AERONAVE) REFERENCES [HAY_TABLA].AERONAVE
@@ -762,6 +762,7 @@ GO
   	print 'Ciudades migradas!'
 
 --- MIGRACION - TIPOS DE SERVICIOS (Un total de 3 registros en tabla MASTER)
+-- ToDo: inferir porcentajeAdicional de Master
 		INSERT INTO [HAY_TABLA].SERVICIO
 					(NOMBRE, PORCENTAJEADICIONAL)
   		SELECT DISTINCT Tipo_Servicio, 0
@@ -782,23 +783,24 @@ GO
 --- MIGRACION - AERONAVES (Un total de  30 registros en tabla MASTER)
 --- nota: NUMERO DE AERONAVE = ID (DE LA TABLA)
 	INSERT INTO [HAY_TABLA].AERONAVE
-				(ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACAS, ESPACIOKGENCOMIENDAS)
+				(ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACAS, ESPACIOKGENCOMIENDAS, FECHAALTA)
    	SELECT 	SERVICIO.ID as "ID_SERVICIO", Aeronave_Modelo, Aeronave_Matricula, Aeronave_Fabricante, 
-  			MAX(Butaca_Nro) as "CANTBUTACAS", Aeronave_KG_Disponibles
+  			MAX(Butaca_Nro)+1 as "CANTBUTACAS", Aeronave_KG_Disponibles, MIN(FechaSalida)
   	FROM 
   		gd_esquema.Maestra, 
   		[HAY_TABLA].SERVICIO
   	WHERE 
   		Tipo_Servicio = SERVICIO.NOMBRE
   	GROUP BY 
-  		SERVICIO.ID, Aeronave_Modelo, Aeronave_Matricula, Aeronave_Fabricante, Aeronave_KG_Disponibles
+  		SERVICIO.ID, Aeronave_Modelo, Aeronave_Matricula, Aeronave_Fabricante, Aeronave_KG_Disponibles, Tipo_Servicio
   	print 'Aeronaves migradas!'
 
 --- MIGRACION - BUTACAS (Un total de 1337 registros en tabla MASTER)
+--- nota: todas las que se vayan a insertar se suponen ocupadas (STATUS = 1), los "huecos" se consideran libres
 	INSERT INTO [HAY_TABLA].BUTACA
 				(NUMERO, ID_AERONAVE, TIPO, PISO)
   	SELECT 	
-  			Butaca_Nro, A.ID , Butaca_Tipo, Butaca_Piso
+  			Butaca_Nro+1, A.ID , Butaca_Tipo, Butaca_Piso
   	FROM 
   		gd_esquema.Maestra, [HAY_TABLA].AERONAVE A
   	WHERE 
