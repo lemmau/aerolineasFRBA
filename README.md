@@ -6,7 +6,10 @@
 * `sql`: scripts de creacrion de tablas, stored procedures, etc.
 * `entrega`: struct con estrategia y demas (según se especifica en enunciado).
 
-DER actualizado: https://drive.draw.io/#G0B9xE2Vns3l-xUFJMWDNWX3lGYlk
+> DER actualizado: https://drive.draw.io/#G0B9xE2Vns3l-xUFJMWDNWX3lGYlk
+¡solicitar acceso!
+
+images/HAY_TABLA.png
 
 ## Datos de Contacto
 
