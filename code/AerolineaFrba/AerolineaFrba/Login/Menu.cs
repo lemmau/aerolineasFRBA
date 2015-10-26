@@ -40,12 +40,10 @@ namespace AerolineaFrba.Login
             InitializeComponent();
             if (SharedData.Instance().currentRolId != 0)
             {
-                //Rol _rol = Rol.GetById(SharedData.Instance().currentRolId);
                 foreach (ToolStripMenuItem item in menuStripSecciones.Items)
                 {
                     foreach (ToolStripMenuItem innerItem in item.DropDownItems)
                     {
-                        // MessageBox.Show("valores debug:" + innerItem.Tag.ToString());
                         innerItem.Visible = (FuncionalidadDeRol.GetById(SharedData.Instance().currentRolId, innerItem.Tag.ToString()).Where(x => x.Seleccionado).ToList().Count > 0);
                     }
                 }
@@ -88,6 +86,12 @@ namespace AerolineaFrba.Login
         private void seccionesToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void itemRoles_Click(object sender, EventArgs e)
+        {
+            Abm_Rol.ListadoRoles _listado_roles = new Abm_Rol.ListadoRoles();
+            _listado_roles.ShowDialog();
         }
     }
 }

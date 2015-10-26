@@ -33,7 +33,7 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStripSecciones = new System.Windows.Forms.MenuStrip();
             this.seccionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rolesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemRoles = new System.Windows.Forms.ToolStripMenuItem();
             this.ciudadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ciudadesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aeronavesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +73,7 @@
             // 
             this.seccionesToolStripMenuItem.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.seccionesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rolesToolStripMenuItem1,
+            this.itemRoles,
             this.ciudadesToolStripMenuItem,
             this.ciudadesToolStripMenuItem1,
             this.aeronavesToolStripMenuItem1,
@@ -89,12 +89,13 @@
             this.seccionesToolStripMenuItem.Text = "Secciones";
             this.seccionesToolStripMenuItem.Click += new System.EventHandler(this.seccionesToolStripMenuItem_Click);
             // 
-            // rolesToolStripMenuItem1
+            // itemRoles
             // 
-            this.rolesToolStripMenuItem1.Name = "rolesToolStripMenuItem1";
-            this.rolesToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
-            this.rolesToolStripMenuItem1.Tag = "ABM DE ROL";
-            this.rolesToolStripMenuItem1.Text = "Roles";
+            this.itemRoles.Name = "itemRoles";
+            this.itemRoles.Size = new System.Drawing.Size(268, 22);
+            this.itemRoles.Tag = "ABM DE ROL";
+            this.itemRoles.Text = "Roles";
+            this.itemRoles.Click += new System.EventHandler(this.itemRoles_Click);
             // 
             // ciudadesToolStripMenuItem
             // 
@@ -206,7 +207,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.MenuStrip menuStripSecciones;
         private System.Windows.Forms.ToolStripMenuItem seccionesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem rolesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem itemRoles;
         private System.Windows.Forms.ToolStripMenuItem ciudadesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ciudadesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aeronavesToolStripMenuItem1;
