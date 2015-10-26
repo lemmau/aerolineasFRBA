@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logica;
+using Configuracion;
 
 namespace AerolineaFrba.Login
 {
@@ -27,10 +28,27 @@ namespace AerolineaFrba.Login
                 if (_usuario != null)
                 {
                     Usuario.SetIntentos(txtUsuario.Text, 0);
-//                  SharedData.Instance().currentUserId = _usuario.Id;
-                    Menu _menu = new Menu();
-                    _menu.Show();
-                    this.Hide();
+
+                    SharedData.Instance().currentUserId = _usuario.Id;
+                    //Menu _menu = new Menu();
+                    //_menu.Show();
+                    //this.Hide();
+                    if (_usuario.Roles.Count > 1)
+                    {
+                        SeleccionarRol _selectRol = new SeleccionarRol(this);
+                        _selectRol.Show();
+                        this.Hide();
+                    }
+                    else if (_usuario.Roles.Count == 1)
+                    {
+                        //if (_usuario.Hoteles.Count == 1)
+                        SharedData.Instance().currentRolId = _usuario.Roles[0].Id;
+                        Menu _menu = new Menu(this);
+                        _menu.Show();
+                        this.Hide();
+                    }
+                    else
+                        MessageBox.Show("El usuario no tiene un rol asignado");
                 }
                 else
                 {

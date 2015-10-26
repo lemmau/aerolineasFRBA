@@ -15,6 +15,8 @@ namespace Logica
         public String Username { get; set; }
         public String Password { get; set; }
 
+        public List<Rol> Roles { get; set; }
+
         public static string SHA256Encripta(string input)
         {
             var provider = new SHA256Managed();
@@ -30,6 +32,33 @@ namespace Logica
             return output.ToString();
         }
 
+        public static Usuario GetById(Int32 id)
+        {
+            var Usuario = new Usuario();
+
+            using (var data = Data.Usuario.GetById(id))
+            {
+                foreach (DataRow row in data.Rows)
+                {
+                    Usuario = new Usuario();
+                    Usuario.Id = Int32.Parse(row["Id"].ToString());
+                    Usuario.Username = row["Username"].ToString();
+                    Usuario.Password = row["Password"].ToString();
+
+                    var rolesData = Data.Usuario.GetRoles(id);
+                    Usuario.Roles = new List<Rol>();
+                    foreach (DataRow row2 in rolesData.Rows)
+                    {
+                        Rol _rol = Rol.GetById(Int32.Parse(row2["ID_ROL"].ToString()));
+                        if (_rol.Estado)
+                            Usuario.Roles.Add(_rol);
+                    }
+                }
+            }
+
+            return Usuario;
+        }
+
         public static Usuario GetByLogin(String username, String password)
         {
             var Usuario = new Usuario();
@@ -43,14 +72,24 @@ namespace Logica
                 {
                     Usuario = new Usuario();
                     Usuario.Id = Int32.Parse(row["Id"].ToString());
-                    Usuario.Id_rol = Int32.Parse(row["Id_rol"].ToString());
                     Usuario.Username = row["Username"].ToString();
                     Usuario.Password = row["Password"].ToString();
+
+                    var rolesData = Data.Usuario.GetRoles(Usuario.Id);
+                    Usuario.Roles = new List<Rol>();
+                    foreach (DataRow row2 in rolesData.Rows)
+                    {
+                        Rol _rol = Rol.GetById(Int32.Parse(row2["ID_ROL"].ToString()));
+                        if (_rol.Estado)
+                            Usuario.Roles.Add(_rol);
+                    }
+
                 }
             }
 
             return Usuario;
         }
+
         public static Int32 GetIntentos(String username)
         {
             DataTable data = Data.Usuario.GetIntentos(username);
@@ -66,6 +105,9 @@ namespace Logica
         {
             Data.Usuario.SetIntentos(username, intentos);
         }
+
+
+
 
 
     }

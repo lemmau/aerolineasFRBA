@@ -14,6 +14,27 @@ namespace AerolineaFrba.Login
 {
     public partial class Menu : Form
     {
+        private IngresoLogin padre;
+        public Menu(IngresoLogin _padre)
+        {
+            InitializeComponent();
+            if (SharedData.Instance().currentRolId != 0)
+            {
+                //Rol _rol = Rol.GetById(SharedData.Instance().currentRolId);
+                foreach (ToolStripMenuItem item in menuStripSecciones.Items)
+                {
+                    foreach (ToolStripMenuItem innerItem in item.DropDownItems)
+                    {
+                        //MessageBox.Show("ID_ROL: " + SharedData.Instance().currentRolId + "ABM: " + innerItem.Tag.ToString());
+                        innerItem.Visible = (FuncionalidadDeRol.GetById(SharedData.Instance().currentRolId, innerItem.Tag.ToString()).Where(x => x.Seleccionado).ToList().Count > 0);
+                    }
+                }
+                menuStripSecciones.Refresh();
+            }
+
+            lbFecha.Text = lbFecha.Text + " " + SharedData.Instance().fechaDelSistema.ToShortDateString();
+        }
+
         public Menu()
         {
             InitializeComponent();

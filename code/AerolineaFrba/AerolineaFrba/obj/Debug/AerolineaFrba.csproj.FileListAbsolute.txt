@@ -61,3 +61,4 @@ C:\Users\lemmau\git\aerolineasFRBA\code\AerolineaFrba\AerolineaFrba\obj\Debug\Ae
 C:\Users\lemmau\git\aerolineasFRBA\code\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Login.Menu.resources
 C:\Users\lemmau\git\aerolineasFRBA\code\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Properties.Resources.resources
 C:\Users\lemmau\git\aerolineasFRBA\code\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.csproj.GenerateResource.Cache
+C:\Users\lemmau\git\aerolineasFRBA\code\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Login.SeleccionarRol.resources
