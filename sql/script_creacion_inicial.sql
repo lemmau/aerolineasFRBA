@@ -4,6 +4,8 @@
 	Sacar esto cuando lo entreguemos porque solo esta para testing. 
 	SI falla -> correr varias veces asi "vuelan" las restricciones de FK
 
+DROP TABLE [HAY_TABLA].#TEMP
+
 DROP TABLE [HAY_TABLA].VIAJE
 DROP TABLE [HAY_TABLA].TIPOBAJA
 DROP TABLE [HAY_TABLA].HISTORIALBAJA_AERONAVE
@@ -107,7 +109,7 @@ FOREIGN KEY (ID_ROL) REFERENCES [HAY_TABLA].ROL,
 FOREIGN KEY (ID_USUARIO) REFERENCES [HAY_TABLA].USUARIO
 )
 
-CREATE TABLE [HAY_TABLA].PERSONA -- aca se agrupan los PASAJEROS y COMPRADORES
+CREATE TABLE [HAY_TABLA].PERSONA -- aca se va a agrupar los CLIENTES + COMPRADORES
 (
 ID 					INT IDENTITY(1,1) NOT NULL,
 ID_ROL				INT NOT NULL DEFAULT 2, -- ROL 2 (GUEST)
@@ -284,9 +286,9 @@ CREATE TABLE [HAY_TABLA].COMPRA (
 ID 						INT IDENTITY(1,1) NOT NULL,
 ID_TARJETA				INT,
 ID_VIAJE				INT NOT NULL,
-ID_FORMADEPAGO			INT NOT NULL,
+ID_FORMADEPAGO			INT, -- NOT NULL
 FECHA 					DATETIME NOT NULL,
-IMPORTE 				INT NOT NULL,
+IMPORTETOTAL			INT NOT NULL,
 
 PRIMARY KEY (ID),
 FOREIGN KEY (ID_FORMADEPAGO) REFERENCES [HAY_TABLA].FORMADEPAGO,
@@ -297,18 +299,23 @@ GO
 
 CREATE TABLE [HAY_TABLA].PASAJE_ENCOMIENDA (
 ID 						INT IDENTITY(1,1) NOT NULL,
-ID_PASAJERO				INT NOT NULL,
-ID_RUTA					INT NOT NULL,
+ID_CLIENTE				INT NOT NULL,
+ID_VIAJE				INT NOT NULL,
 ID_COMPRA				INT NOT NULL,
+IMPORTE 				INT NOT NULL, 
 FECHA 					DATETIME NOT NULL,
 ID_BUTACA_PASAJE		INT,
 PESO_ENCOMIENDA			INT,
 	
 PRIMARY KEY (ID),
-FOREIGN KEY (ID_PASAJERO) REFERENCES [HAY_TABLA].PERSONA,
+FOREIGN KEY (ID_CLIENTE) REFERENCES [HAY_TABLA].PERSONA,
+FOREIGN KEY (ID_VIAJE) REFERENCES [HAY_TABLA].VIAJE,
 FOREIGN KEY (ID_COMPRA) REFERENCES [HAY_TABLA].COMPRA,
-FOREIGN KEY (ID_RUTA) REFERENCES [HAY_TABLA].RUTA,
-FOREIGN KEY (ID_BUTACA_PASAJE) REFERENCES [HAY_TABLA].BUTACA
+FOREIGN KEY (ID_BUTACA_PASAJE) REFERENCES [HAY_TABLA].BUTACA,
+
+--CHECK (	(PESO_ENCOMIENDA IS NOT NULL) OR (ID_BUTACA_PASAJE IS NOT NULL)
+--			AND NOT (PESO_ENCOMIENDA IS NOT NULL) AND (ID_BUTACA_PASAJE IS NOT NULL)
+--		)
 );
 GO
 
@@ -405,6 +412,15 @@ INSERT INTO [HAY_TABLA].USUARIO
 (N'admin03', N'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 0)	-- password : 'w23e'
 GO
 print 'Usuarios administrativos creados!'
+
+------------------------------------------------------
+--- PORCENTAJES segun Tipo de Servicio
+------------------------------------------------------
+INSERT INTO [HAY_TABLA].SERVICIO(NOMBRE, PORCENTAJEADICIONAL) values ('Primera Clase', 2)
+INSERT INTO [HAY_TABLA].SERVICIO(NOMBRE, PORCENTAJEADICIONAL) values ('Ejecutivo', 1.5)
+INSERT INTO [HAY_TABLA].SERVICIO(NOMBRE, PORCENTAJEADICIONAL) values ('Turista', 1.2)
+GO
+print 'Porcentajes Adicionales creados!'
 
 ------------------------------------------------------
 --- ROLES de USUARIO
@@ -776,19 +792,11 @@ GO
   		FROM gd_esquema.Maestra
   	print 'Ciudades migradas!'
 
---- MIGRACION - TIPOS DE SERVICIOS (Un total de 3 registros en tabla MASTER)
--- ToDo: inferir porcentajeAdicional de Master
-		INSERT INTO [HAY_TABLA].SERVICIO
-					(NOMBRE, PORCENTAJEADICIONAL)
-  		SELECT DISTINCT Tipo_Servicio, 0
-  		FROM gd_esquema.Maestra
-  	print 'Tipos de Servicio migrados!'
-
 --- MIGRACION - PERSONAS (Un total de 2594 registros en tabla MASTER)
 	INSERT INTO [HAY_TABLA].PERSONA
-		(DNI, NOMBRE, APELLIDO, DIRECCION, TELEFONO, MAIL, FECHANACIMIENTO)	
+				(DNI, NOMBRE, APELLIDO, DIRECCION, TELEFONO, MAIL, FECHANACIMIENTO)	
 	SELECT 
-		Cli_Dni, Cli_Nombre, Cli_Apellido, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
+			Cli_Dni, Cli_Nombre, Cli_Apellido, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
 	FROM
 		gd_esquema.Maestra
 	group by
@@ -800,7 +808,7 @@ GO
 	INSERT INTO [HAY_TABLA].AERONAVE
 				(ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACAS, ESPACIOKGENCOMIENDAS, FECHAALTA)
    	SELECT 	SERVICIO.ID as "ID_SERVICIO", Aeronave_Modelo, Aeronave_Matricula, Aeronave_Fabricante, 
-  			MAX(Butaca_Nro)+1 as "CANTBUTACAS", Aeronave_KG_Disponibles, MIN(FechaSalida)
+  			MAX(Butaca_Nro)+1 as "Cant Butacas", Aeronave_KG_Disponibles, MIN(FechaSalida) as "Fecha Alta"
   	FROM 
   		gd_esquema.Maestra, 
   		[HAY_TABLA].SERVICIO
@@ -814,8 +822,9 @@ GO
 --- nota: todas las que se vayan a insertar se suponen ocupadas (STATUS = 1), los "huecos" se consideran libres
 	INSERT INTO [HAY_TABLA].BUTACA
 				(NUMERO, ID_AERONAVE, TIPO, PISO)
-  	SELECT 	
-  			Butaca_Nro+1, A.ID , Butaca_Tipo, Butaca_Piso
+  	SELECT 	Butaca_Nro+1 as "Numero", 
+  			A.ID "ID Aeronave", 
+  			Butaca_Tipo, Butaca_Piso
   	FROM 
   		gd_esquema.Maestra, [HAY_TABLA].AERONAVE A
   	WHERE 
@@ -825,50 +834,137 @@ GO
   		Butaca_Nro, Butaca_Tipo, Butaca_Piso, A.ID
   	print 'Butacas migradas!'
 
---- MIGRACION - RUTAS (Un total de 136 registros en tabla MASTER)
---- nota: originalmente NO hay rutas dadas de bajas, por lo que STATUS = 1 para TODOS los registros !
-		INSERT INTO [HAY_TABLA].RUTA
-					(CODIGO, PRECIOBASEPASAJE, PRECIOBASEKG, ID_CDADORIGEN, ID_CDADDESTINO, ID_SERVICIO)
-		SELECT 	
-				Ruta_Codigo, Ruta_Precio_BasePasaje, Ruta_Precio_BaseKG, C1.ID, C2.ID, SERVICIO.ID
-		FROM 
-			gd_esquema.Maestra 
-			JOIN [HAY_TABLA].CIUDAD C1 ON Ruta_Ciudad_Origen = C1.NOMBRE 
-			JOIN [HAY_TABLA].CIUDAD C2 ON Ruta_Ciudad_Destino = C2.NOMBRE
-			JOIN [HAY_TABLA].SERVICIO ON Tipo_Servicio = SERVICIO.NOMBRE
-		GROUP BY 
-			Ruta_Codigo, Ruta_Precio_BaseKG, Ruta_Precio_BasePasaje, Ruta_Ciudad_Destino, Ruta_Ciudad_Origen, Tipo_Servicio, C1.ID, C2.ID, SERVICIO.ID
+--- MIGRACION - RUTAS (Un total de 68 registros en tabla MASTER)
+--- notas: 
+---- 		* originalmente NO hay rutas dadas de bajas, por lo que STATUS = 1 para TODOS los registros
+----		* convencion adoptada: Si un MISMO recorrido ofrece DISTINTOS servicios entonces se trata de 2 rutas DISTINTAS
+	INSERT INTO [HAY_TABLA].RUTA
+				(CODIGO, ID_SERVICIO, ID_CDADORIGEN, ID_CDADDESTINO, PRECIOBASEPASAJE, PRECIOBASEKG)
+	SELECT	Ruta_Codigo, SERVICIO.ID as "ID Servicio",	C1.ID as "ID Cdad Origen", C2.ID as "ID Cdad Destino",
+			SUM(Ruta_Precio_BaseKG),SUM(Ruta_Precio_BasePasaje)
+	FROM 
+		(SELECT DISTINCT Ruta_Codigo, Ruta_Ciudad_Origen, Ruta_Ciudad_Destino,
+						 Ruta_Precio_BaseKG, Ruta_Precio_BasePasaje, Tipo_Servicio
+				FROM gd_esquema.Maestra
+		) TEMPORAL,
+		[HAY_TABLA].CIUDAD C1,
+		[HAY_TABLA].CIUDAD C2,
+		[HAY_TABLA].SERVICIO
+	WHERE
+		Ruta_Ciudad_Origen = C1.NOMBRE 
+		AND Ruta_Ciudad_Destino = C2.NOMBRE
+		AND Tipo_Servicio = SERVICIO.NOMBRE
+	GROUP BY 
+		Ruta_Codigo, Tipo_Servicio, Ruta_Ciudad_Destino, Ruta_Ciudad_Origen, SERVICIO.ID, C1.ID, C2.ID
+	order by 1,3
   	print 'Rutas migradas!'
-  	
---- MIGRACION - VIAJES (Un total de 8509 registros en tabla MASTER)
---- nota: consultar si originalmente hay viajes tildados como "registrados"/arribados
+
+--- MIGRACION - VIAJES (Un total de 8510 registros en tabla MASTER)
 		INSERT INTO [HAY_TABLA].VIAJE
 					(ID_AERONAVE, ID_RUTA, FECHASALIDA, FECHALLEGADA, FECHALLEGADAESTIMADA)
 		SELECT	
-				(SELECT ID FROM [HAY_TABLA].AERONAVE WHERE Aeronave_Matricula = AERONAVE.MATRICULA),
+				(SELECT ID FROM [HAY_TABLA].AERONAVE WHERE Aeronave_Matricula = AERONAVE.MATRICULA) AS "ID_AERONAVE",
 				(SELECT TOP 1 ID FROM [HAY_TABLA].RUTA WHERE Ruta_Codigo = RUTA.CODIGO),
 				FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
   		FROM gd_esquema.Maestra
-  		GROUP BY FechaSalida, FechaLLegada, Fecha_LLegada_Estimada, Ruta_Codigo, Aeronave_Matricula
---		ORDER BY 2,3
---		,Ruta_Ciudad_Origen, Ruta_Ciudad_Destino
+  		GROUP BY 	FechaSalida, FechaLLegada, Fecha_LLegada_Estimada, Tipo_Servicio, 
+  					Ruta_Codigo, Ruta_Ciudad_Origen, Ruta_Ciudad_Destino, Aeronave_Matricula
   	print 'Viajes migrados!'
 
+-- Tabla temporal para los INSERT de COMPRA Y PASAJES/ENCOMIENDAS
+CREATE TABLE #TEMP (
+ID 					INT IDENTITY(1,1),
+Butaca_Nro 			INT,
+Pasaje_Precio 		NUMERIC(18,2),
+Paquete_KG 			INT,
+Paquete_Precio 		NUMERIC(18,2),
+FECHA_COMPRA 		DATETIME,
+ID_CLIENTE 			INT,
+ID_VIAJE 			INT,
+);
+GO
+
+INSERT INTO [HAY_TABLA].#TEMP
+			(Butaca_Nro, Pasaje_Precio, Paquete_KG, Paquete_Precio, FECHA_COMPRA, ID_CLIENTE, ID_VIAJE)
+		SELECT
+			Butaca_Nro, Pasaje_Precio, Paquete_KG, Paquete_Precio,
+			case Butaca_Piso
+				when 0 then Paquete_FechaCompra
+				when 1 	then Pasaje_FechaCompra
+			end	as "FECHA COMPRA",
+			(	select ID from HAY_TABLA.PERSONA P 
+				where P.DNI = m.Cli_Dni
+				and P.nombre = m.Cli_Nombre
+				and P.apellido = P.apellido
+			) AS "ID CLIENTE" ,
+			(
+				select TOP 1 v.ID 
+				from  HAY_TABLA.Viaje v, HAY_TABLA.Ruta r, HAY_TABLA.Ciudad co, HAY_TABLA.Ciudad cd
+				where v.id_ruta = r.id
+				and r.codigo = m.Ruta_Codigo
+				and r.ID_CDADORIGEN = co.id
+				and r.ID_CDADDESTINO = cd.id
+				and co.nombre = m.Ruta_Ciudad_Origen
+				and cd.nombre = m.Ruta_Ciudad_Destino
+				and v.id_aeronave = (	select a.id
+										from HAY_TABLA.Aeronave a
+										where a.matricula = m.Aeronave_Matricula
+										)
+				and v.FECHASALIDA = m.FechaSalida
+				and v.FECHALLEGADAESTIMADA = m.Fecha_LLegada_Estimada
+				AND V.FECHALLEGADA = m.FechaLLegada
+			) as "ID VIAJE"
+		from gd_esquema.Maestra m
+
 /*
---- MIGRACION - COMPRA (Un total de XXX registros en tabla MASTER)
-	INSERT INTO [HAY_TABLA].COMPRA
-				(ID_PERSONA, ID_VIAJE, ID_TARJETA, FECHA, IMPORTE)
-	SELECT 	(SELECT CL.ID FROM [HAY_TABLA].PERSONA CL ...)
-			Pasaje_FechaCompra, Paquete_FechaCompra, Pasaje_Precio, Paquete_Precio
+--- MIGRACION - COMPRA (Un total de 401 304 registros en tabla MASTER)
+INSERT INTO [HAY_TABLA].COMPRA 
+			(ID_VIAJE, FECHA, IMPORTETOTAL)
+	SELECT 	ID_VIAJE, FECHA_COMPRA, 
+			CASE Pasaje_Precio
+				WHEN 0.00 	THEN Paquete_Precio
+				ELSE		Pasaje_Precio
+			END as "ImporteTotal"
+	FROM  #TEMP
+GO
 
---- MIGRACION - PASAJE (Un total de XXX registros en tabla MASTER)
-	INSERT INTO [HAY_TABLA].PASAJE
-				(NUMERO, FECHA, ID_RUTA, ID_PERSONA, ID_COMPRA, ID_BUTACA)
-	SELECT Pasaje_Codigo, Ruta_Codigo, 
+--- MIGRACION - PASAJE_ENCOMIENDA (Un total de 401 304 registros en tabla MASTER)
+	INSERT INTO [HAY_TABLA].PASAJE_ENCOMIENDA
+--				(ID_CLIENTE, ID_VIAJE, ID_COMPRA, IMPORTE, FECHA, , ID_BUTACA_PASAJE, PESO_ENCOMIENDA)
+				(ID, ID_CLIENTE, PESO_ENCOMIENDA, ID_BUTACA_PASAJE, IMPORTE)
+	select ID, ID_CLIENTE, Paquete_KG, 
+			case 
+				when Paquete_KG > 0 then NULL
+				else Butaca_Nro
+				end,
+		case Pasaje_Precio
+			when 0.00 then 	Paquete_Precio
+			else 			Pasaje_Precio
+			end as "Importe"
+		from #TEMP
+GO
 
---- MIGRACION - ENCOMIENDA (Un total de XXX registros en tabla MASTER)
-	INSERT INTO [HAY_TABLA].ENCOMIENDA
-				(NUMERO, FECHA, PESO, ID_RUTA, ID_PERSONA, ID_COMPRA)
-	SELECT 	Paquete_Codigo, Paquete_KG, Ruta_Codigo,
 
-*/
+/*
+INSERT INTO [HAY_TABLA].#TEMP
+			(ID_CLIENTE, ID_VIAJE, Butaca_Nro, Pasaje_Precio, Paquete_KG, Paquete_Precio, FECHA_COMPRA)
+		SELECT
+			P.ID AS "ID CLIENTE", V.ID as "ID VIAJE",
+			Butaca_Nro, Pasaje_Precio, Paquete_KG, Paquete_Precio,
+			case Butaca_Piso
+				when 0 then Paquete_FechaCompra
+				when 1 	then Pasaje_FechaCompra
+			end	as "FECHA COMPRA"
+	FROM
+		gd_esquema.Maestra, HAY_TABLA.PERSONA P,
+		HAY_TABLA.VIAJE V, HAY_TABLA.RUTA R, HAY_TABLA.CIUDAD co, HAY_TABLA.CIUDAD cd, 
+		HAY_TABLA.AERONAVE A, HAY_TABLA.BUTACA B
+	WHERE 
+		P.DNI = Cli_Dni AND P.NOMBRE = Cli_Nombre and P.APELLIDO = Cli_Apellido AND P.DIRECCION = Cli_Dir AND P.FECHANACIMIENTO = Cli_Fecha_Nac
+		AND A.MATRICULA = Aeronave_Matricula AND V.ID_AERONAVE = A.ID
+		AND R.CODIGO = Ruta_Codigo AND V.ID_RUTA = R.ID
+		AND co.NOMBRE = Ruta_Ciudad_Origen AND cd.NOMBRE = Ruta_Ciudad_Destino
+		AND R.ID_CDADORIGEN = co.ID AND R.ID_CDADDESTINO = cd.ID
+		AND V.FECHASALIDA = maestra.FechaSalida and V.FECHALLEGADAESTIMADA = Fecha_LLegada_Estimada	AND V.FECHALLEGADA = maestra.FechaLLegada
+		AND B.NUMERO = Butaca_Nro AND B.ID_AERONAVE = A.ID
+*/*/
