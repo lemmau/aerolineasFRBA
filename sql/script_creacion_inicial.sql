@@ -46,6 +46,11 @@ DROP PROCEDURE [HAY_TABLA].[sp_get_usuario_by_login]
 DROP PROCEDURE [HAY_TABLA].[sp_get_usuario_intentos]
 DROP PROCEDURE [HAY_TABLA].[sp_set_usuario_intentos]
 
+DROP PROCEDURE [HAY_TABLA].[sp_get_ciudades]
+DROP PROCEDURE [HAY_TABLA].[sp_insertar_ciudad]
+DROP PROCEDURE [HAY_TABLA].[sp_eliminar_ciudad]
+
+
 DROP SCHEMA [HAY_TABLA]
 */
 
@@ -784,6 +789,79 @@ BEGIN
 		ID_USUARIO = @id_usuario
 END
 GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_get_ciudades]
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT 
+		ID, NOMBRE, STATUS
+	FROM 
+		[HAY_TABLA].CIUDAD
+	WHERE
+		STATUS = 1
+	ORDER BY
+		NOMBRE
+END
+GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ciudad]
+	@nombre nvarchar(100)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+	if (exists(select id from [HAY_TABLA].CIUDAD where NOMBRE = @nombre and STATUS = 1))
+		begin
+			RAISERROR(N'Ya existe una ciudad con ese nombre',16,1)
+			return
+		end		
+	else 
+		begin
+			if (exists(select id from [HAY_TABLA].CIUDAD where NOMBRE = @nombre and STATUS = 0))		
+				begin
+					UPDATE 
+						[HAY_TABLA].CIUDAD
+					SET 
+						STATUS = 1
+					WHERE
+						NOMBRE = @nombre and STATUS = 0
+					RAISERROR(N'Habilito Ciudad',16,1)
+					return
+				end
+			else
+				begin
+					INSERT INTO [HAY_TABLA].CIUDAD  (NOMBRE, STATUS)
+					OUTPUT
+						inserted.id
+					VALUES
+						(@nombre, 1)
+					RAISERROR(N'Agrego Nueva Ciudad',16,1)
+					return
+				end
+		end
+END
+GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_eliminar_ciudad]
+	@id int
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE 
+		[HAY_TABLA].CIUDAD
+	SET 
+		STATUS = 0
+	WHERE
+		ID = @id
+END
+GO
+
+
 /*************************************************** MIGRACION ******************************************************/
 --- MIGRACION - CIUDADES (Un total de 35 registros en tabla MASTER)
 		INSERT INTO [HAY_TABLA].CIUDAD

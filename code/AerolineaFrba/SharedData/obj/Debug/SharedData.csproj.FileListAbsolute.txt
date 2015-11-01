@@ -8,3 +8,8 @@ C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\SharedData\bin\Debug\Share
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\SharedData\obj\Debug\SharedData.csprojResolveAssemblyReference.cache
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\SharedData\obj\Debug\SharedData.dll
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\SharedData\obj\Debug\SharedData.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\SharedData\bin\Debug\SharedData.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\SharedData\bin\Debug\SharedData.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\SharedData\obj\Debug\SharedData.csprojResolveAssemblyReference.cache
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\SharedData\obj\Debug\SharedData.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\SharedData\obj\Debug\SharedData.pdb

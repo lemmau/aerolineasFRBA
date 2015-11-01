@@ -35,7 +35,7 @@
             this.seccionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemRoles = new System.Windows.Forms.ToolStripMenuItem();
             this.ciudadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ciudadesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemCiudades = new System.Windows.Forms.ToolStripMenuItem();
             this.aeronavesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.generarViajeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.registroLlegadaDeAeronaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +75,7 @@
             this.seccionesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itemRoles,
             this.ciudadesToolStripMenuItem,
-            this.ciudadesToolStripMenuItem1,
+            this.itemCiudades,
             this.aeronavesToolStripMenuItem1,
             this.generarViajeToolStripMenuItem1,
             this.registroLlegadaDeAeronaveToolStripMenuItem,
@@ -105,12 +105,13 @@
             this.ciudadesToolStripMenuItem.Text = "Rutas";
             this.ciudadesToolStripMenuItem.Click += new System.EventHandler(this.ciudadesToolStripMenuItem_Click);
             // 
-            // ciudadesToolStripMenuItem1
+            // itemCiudades
             // 
-            this.ciudadesToolStripMenuItem1.Name = "ciudadesToolStripMenuItem1";
-            this.ciudadesToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
-            this.ciudadesToolStripMenuItem1.Tag = "ABM DE CIUDAD";
-            this.ciudadesToolStripMenuItem1.Text = "Ciudades";
+            this.itemCiudades.Name = "itemCiudades";
+            this.itemCiudades.Size = new System.Drawing.Size(268, 22);
+            this.itemCiudades.Tag = "ABM DE CIUDAD";
+            this.itemCiudades.Text = "Ciudades";
+            this.itemCiudades.Click += new System.EventHandler(this.itemCiudades_Click);
             // 
             // aeronavesToolStripMenuItem1
             // 
@@ -209,7 +210,7 @@
         private System.Windows.Forms.ToolStripMenuItem seccionesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemRoles;
         private System.Windows.Forms.ToolStripMenuItem ciudadesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ciudadesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem itemCiudades;
         private System.Windows.Forms.ToolStripMenuItem aeronavesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem generarViajeToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem registroLlegadaDeAeronaveToolStripMenuItem;

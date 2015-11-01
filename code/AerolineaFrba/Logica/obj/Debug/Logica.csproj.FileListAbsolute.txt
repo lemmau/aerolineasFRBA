@@ -12,3 +12,10 @@ C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Logica\bin\Debug\Data.pdb
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Logica\obj\Debug\Logica.csprojResolveAssemblyReference.cache
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Logica\obj\Debug\Logica.dll
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Logica\obj\Debug\Logica.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Debug\Logica.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Debug\Logica.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Debug\Data.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Debug\Data.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\obj\Debug\Logica.csprojResolveAssemblyReference.cache
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\obj\Debug\Logica.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Logica\obj\Debug\Logica.pdb

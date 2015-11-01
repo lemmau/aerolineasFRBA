@@ -93,5 +93,11 @@ namespace AerolineaFrba.Login
             Abm_Rol.ListadoRoles _listado_roles = new Abm_Rol.ListadoRoles();
             _listado_roles.ShowDialog();
         }
+
+        private void itemCiudades_Click(object sender, EventArgs e)
+        {
+            Abm_Ciudad.AbmCiudad ciudad = new Abm_Ciudad.AbmCiudad();
+            ciudad.Show();
+        }
     }
 }

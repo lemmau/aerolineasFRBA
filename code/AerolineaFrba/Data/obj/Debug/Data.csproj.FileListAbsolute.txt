@@ -8,3 +8,7 @@ C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Data\bin\Debug\Data.pdb
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Data\obj\Debug\Data.dll
 C:\Users\lemmau\git\aerolineasFRBa\code\AerolineaFrba\Data\obj\Debug\Data.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Data\bin\Debug\Data.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Data\bin\Debug\Data.pdb
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Data\obj\Debug\Data.dll
+C:\Users\mym\Desktop\TP Aerolinea FRBA 1.1 - 2C 2015\Intento 7 01-11\aerolineasFRBA\code\AerolineaFrba\Data\obj\Debug\Data.pdb
