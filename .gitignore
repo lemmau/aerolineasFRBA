@@ -1,5 +1,8 @@
 code/AerolineaFrba/AerolineaFrba/bin/Debug/*
 code/AerolineaFrba/AerolineaFrba/obj/Debug/*
+code/AerolineaFrba/Data/obj/Debug/*
+code/AerolineaFrba/Logica/obj/Debug/*
+code/AerolineaFrba/SharedData/obj/Debug/*
 code/AerolineaFrba/AerolineaFrba.v11.suo
 
 doc/Base de Datos/gd_esquema.Schema.sql
