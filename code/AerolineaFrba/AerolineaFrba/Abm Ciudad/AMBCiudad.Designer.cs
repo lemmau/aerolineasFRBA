@@ -132,6 +132,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.DGVCiudad);
             this.Name = "AbmCiudad";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AMBCiudad";
             this.Load += new System.EventHandler(this.AbmCiudad_Load);
             this.groupBox3.ResumeLayout(false);
