@@ -790,7 +790,6 @@ END
 GO
 
 CREATE PROCEDURE [HAY_TABLA].[sp_get_ciudades]
-
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -808,36 +807,37 @@ GO
 
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ciudad]
 	@nombre nvarchar(100)
-
 AS
 BEGIN
 	SET NOCOUNT ON;
-	if (exists(select id from [HAY_TABLA].CIUDAD where NOMBRE = @nombre and STATUS = 1))
+	if (exists(select id from [HAY_TABLA].CIUDAD where NOMBRE like '%' + @nombre and STATUS = 1))
 		begin
-			RAISERROR(N'Ya existe una ciudad con ese nombre',16,1)
+			RAISERROR(N' Ya existe una ciudad con ese nombre ', 16, 1)
 			return
 		end		
 	else 
 		begin
-			if (exists(select id from [HAY_TABLA].CIUDAD where NOMBRE = @nombre and STATUS = 0))		
+			if (exists(select id from [HAY_TABLA].CIUDAD where NOMBRE like '%' + @nombre and STATUS = 0))		
 				begin
 					UPDATE 
 						[HAY_TABLA].CIUDAD
 					SET 
 						STATUS = 1
 					WHERE
-						NOMBRE = @nombre and STATUS = 0
-					RAISERROR(N'Habilito Ciudad',16,1)
+						NOMBRE LIKE '%' + @nombre 
+						AND STATUS = 0
+					RAISERROR(N' Habilito Ciudad ', 16, 1)
 					return
 				end
 			else
 				begin
-					INSERT INTO [HAY_TABLA].CIUDAD  (NOMBRE, STATUS)
+					INSERT INTO [HAY_TABLA].CIUDAD 
+								(NOMBRE, STATUS)
 					OUTPUT
 						inserted.id
 					VALUES
 						(@nombre, 1)
-					RAISERROR(N'Agrego Nueva Ciudad',16,1)
+					RAISERROR(N' Agrego Nueva Ciudad ', 16, 1)
 					return
 				end
 		end
@@ -846,7 +846,6 @@ GO
 
 CREATE PROCEDURE [HAY_TABLA].[sp_eliminar_ciudad]
 	@id int
-
 AS
 BEGIN
 	SET NOCOUNT ON;

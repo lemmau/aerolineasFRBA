@@ -23,15 +23,11 @@ namespace Logica
             using (var con = Data.DataAccess.GetConnection())
             {
                 con.Open();
-
                 DataTable dtDatos = new DataTable();
-
                 SqlDataAdapter mdaDatos = new SqlDataAdapter(SP_GET_CIUDADES, con);
 
                 mdaDatos.Fill(dtDatos);
-
                 datosDT = dtDatos;
-
                 con.Close();
             }
 
