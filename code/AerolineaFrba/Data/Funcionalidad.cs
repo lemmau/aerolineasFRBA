@@ -12,7 +12,7 @@ namespace Data
     {
         private const String SP_GET = "[HAY_TABLA].sp_select_funcionalidades_de_rol";
         private const String SP_GET_NEW = "[HAY_TABLA].sp_select_funcionalidades_de_rol_nuevo";
-        private const String SP_INSERT = "[HAY_TABLA].sp_insertar_funcionalidad_en_rol";
+        private const String SP_INSERT = "[HAY_TABLA].sp_insertar_funcionalidad_a_rol";
         private const string SP_DELETE = "[HAY_TABLA].sp_borrar_funcionalidades_de_rol";
 
         public static DataTable Get(int rolId)
