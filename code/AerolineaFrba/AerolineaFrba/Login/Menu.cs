@@ -68,11 +68,6 @@ namespace AerolineaFrba.Login
 
         }
 
-        private void ciudadesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -98,6 +93,12 @@ namespace AerolineaFrba.Login
         {
             Abm_Ciudad.AbmCiudad ciudad = new Abm_Ciudad.AbmCiudad();
             ciudad.Show();
+        }
+
+        private void itemRutas_Click(object sender, EventArgs e)
+        {
+            Abm_Ruta.ListadoRutas _listado_rutas = new Abm_Ruta.ListadoRutas();
+            _listado_rutas.Show();
         }
     }
 }

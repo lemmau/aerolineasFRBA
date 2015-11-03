@@ -34,7 +34,7 @@
             this.menuStripSecciones = new System.Windows.Forms.MenuStrip();
             this.seccionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemRoles = new System.Windows.Forms.ToolStripMenuItem();
-            this.ciudadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemRutas = new System.Windows.Forms.ToolStripMenuItem();
             this.itemCiudades = new System.Windows.Forms.ToolStripMenuItem();
             this.aeronavesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.generarViajeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +74,7 @@
             this.seccionesToolStripMenuItem.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.seccionesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itemRoles,
-            this.ciudadesToolStripMenuItem,
+            this.itemRutas,
             this.itemCiudades,
             this.aeronavesToolStripMenuItem1,
             this.generarViajeToolStripMenuItem1,
@@ -97,13 +97,13 @@
             this.itemRoles.Text = "Roles";
             this.itemRoles.Click += new System.EventHandler(this.itemRoles_Click);
             // 
-            // ciudadesToolStripMenuItem
+            // itemRutas
             // 
-            this.ciudadesToolStripMenuItem.Name = "ciudadesToolStripMenuItem";
-            this.ciudadesToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
-            this.ciudadesToolStripMenuItem.Tag = "ABM DE RUTA AEREA";
-            this.ciudadesToolStripMenuItem.Text = "Rutas";
-            this.ciudadesToolStripMenuItem.Click += new System.EventHandler(this.ciudadesToolStripMenuItem_Click);
+            this.itemRutas.Name = "itemRutas";
+            this.itemRutas.Size = new System.Drawing.Size(268, 22);
+            this.itemRutas.Tag = "ABM DE RUTA AEREA";
+            this.itemRutas.Text = "Rutas";
+            this.itemRutas.Click += new System.EventHandler(this.itemRutas_Click);
             // 
             // itemCiudades
             // 
@@ -209,7 +209,7 @@
         private System.Windows.Forms.MenuStrip menuStripSecciones;
         private System.Windows.Forms.ToolStripMenuItem seccionesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemRoles;
-        private System.Windows.Forms.ToolStripMenuItem ciudadesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem itemRutas;
         private System.Windows.Forms.ToolStripMenuItem itemCiudades;
         private System.Windows.Forms.ToolStripMenuItem aeronavesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem generarViajeToolStripMenuItem1;

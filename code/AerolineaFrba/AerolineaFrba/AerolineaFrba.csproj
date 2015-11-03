@@ -81,11 +81,11 @@
     <Compile Include="Abm Rol\ListadoRoles.Designer.cs">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Ruta\Form1.cs">
+    <Compile Include="Abm Ruta\ListadoRutas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Ruta\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Ruta\ListadoRutas.Designer.cs">
+      <DependentUpon>ListadoRutas.cs</DependentUpon>
     </Compile>
     <Compile Include="Canje Millas\Form1.cs">
       <SubType>Form</SubType>
@@ -177,6 +177,9 @@
     <EmbeddedResource Include="Abm Rol\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ruta\ListadoRutas.resx">
+      <DependentUpon>ListadoRutas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Inicial.resx">
       <DependentUpon>Inicial.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,7 +212,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logica\Logica.csproj">
