@@ -409,7 +409,7 @@ BEGIN
 		NOMBRE ASC
 END
 GO
-
+/*
 CREATE PROCEDURE [HAY_TABLA].[sp_select_rutas_con_ciudadOrigen]
 	@cdadOrigen nvarchar(50)
 AS
@@ -426,8 +426,8 @@ BEGIN
 		CO.NOMBRE 
 END
 GO
+*/
 
--- VER
 CREATE PROCEDURE [HAY_TABLA].[sp_get_ruta_by_id]
 	@id int
 AS
@@ -443,28 +443,118 @@ BEGIN
 END
 GO
 
--- VER
 CREATE PROCEDURE [HAY_TABLA].[sp_select_rutas]
+	@codRuta nvarchar(12) = null,
 	@idCiudadOrigen numeric(18,0) = null,
 	@idCiudadDestino numeric(18,0) = null,
 	@idTipoDeServicio numeric(18,0) = null
 AS
 BEGIN
 	SELECT
-		R.ID, R.CODIGO, CO.NOMBRE as "CO_NOMBRE", CD.NOMBRE as "CD_NOMBRE", R.PRECIOBASEKG, R.PRECIOBASEPASAJE, S.NOMBRE as "SERV_NOMBRE",
+		R.ID, R.CODIGO as "R_CODIGO", CO.NOMBRE as "CO_NOMBRE", CD.NOMBRE as "CD_NOMBRE",
+		R.PRECIOBASEKG, R.PRECIOBASEPASAJE, S.NOMBRE as "S_NOMBRE",
 		(	case 
-			when R.STATUS = 0 then 'NO'
+			when R.STATUS = 0 
+			then 'NO'
 			else 'SI' 
 			end ) as 'STATUS'
 	FROM
 		[HAY_TABLA].RUTA R, [HAY_TABLA].SERVICIO S, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD
 	WHERE
-		((@idCiudadOrigen is null)  or (R.ID_CDADORIGEN = @idCiudadOrigen)) AND
-		((@idCiudadDestino is null) or (R.ID_CDADDESTINO = @idCiudadDestino)) AND
-		((@idTipoDeServicio is null) or (R.ID_SERVICIO = @idTipoDeServicio))
-		AND R.ID_CDADORIGEN=CO.ID AND R.ID_CDADDESTINO=CD.ID
-		AND S.ID=R.ID_SERVICIO 
+		((@codRuta is null)) or (R.CODIGO LIKE '%' + @codRuta + '%') AND
+		((@idCiudadOrigen is null)  or (R.ID_CDADORIGEN = @idCiudadOrigen AND R.ID_CDADORIGEN=CO.ID)) AND
+		((@idCiudadDestino is null) or (R.ID_CDADDESTINO = @idCiudadDestino  AND R.ID_CDADDESTINO=CD.ID)) AND
+		((@idTipoDeServicio is null) or (R.ID_SERVICIO = @idTipoDeServicio 		AND S.ID=R.ID_SERVICIO ))
 	ORDER BY
 		R.CODIGO, CO.NOMBRE
+END
+GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_select_ruta]
+	@id int
+AS
+BEGIN
+	SELECT
+		R.ID, CO.NOMBRE as "CO_NOMBRE", CD.NOMBRE as "CD_NOMBRE", R.PRECIOBASEPASAJE, R.PRECIOBASEKG, S.ID as "S_ID", S.NOMBRE as "S_NOMBRE"
+	FROM
+		[HAY_TABLA].RUTA R, [HAY_TABLA].SERVICIO S, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD
+	WHERE
+		R.ID  = @id
+		AND R.ID_CDADORIGEN=CO.ID AND R.ID_CDADDESTINO=CD.ID AND S.ID=R.ID_SERVICIO
+END
+GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_baja_ruta]
+	@id	int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE 
+		[HAY_TABLA].RUTA
+	SET 
+		STATUS = 0
+	WHERE
+		id = @id
+END
+GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ruta]
+	@idCiudadOrigen int,
+	@idCiudadDestino int,
+	@idTipoDeServicio int,
+	@precioBasePasaje numeric(18,0),
+	@precioBaseKG numeric(18,0),
+	@status bit
+AS
+BEGIN
+	DECLARE @codRuta int
+	SELECT @codRuta = MAX(CODIGO)+1 FROM [HAY_TABLA].RUTA
+
+	if (exists(select id from [HAY_TABLA].RUTA where ID_CDADORIGEN=@idCiudadOrigen AND ID_CDADDESTINO=@idCiudadDestino AND ID_SERVICIO=@idTipoDeServicio))
+		begin
+			RAISERROR(N'Ya existe dicha Ruta',16,1)
+			return
+		end		
+		
+	INSERT INTO [HAY_TABLA].RUTA
+				(ID_CDADORIGEN,ID_CDADDESTINO,ID_SERVICIO,PRECIOBASEPASAJE,PRECIOBASEKG,CODIGO)
+    OUTPUT
+		inserted.id
+    VALUES
+          (	@idCiudadOrigen, @idCiudadDestino, @idTipoDeServicio, 
+          	@precioBasePasaje, @precioBaseKG, @codRuta)
+END
+GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_modificacion_ruta]
+	@id	int,
+	@idCiudadOrigen int,
+	@idCiudadDestino int,
+	@idTipoDeServicio int,
+	@precioBasePasaje numeric(18,0),
+	@precioBaseKG numeric(18,0),
+	@status bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+		if (exists(select id from [HAY_TABLA].RUTA where ID_CDADORIGEN=@idCiudadOrigen AND ID_CDADDESTINO=@idCiudadDestino AND ID_SERVICIO=@idTipoDeServicio AND ID <> @id))
+		begin
+			RAISERROR(N'Ya existe una Ruta con esos datos',16,1)
+			return
+		end		
+	
+	UPDATE 
+		[HAY_TABLA].RUTA
+	SET 
+	ID_CDADORIGEN = @idCiudadOrigen,
+	ID_CDADDESTINO = @idCiudadDestino,
+	ID_SERVICIO = @idTipoDeServicio,
+	PRECIOBASEPASAJE = @precioBasePasaje,
+	PRECIOBASEKG = @precioBaseKG,
+	STATUS = @status
+	WHERE
+		id = @id
 END
 GO

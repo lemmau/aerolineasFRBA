@@ -81,6 +81,18 @@
     <Compile Include="Abm Rol\ListadoRoles.Designer.cs">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Ruta\FrmActualizarRuta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ruta\FrmActualizarRuta.Designer.cs">
+      <DependentUpon>FrmActualizarRuta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Ruta\FrmEliminarRuta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ruta\FrmEliminarRuta.Designer.cs">
+      <DependentUpon>FrmEliminarRuta.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Ruta\FrmInsertarRuta.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,11 +195,18 @@
     <EmbeddedResource Include="Abm Rol\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ruta\FrmActualizarRuta.resx">
+      <DependentUpon>FrmActualizarRuta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ruta\FrmEliminarRuta.resx">
+      <DependentUpon>FrmEliminarRuta.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Ruta\FrmInsertarRuta.resx">
       <DependentUpon>FrmInsertarRuta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ruta\ListadoRutas.resx">
       <DependentUpon>ListadoRutas.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicial.resx">
       <DependentUpon>Inicial.cs</DependentUpon>

@@ -1,6 +1,6 @@
 ﻿namespace AerolineaFrba.Abm_Ruta
 {
-    partial class FrmInsertarRuta
+    partial class FrmActualizarRuta
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btActualizar = new System.Windows.Forms.Button();
             this.gbCamposDeRuta = new System.Windows.Forms.GroupBox();
             this.lbPrecioBaseKG = new System.Windows.Forms.Label();
             this.tbPrecioBaseKG = new System.Windows.Forms.TextBox();
@@ -40,9 +41,17 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btGuardar = new System.Windows.Forms.Button();
             this.gbCamposDeRuta.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // btActualizar
+            // 
+            this.btActualizar.Location = new System.Drawing.Point(497, 295);
+            this.btActualizar.Name = "btActualizar";
+            this.btActualizar.Size = new System.Drawing.Size(75, 23);
+            this.btActualizar.TabIndex = 11;
+            this.btActualizar.Text = "Actualizar";
+            this.btActualizar.UseVisualStyleBackColor = true;
             // 
             // gbCamposDeRuta
             // 
@@ -60,7 +69,7 @@
             this.gbCamposDeRuta.Location = new System.Drawing.Point(12, 12);
             this.gbCamposDeRuta.Name = "gbCamposDeRuta";
             this.gbCamposDeRuta.Size = new System.Drawing.Size(560, 257);
-            this.gbCamposDeRuta.TabIndex = 8;
+            this.gbCamposDeRuta.TabIndex = 10;
             this.gbCamposDeRuta.TabStop = false;
             this.gbCamposDeRuta.Text = "Campos de Ruta";
             // 
@@ -141,7 +150,6 @@
             this.label3.Size = new System.Drawing.Size(84, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Tipo de Servicio";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label2
             // 
@@ -161,27 +169,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Ciudad Origen";
             // 
-            // btGuardar
-            // 
-            this.btGuardar.Location = new System.Drawing.Point(497, 295);
-            this.btGuardar.Name = "btGuardar";
-            this.btGuardar.Size = new System.Drawing.Size(75, 23);
-            this.btGuardar.TabIndex = 9;
-            this.btGuardar.Text = "Guardar";
-            this.btGuardar.UseVisualStyleBackColor = true;
-            this.btGuardar.Click += new System.EventHandler(this.btGuardar_Click);
-            // 
-            // FrmInsertarRuta
+            // FrmActualizarRuta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 330);
-            this.Controls.Add(this.btGuardar);
+            this.Controls.Add(this.btActualizar);
             this.Controls.Add(this.gbCamposDeRuta);
-            this.Name = "FrmInsertarRuta";
+            this.Name = "FrmActualizarRuta";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Alta de Ruta Aerea";
-            this.Load += new System.EventHandler(this.FrmInsertarRuta_Load);
+            this.Text = "Modificar Ruta Aerea";
+            this.Load += new System.EventHandler(this.FrmActualizarRuta_Load);
             this.gbCamposDeRuta.ResumeLayout(false);
             this.gbCamposDeRuta.PerformLayout();
             this.ResumeLayout(false);
@@ -190,7 +188,10 @@
 
         #endregion
 
+        private System.Windows.Forms.Button btActualizar;
         private System.Windows.Forms.GroupBox gbCamposDeRuta;
+        private System.Windows.Forms.Label lbPrecioBaseKG;
+        private System.Windows.Forms.TextBox tbPrecioBaseKG;
         private System.Windows.Forms.CheckBox cbActiva;
         private System.Windows.Forms.TextBox tbPrecioBasePasaje;
         private System.Windows.Forms.Label lbPrecioBasePasaje;
@@ -200,8 +201,5 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lbPrecioBaseKG;
-        private System.Windows.Forms.TextBox tbPrecioBaseKG;
-        private System.Windows.Forms.Button btGuardar;
     }
 }

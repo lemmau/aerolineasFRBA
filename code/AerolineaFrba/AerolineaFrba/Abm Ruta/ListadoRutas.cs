@@ -40,6 +40,14 @@ namespace AerolineaFrba.Abm_Ruta
             //cbCiudadDestino.DisplayMember = "Nombre";
         }
 
+        private String CodRuta
+        {
+            get
+            {
+                return tbCodRuta.Text;
+            }
+        }
+
         private Int32? IdTipoDeServicio
         {
             get
@@ -73,6 +81,18 @@ namespace AerolineaFrba.Abm_Ruta
             }
         }
 
+        public Int32? IdSeleccionado
+        {
+            get
+            {
+                if (dgvRutas.SelectedRows.Count == 0)
+                    return null;
+
+
+                return Int32.Parse(dgvRutas.SelectedRows[0].Cells["Id"].Value.ToString());
+            }
+        }
+
         //Int32? = nullable. si no hay una fila seleccionado devuelvo null y listo.
         public Ruta RutaSeleccionada
         {
@@ -86,23 +106,30 @@ namespace AerolineaFrba.Abm_Ruta
             }
         }
 
-        private void AgregarRuta(Ruta ruta)
-        {
-            Int32 index = dgvRutas.Rows.Add();
-            dgvRutas.Rows[index].Cells["Id"].Value = ruta.Id;
-            dgvRutas.Rows[index].Cells["codRuta"].Value = ruta.codRuta;
-            dgvRutas.Rows[index].Cells["precioBaseKG"].Value = ruta.precioBaseKG;
-            dgvRutas.Rows[index].Cells["precioBasePasaje"].Value = ruta.precioBasePasaje;
-            dgvRutas.Rows[index].Cells["ciudadOrigen"].Value = ruta.ciudadOrigen;
-            dgvRutas.Rows[index].Cells["ciudadDestino"].Value = ruta.ciudadDestino;
-//            dgvRutas.Rows[index].Cells["tipoServicio"].Value = ruta.tipoServicio;
+        //private void AgregarRuta(Ruta ruta)
+        //{
+        //    Int32 index = dgvRutas.Rows.Add();
+        //    dgvRutas.Rows[index].Cells["Id"].Value = ruta.Id;
+        //    dgvRutas.Rows[index].Cells["codRuta"].Value = ruta.codRuta;
+        //    dgvRutas.Rows[index].Cells["precioBaseKG"].Value = ruta.precioBaseKG;
+        //    dgvRutas.Rows[index].Cells["precioBasePasaje"].Value = ruta.precioBasePasaje;
+        //    dgvRutas.Rows[index].Cells["ciudadOrigen"].Value = ruta.ciudadOrigen;
+        //    dgvRutas.Rows[index].Cells["ciudadDestino"].Value = ruta.ciudadDestino;
   
-            if (ruta.Estado)
-                dgvRutas.Rows[index].Cells["Activo"].Value = "SI";
-            else
-                dgvRutas.Rows[index].Cells["Activo"].Value = "NO";
-        }
+        //    if (ruta.Estado)
+        //        dgvRutas.Rows[index].Cells["Activo"].Value = "SI";
+        //    else
+        //        dgvRutas.Rows[index].Cells["Activo"].Value = "NO";
+        //}
 
+        //private void CargarRutas()
+        //{
+        //    dgvRutas.Rows.Clear();
+
+        //    //como el textbox filtro tiene un maximo de 255 no valido rango.
+        //    foreach (Ruta ruta in Ruta.Get(cbCiudadOrigen.Text))
+        //        AgregarRuta(ruta);
+        //}
 
         private void CargarTiposDeServicio()
         {
@@ -123,15 +150,6 @@ namespace AerolineaFrba.Abm_Ruta
                 cbCiudad.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));
         }
 
-        private void CargarRutas()
-        {
-            dgvRutas.Rows.Clear();
-
-            //como el textbox filtro tiene un maximo de 255 no valido rango.
-            foreach (Ruta ruta in Ruta.Get(cbCiudadOrigen.Text))
-                AgregarRuta(ruta);
-        }
-
         private void ListadoRutas_Load(object sender, EventArgs e)
         {
             CargarTiposDeServicio();
@@ -139,6 +157,48 @@ namespace AerolineaFrba.Abm_Ruta
             CargarCiudades(cbCiudadDestino);
             //CargarRutas();
             cbCiudadOrigen.Select();
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            tbCodRuta.Text = String.Empty;
+            cbCiudadOrigen.SelectedIndex = -1;
+            cbCiudadDestino.SelectedIndex = -1;
+            cbTipoDeServicio.SelectedIndex = -1;
+        }
+
+        private void btnAlta_Click(object sender, EventArgs e)
+        {
+            var frm = new FrmInsertarRuta();
+            frm.ShowDialog();
+            //CargarRutas();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            // actualizar STATUS en DB y poner "ACTIVO" EN "NO"
+            if (IdSeleccionado.HasValue)
+            {
+                var frm = new FrmEliminarRuta(IdSeleccionado.Value);
+                frm.ShowDialog();
+                btnBuscar_Click_1(sender, e);
+            } else
+            {
+                MessageBox.Show("Seleccione una ruta del listado.");
+                return;
+            }
+        }
+
+        private void btnBuscar_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                dgvRutas.DataSource = Ruta.Get(CodRuta, IdCiudadOrigen, IdCiudadDestino, IdTipoDeServicio);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -155,39 +215,6 @@ namespace AerolineaFrba.Abm_Ruta
         {
 
         }
-
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            cbCiudadOrigen.SelectedIndex = -1;
-            cbCiudadDestino.SelectedIndex = -1;
-            cbTipoDeServicio.SelectedIndex = -1;
-            //CargarRutas();
-        }
-
-        private void btnAlta_Click(object sender, EventArgs e)
-        {
-            var frm = new FrmInsertarRuta();
-            frm.ShowDialog();
-            CargarRutas();
-        }
-
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            if (RutaSeleccionada == null)
-            {
-                MessageBox.Show("Seleccione una ruta del listado.");
-                return;
-            }
-
-            // actualizar STATUS en DB y poner "ACTIVO" EN "NO"
-            // frm.ShowDialog();
-            CargarRutas();
-        }
-
-        private void btnBuscar_Click_1(object sender, EventArgs e)
-        {
-            //CargarRutas();
-            dgvRutas.DataSource = Ruta.Get(IdCiudadOrigen, IdCiudadDestino, IdTipoDeServicio);
-        }
+        
     }
 }
