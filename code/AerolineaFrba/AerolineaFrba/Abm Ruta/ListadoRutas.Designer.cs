@@ -35,20 +35,21 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.dgvRoles = new System.Windows.Forms.DataGridView();
+            this.dgvRutas = new System.Windows.Forms.DataGridView();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.codigoRuta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.codRuta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ciudadOrigen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ciudadDestino = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.precioBaseKG = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.precioBasePasaje = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Activo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAlta = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRoles)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRutas)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -59,7 +60,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(20, 12);
+            this.groupBox1.Location = new System.Drawing.Point(55, 18);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(667, 158);
             this.groupBox1.TabIndex = 7;
@@ -68,6 +69,7 @@
             // 
             // cbTipoDeServicio
             // 
+            this.cbTipoDeServicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTipoDeServicio.FormattingEnabled = true;
             this.cbTipoDeServicio.Location = new System.Drawing.Point(302, 106);
             this.cbTipoDeServicio.Name = "cbTipoDeServicio";
@@ -76,6 +78,7 @@
             // 
             // cbCiudadDestino
             // 
+            this.cbCiudadDestino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCiudadDestino.FormattingEnabled = true;
             this.cbCiudadDestino.Location = new System.Drawing.Point(302, 66);
             this.cbCiudadDestino.Name = "cbCiudadDestino";
@@ -84,6 +87,7 @@
             // 
             // cbCiudadOrigen
             // 
+            this.cbCiudadOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCiudadOrigen.FormattingEnabled = true;
             this.cbCiudadOrigen.Location = new System.Drawing.Point(302, 26);
             this.cbCiudadOrigen.Name = "cbCiudadOrigen";
@@ -120,25 +124,26 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Ciudad Origen";
             // 
-            // dgvRoles
+            // dgvRutas
             // 
-            this.dgvRoles.AllowUserToAddRows = false;
-            this.dgvRoles.AllowUserToDeleteRows = false;
-            this.dgvRoles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRoles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvRutas.AllowUserToAddRows = false;
+            this.dgvRutas.AllowUserToDeleteRows = false;
+            this.dgvRutas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRutas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Id,
-            this.codigoRuta,
+            this.codRuta,
             this.ciudadOrigen,
             this.ciudadDestino,
             this.precioBaseKG,
-            this.precioBasePasaje});
-            this.dgvRoles.Location = new System.Drawing.Point(10, 224);
-            this.dgvRoles.MultiSelect = false;
-            this.dgvRoles.Name = "dgvRoles";
-            this.dgvRoles.ReadOnly = true;
-            this.dgvRoles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRoles.Size = new System.Drawing.Size(762, 376);
-            this.dgvRoles.TabIndex = 8;
+            this.precioBasePasaje,
+            this.Activo});
+            this.dgvRutas.Location = new System.Drawing.Point(10, 224);
+            this.dgvRutas.MultiSelect = false;
+            this.dgvRutas.Name = "dgvRutas";
+            this.dgvRutas.ReadOnly = true;
+            this.dgvRutas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvRutas.Size = new System.Drawing.Size(762, 376);
+            this.dgvRutas.TabIndex = 8;
             // 
             // Id
             // 
@@ -148,25 +153,26 @@
             this.Id.Visible = false;
             this.Id.Width = 400;
             // 
-            // codigoRuta
+            // codRuta
             // 
-            this.codigoRuta.HeaderText = "Cod Ruta";
-            this.codigoRuta.Name = "codigoRuta";
-            this.codigoRuta.ReadOnly = true;
+            this.codRuta.HeaderText = "Cod Ruta";
+            this.codRuta.Name = "codRuta";
+            this.codRuta.ReadOnly = true;
+            this.codRuta.Width = 80;
             // 
             // ciudadOrigen
             // 
             this.ciudadOrigen.HeaderText = "Ciudad Origen";
             this.ciudadOrigen.Name = "ciudadOrigen";
             this.ciudadOrigen.ReadOnly = true;
-            this.ciudadOrigen.Width = 200;
+            this.ciudadOrigen.Width = 150;
             // 
             // ciudadDestino
             // 
             this.ciudadDestino.HeaderText = "Ciudad Destino";
             this.ciudadDestino.Name = "ciudadDestino";
             this.ciudadDestino.ReadOnly = true;
-            this.ciudadDestino.Width = 200;
+            this.ciudadDestino.Width = 150;
             // 
             // precioBaseKG
             // 
@@ -181,6 +187,13 @@
             this.precioBasePasaje.Name = "precioBasePasaje";
             this.precioBasePasaje.ReadOnly = true;
             // 
+            // Activo
+            // 
+            this.Activo.HeaderText = "Activo";
+            this.Activo.Name = "Activo";
+            this.Activo.ReadOnly = true;
+            this.Activo.Width = 50;
+            // 
             // btnAlta
             // 
             this.btnAlta.Location = new System.Drawing.Point(697, 606);
@@ -189,6 +202,7 @@
             this.btnAlta.TabIndex = 13;
             this.btnAlta.Text = "Alta";
             this.btnAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
             // 
             // btnEliminar
             // 
@@ -210,16 +224,17 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(602, 182);
+            this.btnBuscar.Location = new System.Drawing.Point(647, 182);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(75, 23);
             this.btnBuscar.TabIndex = 10;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click_1);
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(20, 182);
+            this.btnLimpiar.Location = new System.Drawing.Point(55, 182);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
             this.btnLimpiar.TabIndex = 9;
@@ -233,7 +248,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 641);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dgvRoles);
+            this.Controls.Add(this.dgvRutas);
             this.Controls.Add(this.btnAlta);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnEditar);
@@ -245,7 +260,7 @@
             this.Load += new System.EventHandler(this.ListadoRutas_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRoles)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRutas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -254,7 +269,7 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dgvRoles;
+        private System.Windows.Forms.DataGridView dgvRutas;
         private System.Windows.Forms.Button btnAlta;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnEditar;
@@ -266,10 +281,11 @@
         private System.Windows.Forms.ComboBox cbCiudadDestino;
         private System.Windows.Forms.ComboBox cbCiudadOrigen;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn codigoRuta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codRuta;
         private System.Windows.Forms.DataGridViewTextBoxColumn ciudadOrigen;
         private System.Windows.Forms.DataGridViewTextBoxColumn ciudadDestino;
         private System.Windows.Forms.DataGridViewTextBoxColumn precioBaseKG;
         private System.Windows.Forms.DataGridViewTextBoxColumn precioBasePasaje;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Activo;
     }
 }

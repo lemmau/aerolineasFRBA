@@ -44,6 +44,8 @@
     <Compile Include="Funcionalidad.cs" />
     <Compile Include="FuncionalidadesDeRol.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="Ruta.cs" />
+    <Compile Include="TipoServicio.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

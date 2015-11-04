@@ -10,9 +10,34 @@ namespace Logica
 {
     public class Ciudad
     {
+        public Int32 Id { get; set; }
+        public String Nombre { get; set; }
+        public Boolean Estado { get; set; }
+
         private const String SP_GET_CIUDADES = "[HAY_TABLA].sp_get_ciudades";
         private const String SP_INSERTAR_CIUDAD = "[HAY_TABLA].sp_insertar_ciudad";
         private const String SP_ELIMINAR_CIUDAD = "[HAY_TABLA].sp_eliminar_ciudad";
+
+        public Ciudad() { }
+
+        public Ciudad(Int32 id, String nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+        }
+
+        public static List<Ciudad> Get()
+        {
+            var cdades = new List<Ciudad>();
+
+            using (var data = Data.Ciudad.Get())
+            {
+                foreach (DataRow row in data.Rows)
+                    cdades.Add(new Ciudad(Int32.Parse(row["Id"].ToString()), row["Nombre"].ToString()));
+            }
+
+            return cdades;
+        }
 
         public static DataTable cargarDGVCiudad()
         {

@@ -152,6 +152,7 @@ namespace Logica
         {
             Data.Rol.Eliminar(rol.Id);
         }
+
         private void Validate()
         {
             if (String.IsNullOrEmpty(this.Nombre))
