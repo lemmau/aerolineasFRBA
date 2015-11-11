@@ -435,11 +435,18 @@ BEGIN
 	SET NOCOUNT ON;
 
 	SELECT 
-		ID, PRECIOBASEKG, PRECIOBASEPASAJE, ID_SERVICIO, ID_CDADORIGEN, ID_CDADDESTINO
+		R.ID, R.PRECIOBASEKG, R.PRECIOBASEPASAJE,
+		R.ID_SERVICIO as "S_ID", S.NOMBRE as "S_NOMBRE",
+		R.ID_CDADORIGEN as "CO_ID", CO.NOMBRE as "CO_NOMBRE",
+		R.ID_CDADDESTINO as "CD_ID", CD.NOMBRE as "CD_NOMBRE",
+		R.STATUS 
 	FROM 
-		[HAY_TABLA].RUTA
+		[HAY_TABLA].RUTA R, [HAY_TABLA].SERVICIO S, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD
 	WHERE
-		Id = @id
+		R.ID = @id
+		AND CO.ID = R.ID_CDADORIGEN
+		AND CD.ID = R.ID_CDADDESTINO
+		AND S.ID = R.ID_SERVICIO
 END
 GO
 
@@ -534,7 +541,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_modificacion_ruta]
 	@id	int,
 	@idCiudadOrigen int,
 	@idCiudadDestino int,
-	@idTipoDeServicio int,
+	@idTipoServicio int,
 	@precioBasePasaje numeric(18,0),
 	@precioBaseKG numeric(18,0),
 	@status bit
@@ -542,7 +549,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	
-		if (exists(select id from [HAY_TABLA].RUTA where ID_CDADORIGEN=@idCiudadOrigen AND ID_CDADDESTINO=@idCiudadDestino AND ID_SERVICIO=@idTipoDeServicio AND ID <> @id))
+		if (exists(select id from [HAY_TABLA].RUTA where ID_CDADORIGEN=@idCiudadOrigen AND ID_CDADDESTINO=@idCiudadDestino AND ID_SERVICIO=@idTipoServicio AND ID <> @id))
 		begin
 			RAISERROR(N'Ya existe una Ruta con esos datos',16,1)
 			return
@@ -553,7 +560,7 @@ BEGIN
 	SET 
 	ID_CDADORIGEN = @idCiudadOrigen,
 	ID_CDADDESTINO = @idCiudadDestino,
-	ID_SERVICIO = @idTipoDeServicio,
+	ID_SERVICIO = @idTipoServicio,
 	PRECIOBASEPASAJE = @precioBasePasaje,
 	PRECIOBASEKG = @precioBaseKG,
 	STATUS = @status

@@ -140,7 +140,6 @@ namespace AerolineaFrba.Abm_Ruta
                 cbTipoDeServicio.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));
         }
 
-
         private void CargarCiudades(ComboBox cbCiudad)
         {
             cbCiudad.DisplayMember = "Value";
@@ -150,13 +149,37 @@ namespace AerolineaFrba.Abm_Ruta
                 cbCiudad.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));
         }
 
+        private bool FormularioValido()
+        {
+            Boolean valido = true;
+            decimal numeroDecimal;
+
+            if (!String.IsNullOrEmpty(tbCodRuta.Text) 
+                && !Decimal.TryParse(tbCodRuta.Text, out numeroDecimal))
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Cod Ruta' debe contener un numero valido.");
+            }
+
+            if (String.IsNullOrEmpty(tbCodRuta.Text)
+                && String.IsNullOrEmpty(cbCiudadOrigen.Text)
+                && String.IsNullOrEmpty(cbCiudadDestino.Text)
+                && String.IsNullOrEmpty(cbTipoDeServicio.Text))
+            {
+                valido = false;
+                MessageBox.Show("Indique parametro de búsqueda alguno.");
+            }
+
+            return valido;
+        }
+
         private void ListadoRutas_Load(object sender, EventArgs e)
         {
             CargarTiposDeServicio();
             CargarCiudades(cbCiudadOrigen);
             CargarCiudades(cbCiudadDestino);
-            //CargarRutas();
             cbCiudadOrigen.Select();
+            //CargarRutas();
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -174,23 +197,10 @@ namespace AerolineaFrba.Abm_Ruta
             //CargarRutas();
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            // actualizar STATUS en DB y poner "ACTIVO" EN "NO"
-            if (IdSeleccionado.HasValue)
-            {
-                var frm = new FrmEliminarRuta(IdSeleccionado.Value);
-                frm.ShowDialog();
-                btnBuscar_Click_1(sender, e);
-            } else
-            {
-                MessageBox.Show("Seleccione una ruta del listado.");
-                return;
-            }
-        }
-
         private void btnBuscar_Click_1(object sender, EventArgs e)
         {
+            if (!FormularioValido()) return;
+
             try
             {
                 dgvRutas.DataSource = Ruta.Get(CodRuta, IdCiudadOrigen, IdCiudadDestino, IdTipoDeServicio);
@@ -214,6 +224,32 @@ namespace AerolineaFrba.Abm_Ruta
         private void cbCiudadOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (IdSeleccionado.HasValue)
+            {
+                var frm = new FrmActualizarRuta(IdSeleccionado.Value);
+                frm.ShowDialog();
+                btnBuscar_Click_1(sender, e);
+            }
+        }
+
+        private void btnEliminar_Click_1(object sender, EventArgs e)
+        {
+            // actualizar STATUS en DB y poner "ACTIVO" EN "NO"
+            if (IdSeleccionado.HasValue)
+            {
+                var frm = new FrmEliminarRuta(IdSeleccionado.Value);
+                frm.ShowDialog();
+                btnBuscar_Click_1(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una ruta del listado.");
+                return;
+            }
         }
         
     }

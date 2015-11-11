@@ -27,7 +27,7 @@ namespace Data
                 var cmd = new SqlCommand(SP_GET_BY_ID, con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add("@id ", SqlDbType.Int).Value = id;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
 
                 con.Open();
                 table.Load(cmd.ExecuteReader());

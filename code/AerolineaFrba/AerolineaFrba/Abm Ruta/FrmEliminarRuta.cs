@@ -30,7 +30,6 @@ namespace AerolineaFrba.Abm_Ruta
                 cbTipoDeServicio.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));
         }
 
-
         private void CargarCiudades(ComboBox cbCiudad)
         {
             cbCiudad.DisplayMember = "Value";
@@ -40,12 +39,22 @@ namespace AerolineaFrba.Abm_Ruta
                 cbCiudad.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));
         }
 
+        private void CargarRuta()
+        {
+            tbPrecioBasePasaje.Text = _ruta.precioBasePasaje.ToString();
+            tbPrecioBaseKG.Text = _ruta.precioBaseKG.ToString();
+            cbCiudadOrigen.SelectedText = _ruta.ciudadOrigen.Nombre;
+            cbCiudadDestino.SelectedText = _ruta.ciudadDestino.Nombre;
+            cbTipoDeServicio.SelectedText = _ruta.tipoServicio.Nombre;
+            cbActiva.Checked = _ruta.Estado;
+        }
+
         private void FrmEliminarRuta_Load(object sender, EventArgs e)
         {
             CargarTiposDeServicio();
             CargarCiudades(cbCiudadOrigen);
             CargarCiudades(cbCiudadDestino);
-            cbCiudadOrigen.Select();
+            CargarRuta();
         }
 
         private void btEliminar_Click(object sender, EventArgs e)

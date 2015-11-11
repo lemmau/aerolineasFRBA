@@ -52,6 +52,7 @@
             this.btActualizar.TabIndex = 11;
             this.btActualizar.Text = "Actualizar";
             this.btActualizar.UseVisualStyleBackColor = true;
+            this.btActualizar.Click += new System.EventHandler(this.btActualizar_Click);
             // 
             // gbCamposDeRuta
             // 
