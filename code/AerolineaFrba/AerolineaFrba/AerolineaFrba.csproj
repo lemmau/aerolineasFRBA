@@ -208,6 +208,9 @@
       <DependentUpon>ListadoRutas.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Generacion Viaje\Generar_Viaje.resx">
+      <DependentUpon>Generar_Viaje.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Inicial.resx">
       <DependentUpon>Inicial.cs</DependentUpon>
     </EmbeddedResource>
