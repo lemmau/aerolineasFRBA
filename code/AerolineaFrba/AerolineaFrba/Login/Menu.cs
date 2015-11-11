@@ -100,5 +100,12 @@ namespace AerolineaFrba.Login
             Abm_Ruta.ListadoRutas _listado_rutas = new Abm_Ruta.ListadoRutas();
             _listado_rutas.Show();
         }
+
+        private void generarViajeToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Generacion_Viaje.Generar_Viaje _generar_viaje = new Generacion_Viaje.Generar_Viaje();
+
+            _generar_viaje.ShowDialog();
+        }
     }
 }

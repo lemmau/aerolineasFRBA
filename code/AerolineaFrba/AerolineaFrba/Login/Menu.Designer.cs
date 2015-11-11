@@ -126,6 +126,7 @@
             this.generarViajeToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
             this.generarViajeToolStripMenuItem1.Tag = "GENERACION DE VIAJE";
             this.generarViajeToolStripMenuItem1.Text = "Generar viaje";
+            this.generarViajeToolStripMenuItem1.Click += new System.EventHandler(this.generarViajeToolStripMenuItem1_Click);
             // 
             // registroLlegadaDeAeronaveToolStripMenuItem
             // 
