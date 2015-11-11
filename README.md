@@ -20,5 +20,3 @@ Legajo | Apellido, Nombre |
 138.822-8 | Mauro, Leandro 
 117.197-5 | Safran, Maximiliano 
 137.791-7 | Pomajulca Gonzales, Melyna 
-114.959-3 | Wieja, Marcelo 
-
