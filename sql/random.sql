@@ -458,13 +458,15 @@ BEGIN
 			then 'NO'
 			else 'SI' 
 			end ) as 'STATUS'
-	FROM
-		[HAY_TABLA].RUTA R, [HAY_TABLA].SERVICIO S, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD
+	FROM [HAY_TABLA].RUTA R
+		INNER JOIN [HAY_TABLA].SERVICIO S ON S.ID=R.ID_SERVICIO
+		INNER JOIN [HAY_TABLA].CIUDAD CO ON R.ID_CDADORIGEN=CO.ID
+		INNER JOIN [HAY_TABLA].CIUDAD CD ON R.ID_CDADDESTINO=CD.ID
 	WHERE
-		((@codRuta is null)) or (R.CODIGO LIKE '%' + @codRuta + '%') AND
-		((@idCiudadOrigen is null)  or (R.ID_CDADORIGEN = @idCiudadOrigen AND R.ID_CDADORIGEN=CO.ID)) AND
-		((@idCiudadDestino is null) or (R.ID_CDADDESTINO = @idCiudadDestino  AND R.ID_CDADDESTINO=CD.ID)) AND
-		((@idTipoDeServicio is null) or (R.ID_SERVICIO = @idTipoDeServicio 		AND S.ID=R.ID_SERVICIO ))
+		((@codRuta is null) or (R.CODIGO LIKE '%' + @codRuta + '%')) AND
+		((@idCiudadOrigen is null)  or (R.ID_CDADORIGEN = @idCiudadOrigen)) AND
+		((@idCiudadDestino is null) or (R.ID_CDADDESTINO = @idCiudadDestino)) AND
+		((@idTipoDeServicio is null) or (R.ID_SERVICIO = @idTipoDeServicio))
 	ORDER BY
 		R.CODIGO, CO.NOMBRE
 END
@@ -518,12 +520,13 @@ BEGIN
 		end		
 		
 	INSERT INTO [HAY_TABLA].RUTA
-				(ID_CDADORIGEN,ID_CDADDESTINO,ID_SERVICIO,PRECIOBASEPASAJE,PRECIOBASEKG,CODIGO)
+				(	ID_CDADORIGEN, ID_CDADDESTINO, ID_SERVICIO,
+					PRECIOBASEPASAJE, PRECIOBASEKG, CODIGO, STATUS )
     OUTPUT
 		inserted.id
     VALUES
-          (	@idCiudadOrigen, @idCiudadDestino, @idTipoDeServicio, 
-          	@precioBasePasaje, @precioBaseKG, @codRuta)
+          	(	@idCiudadOrigen, @idCiudadDestino, @idTipoDeServicio, 
+          		@precioBasePasaje, @precioBaseKG, @codRuta, @status )
 END
 GO
 
