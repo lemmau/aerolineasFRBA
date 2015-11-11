@@ -86,9 +86,58 @@ namespace AerolineaFrba.Abm_Ruta
 
         }
 
+        private bool FormularioValido()
+        {
+            Boolean valido = true;
+            decimal numeroDecimal;
+
+
+            if (String.IsNullOrEmpty(cbCiudadOrigen.Text))
+            {
+                valido = false;
+                MessageBox.Show("Debe seleccionar una 'Ciudad Origen'.");
+            }
+
+            if (String.IsNullOrEmpty(cbCiudadDestino.Text))
+            {
+                valido = false;
+                MessageBox.Show("Debe seleccionar una 'Ciudad Destino' .");
+            }
+
+            if (String.IsNullOrEmpty(cbTipoDeServicio.Text))
+            {
+                valido = false;
+                MessageBox.Show("Debe seleccionar un 'Tipo de Servicio'.");
+            }
+
+            if (String.IsNullOrEmpty(tbPrecioBasePasaje.Text))
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Precio Base Pasaje' no puede estar vacio.");
+            }
+            else if (!Decimal.TryParse(tbPrecioBasePasaje.Text, out numeroDecimal))
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Precio Base Pasaje' debe contener un numero valido.");
+            }
+
+            if (String.IsNullOrEmpty(tbPrecioBaseKG.Text))
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Precio Base KG' no puede estar vacio.");
+            }
+            else if (!Decimal.TryParse(tbPrecioBaseKG.Text, out numeroDecimal))
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Precio Base KG' debe contener un numero valido.");
+            }
+
+            return valido;
+        }
+
         private void btGuardar_Click(object sender, EventArgs e)
         {
-            //if (!FormularioValido()) return;
+            if (!FormularioValido()) return;
 
             try
             {

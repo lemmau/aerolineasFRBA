@@ -31,7 +31,6 @@
             this.gbCamposDeRuta = new System.Windows.Forms.GroupBox();
             this.lbPrecioBaseKG = new System.Windows.Forms.Label();
             this.tbPrecioBaseKG = new System.Windows.Forms.TextBox();
-            this.cbActiva = new System.Windows.Forms.CheckBox();
             this.tbPrecioBasePasaje = new System.Windows.Forms.TextBox();
             this.lbPrecioBasePasaje = new System.Windows.Forms.Label();
             this.cbTipoDeServicio = new System.Windows.Forms.ComboBox();
@@ -41,6 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btGuardar = new System.Windows.Forms.Button();
+            this.cbActiva = new System.Windows.Forms.CheckBox();
             this.gbCamposDeRuta.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,16 +79,6 @@
             this.tbPrecioBaseKG.Name = "tbPrecioBaseKG";
             this.tbPrecioBaseKG.Size = new System.Drawing.Size(83, 20);
             this.tbPrecioBaseKG.TabIndex = 9;
-            // 
-            // cbActiva
-            // 
-            this.cbActiva.AutoSize = true;
-            this.cbActiva.Location = new System.Drawing.Point(485, 232);
-            this.cbActiva.Name = "cbActiva";
-            this.cbActiva.Size = new System.Drawing.Size(56, 17);
-            this.cbActiva.TabIndex = 8;
-            this.cbActiva.Text = "Activa";
-            this.cbActiva.UseVisualStyleBackColor = true;
             // 
             // tbPrecioBasePasaje
             // 
@@ -171,6 +161,16 @@
             this.btGuardar.UseVisualStyleBackColor = true;
             this.btGuardar.Click += new System.EventHandler(this.btGuardar_Click);
             // 
+            // cbActiva
+            // 
+            this.cbActiva.AutoSize = true;
+            this.cbActiva.Location = new System.Drawing.Point(485, 232);
+            this.cbActiva.Name = "cbActiva";
+            this.cbActiva.Size = new System.Drawing.Size(56, 17);
+            this.cbActiva.TabIndex = 8;
+            this.cbActiva.Text = "Activa";
+            this.cbActiva.UseVisualStyleBackColor = true;
+            // 
             // FrmInsertarRuta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,7 +191,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gbCamposDeRuta;
-        private System.Windows.Forms.CheckBox cbActiva;
         private System.Windows.Forms.TextBox tbPrecioBasePasaje;
         private System.Windows.Forms.Label lbPrecioBasePasaje;
         private System.Windows.Forms.ComboBox cbTipoDeServicio;
@@ -203,5 +202,6 @@
         private System.Windows.Forms.Label lbPrecioBaseKG;
         private System.Windows.Forms.TextBox tbPrecioBaseKG;
         private System.Windows.Forms.Button btGuardar;
+        private System.Windows.Forms.CheckBox cbActiva;
     }
 }
