@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace Logica
 {
-    public class Ruta
+    public sealed class Ruta
     {
         public Int32 Id { get; set; }
         public Int32 codRuta { get; set; }
@@ -19,6 +19,13 @@ namespace Logica
         public Ciudad ciudadOrigen { get; set; }
         public Ciudad ciudadDestino { get; set; }
         public TipoServicio tipoServicio { get; set; }
+
+        public Ruta()
+        {
+            ciudadOrigen = new Ciudad();
+            ciudadDestino = new Ciudad();
+            tipoServicio = new TipoServicio();
+        }
 
         public void Insertate()
         {
@@ -48,7 +55,7 @@ namespace Logica
                 trans = con.BeginTransaction();
 
                 ruta.Id = Data.Ruta.Insertar(ruta.ciudadOrigen.Id, ruta.ciudadDestino.Id, 
-                      ruta.tipoServicio.Id, ruta.precioBasePasaje, ruta.precioBaseKG, ruta.Estado);
+                      ruta.tipoServicio.Id, ruta.precioBasePasaje, ruta.precioBaseKG);
 
                 trans.Commit();
                 con.Close();

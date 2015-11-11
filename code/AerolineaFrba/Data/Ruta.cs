@@ -118,7 +118,7 @@ namespace Data
         }
 
         public static int Insertar(Int32 idCiudadOrigen, Int32 idCiudadDestino,
-            Int32 idTipoServicio, Decimal precioBasePasaje, Decimal precioBaseKG, Boolean estado)
+            Int32 idTipoServicio, Decimal precioBasePasaje, Decimal precioBaseKG)
         {
             int id_insertado = -1;
             using (var con = DataAccess.GetConnection())
@@ -131,7 +131,6 @@ namespace Data
                 cmd.Parameters.Add("@idTipoServicio", SqlDbType.Int).Value = idTipoServicio;
                 cmd.Parameters.Add("@precioBasePasaje", SqlDbType.Decimal).Value = precioBasePasaje;
                 cmd.Parameters.Add("@precioBaseKG", SqlDbType.Decimal).Value = precioBaseKG;
-                cmd.Parameters.Add("@status", SqlDbType.Bit).Value = estado;
 
                 con.Open();
                 id_insertado = (int)cmd.ExecuteScalar();

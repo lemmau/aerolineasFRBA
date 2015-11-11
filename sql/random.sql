@@ -504,16 +504,16 @@ GO
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ruta]
 	@idCiudadOrigen int,
 	@idCiudadDestino int,
-	@idTipoDeServicio int,
+	@idTipoServicio int,
 	@precioBasePasaje numeric(18,0),
-	@precioBaseKG numeric(18,0),
-	@status bit
+	@precioBaseKG numeric(18,0)
+
 AS
 BEGIN
 	DECLARE @codRuta int
 	SELECT @codRuta = MAX(CODIGO)+1 FROM [HAY_TABLA].RUTA
 
-	if (exists(select id from [HAY_TABLA].RUTA where ID_CDADORIGEN=@idCiudadOrigen AND ID_CDADDESTINO=@idCiudadDestino AND ID_SERVICIO=@idTipoDeServicio))
+	if (exists(select id from [HAY_TABLA].RUTA where ID_CDADORIGEN=@idCiudadOrigen AND ID_CDADDESTINO=@idCiudadDestino AND ID_SERVICIO=@idTipoServicio))
 		begin
 			RAISERROR(N'Ya existe dicha Ruta',16,1)
 			return
@@ -521,12 +521,12 @@ BEGIN
 		
 	INSERT INTO [HAY_TABLA].RUTA
 				(	ID_CDADORIGEN, ID_CDADDESTINO, ID_SERVICIO,
-					PRECIOBASEPASAJE, PRECIOBASEKG, CODIGO, STATUS )
+					PRECIOBASEPASAJE, PRECIOBASEKG, CODIGO )
     OUTPUT
 		inserted.id
     VALUES
-          	(	@idCiudadOrigen, @idCiudadDestino, @idTipoDeServicio, 
-          		@precioBasePasaje, @precioBaseKG, @codRuta, @status )
+          	(	@idCiudadOrigen, @idCiudadDestino, @idTipoServicio, 
+          		@precioBasePasaje, @precioBaseKG, @codRuta )
 END
 GO
 

@@ -80,7 +80,6 @@ namespace AerolineaFrba.Abm_Ruta
             cbCiudadOrigen.Select();
         }
 
-
         private void label3_Click(object sender, EventArgs e)
         {
 
@@ -140,7 +139,7 @@ namespace AerolineaFrba.Abm_Ruta
             if (!FormularioValido()) return;
 
             try
-            {
+            {               
                 var ruta = new Ruta();
 
                 ruta.ciudadOrigen.Id = IdCiudadOrigenSeleccionada.Value;
@@ -148,7 +147,6 @@ namespace AerolineaFrba.Abm_Ruta
                 ruta.tipoServicio.Id = IdTipoDeServicioSeleccionado.Value;
                 ruta.precioBasePasaje = Decimal.Parse(tbPrecioBasePasaje.Text);
                 ruta.precioBaseKG = Decimal.Parse(tbPrecioBaseKG.Text);
-                ruta.Estado = cbActiva.Checked;
 
                 ruta.Insertate();
 

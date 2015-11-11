@@ -40,7 +40,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btGuardar = new System.Windows.Forms.Button();
-            this.cbActiva = new System.Windows.Forms.CheckBox();
             this.gbCamposDeRuta.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +47,6 @@
             // 
             this.gbCamposDeRuta.Controls.Add(this.lbPrecioBaseKG);
             this.gbCamposDeRuta.Controls.Add(this.tbPrecioBaseKG);
-            this.gbCamposDeRuta.Controls.Add(this.cbActiva);
             this.gbCamposDeRuta.Controls.Add(this.tbPrecioBasePasaje);
             this.gbCamposDeRuta.Controls.Add(this.lbPrecioBasePasaje);
             this.gbCamposDeRuta.Controls.Add(this.cbTipoDeServicio);
@@ -161,16 +159,6 @@
             this.btGuardar.UseVisualStyleBackColor = true;
             this.btGuardar.Click += new System.EventHandler(this.btGuardar_Click);
             // 
-            // cbActiva
-            // 
-            this.cbActiva.AutoSize = true;
-            this.cbActiva.Location = new System.Drawing.Point(485, 232);
-            this.cbActiva.Name = "cbActiva";
-            this.cbActiva.Size = new System.Drawing.Size(56, 17);
-            this.cbActiva.TabIndex = 8;
-            this.cbActiva.Text = "Activa";
-            this.cbActiva.UseVisualStyleBackColor = true;
-            // 
             // FrmInsertarRuta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,6 +190,5 @@
         private System.Windows.Forms.Label lbPrecioBaseKG;
         private System.Windows.Forms.TextBox tbPrecioBaseKG;
         private System.Windows.Forms.Button btGuardar;
-        private System.Windows.Forms.CheckBox cbActiva;
     }
 }
