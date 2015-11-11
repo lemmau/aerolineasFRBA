@@ -568,3 +568,61 @@ BEGIN
 		id = @id
 END
 GO
+
+CREATE PROCEDURE [HAY_TABLA].[alta_viaje]
+    @f_salida datetime,
+	@f_llegada datetime ,
+	@f_llegada_est  datetime ,
+	@id_aeronave int,
+	@id_ruta int,
+	@hayErr int OUT,
+    @errores varchar(200) OUT
+AS
+	SET @hayErr = 0
+	SET @errores = ''
+	
+	BEGIN TRANSACTION
+	
+	INSERT INTO HAY_TABLA.VIAJE VALUES (@id_aeronave ,@id_ruta,@f_salida ,@f_llegada ,@f_llegada_est , 1);
+	IF @@error != 0 BEGIN
+		ROLLBACK TRANSACTION
+		SET @hayErr = 1
+		RETURN
+	END
+	
+	COMMIT TRANSACTION
+	GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_get_rutas_generar_viaje]
+	@servicio varchar(255)
+AS
+BEGIN
+	
+	DECLARE @id_tipo_servicio INT
+
+	 SET  @id_tipo_servicio = (SELECT SER.ID
+	 FROM HAY_TABLA.SERVICIO  SER WHERE SER.NOMBRE = @servicio )
+
+
+	   SELECT R.ID , R.CODIGO , C1.NOMBRE , C2.NOMBRE ,S.NOMBRE 
+	   FROM HAY_TABLA.RUTA R JOIN HAY_TABLA.SERVICIO S ON R.ID_SERVICIO = S.ID  JOIN HAY_TABLA.CIUDAD C1 
+        ON C1.ID = R.ID_CDADORIGEN JOIN HAY_TABLA.CIUDAD C2 ON C2.ID = R.ID_CDADDESTINO	 
+	  WHERE ID_SERVICIO = @id_tipo_servicio ;
+
+
+END
+GO
+
+
+CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronaves_generar_viaje]
+	@fecha datetime 
+AS
+BEGIN
+	
+	SELECT AER.ID , AER.MODELO , AER.MATRICULA , AER.FABRICANTE ,SER.NOMBRE  FROM HAY_TABLA.AERONAVE AER JOIN HAY_TABLA.SERVICIO SER  ON AER.ID_SERVICIO = SER.ID WHERE 
+
+not EXISTS (SELECT * FROM HAY_TABLA.VIAJE VI WHERE
+ VI.ID_AERONAVE = AER.ID and YEAR (VI.FECHASALIDA) = YEAR (@fecha) and
+  MONTH(VI.FECHASALIDA) = MONTH (@fecha) and DAY(VI.FECHASALIDA)=DAY(@fecha) )  ;
+
+END
