@@ -128,12 +128,14 @@ namespace AerolineaFrba.Generacion_Viaje
             v_f_salida = v_f_salida.AddHours(-v_f_salida.Hour);
             v_f_salida = v_f_salida.AddMinutes(-v_f_salida.Minute);
             v_f_salida = v_f_salida.AddSeconds(-v_f_salida.Second);
-            v_f_salida = v_f_salida.AddMilliseconds(-v_f_salida.Millisecond);
+         
             DateTime v_h_salida = fechaSalida.Value;
             int hora_salida = v_h_salida.Hour;
             int minutos_salida = v_h_salida.Minute;
+            int segundo_salida = v_h_salida.Second;
             v_f_salida = v_f_salida.AddHours(hora_salida);
             v_f_salida = v_f_salida.AddMinutes(minutos_salida);
+            v_h_salida = v_f_salida.AddSeconds(segundo_salida);
 
             DateTime v_f_llegada_estim = fechaEst1.Value;
             v_f_llegada_estim = v_f_llegada_estim.AddHours(-v_f_llegada_estim.Hour);
@@ -143,9 +145,10 @@ namespace AerolineaFrba.Generacion_Viaje
             DateTime v_h_llegada_estim = fechaEst.Value;
             int hora_llegada_estim = v_h_llegada_estim.Hour;
             int minutos_llegada_estim = v_h_llegada_estim.Minute;
+            int segundo_llegada_estim = v_h_llegada_estim.Second;
             v_f_llegada_estim = v_f_llegada_estim.AddHours(hora_llegada_estim);
             v_f_llegada_estim = v_f_llegada_estim.AddMinutes(minutos_llegada_estim);
-
+            v_h_llegada_estim = v_h_llegada_estim.AddSeconds(segundo_llegada_estim);
             if (v_f_llegada_estim <= v_f_salida)
                 return true;
 
@@ -174,7 +177,6 @@ namespace AerolineaFrba.Generacion_Viaje
             v_f_salida = v_f_salida.AddHours(-v_f_salida.Hour);
             v_f_salida = v_f_salida.AddMinutes(-v_f_salida.Minute);
             v_f_salida = v_f_salida.AddSeconds(-v_f_salida.Second);
-            v_f_salida = v_f_salida.AddMilliseconds(-v_f_salida.Millisecond);
             DateTime v_h_salida = fechaSalida.Value;
             int hora_salida = v_h_salida.Hour;
             int minutos_salida = v_h_salida.Minute;
@@ -216,17 +218,20 @@ namespace AerolineaFrba.Generacion_Viaje
             this.fecha_actual = this.fecha_actual.AddHours(DateTime.Now.Hour);
             this.fecha_actual = this.fecha_actual.AddHours(1);
             this.fecha_actual = this.fecha_actual.AddMinutes(DateTime.Now.Minute);
+            this.fecha_actual = this.fecha_actual.AddSeconds(DateTime.Now.Second);
 
             DateTime v_f_salida = fechaSalida1.Value;
             v_f_salida = v_f_salida.AddHours(-v_f_salida.Hour);
             v_f_salida = v_f_salida.AddMinutes(-v_f_salida.Minute);
             v_f_salida = v_f_salida.AddSeconds(-v_f_salida.Second);
-            v_f_salida = v_f_salida.AddMilliseconds(-v_f_salida.Millisecond);
+       
             DateTime v_h_salida = fechaSalida.Value;
             int hora_salida = v_h_salida.Hour;
             int minutos_salida = v_h_salida.Minute;
+            int segundo_salida = v_f_salida.Second;
             v_f_salida = v_f_salida.AddHours(hora_salida);
             v_f_salida = v_f_salida.AddMinutes(minutos_salida);
+            v_f_salida = v_f_salida.AddSeconds(segundo_salida);
 
             if (v_f_salida < this.fecha_actual)
                 return true;
