@@ -132,8 +132,9 @@
             // 
             this.registroLlegadaDeAeronaveToolStripMenuItem.Name = "registroLlegadaDeAeronaveToolStripMenuItem";
             this.registroLlegadaDeAeronaveToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
-            this.registroLlegadaDeAeronaveToolStripMenuItem.Tag = "REGISTRO LLEGADA DE AERONAVE";
+            this.registroLlegadaDeAeronaveToolStripMenuItem.Tag = "REGISTRO DE LLEGADA A DESTINO";
             this.registroLlegadaDeAeronaveToolStripMenuItem.Text = "Registro llegada de Aeronave";
+            this.registroLlegadaDeAeronaveToolStripMenuItem.Click += new System.EventHandler(this.registroLlegadaDeAeronaveToolStripMenuItem_Click);
             // 
             // compraDePasajeEncomiendaToolStripMenuItem1
             // 

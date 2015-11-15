@@ -242,7 +242,7 @@ namespace AerolineaFrba.Generacion_Viaje
             DateTime fecha = fechaSalida1.Value;
             fecha = fecha.AddHours(-fecha.Hour);
             fecha = fecha.AddMinutes(-fecha.Minute);
-            fecha = fecha.AddMilliseconds(-fecha.Millisecond);
+            fecha = fecha.AddSeconds(-fecha.Second);
 
             DateTime fecha_h = fechaSalida.Value;
             int hora = fecha_h.Hour;

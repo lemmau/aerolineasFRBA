@@ -107,5 +107,11 @@ namespace AerolineaFrba.Login
 
             _generar_viaje.ShowDialog();
         }
+
+        private void registroLlegadaDeAeronaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Registro_Llegada_Destino.Registro_llegada _registro_llegada = new Registro_Llegada_Destino.Registro_llegada();
+            _registro_llegada.ShowDialog();
+        }
     }
 }

@@ -642,3 +642,58 @@ SELECT * FROM HAY_TABLA.SERVICIO S  ORDER BY 2;
 END
 
 GO
+
+
+CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
+    	@matricula VARCHAR(255),
+		@f_llegada datetime,
+    	@id_ciudad_origen int,
+    	@id_ciudad_destino int,
+    	@hayErr int OUT,
+    	@errores varchar(200) OUT
+AS
+	SET @hayErr = 0
+	SET @errores = ''
+	
+BEGIN
+
+	
+	DECLARE @existe int 
+	select @existe = (select COUNT(*) from HAY_TABLA.AERONAVE A where upper(A.MATRICULA) = upper(@matricula))
+	if @existe = 0
+	BEGIN
+		set @hayErr = 1
+		set @errores = 'La matricula ingresada no existe.'
+		RETURN
+	END
+	
+	/*verifico que exista el viaje segun los datos ingresados*/
+	DECLARE @id_viaje int 
+	select @id_viaje = (select V.ID 
+						from HAY_TABLA.VIAJE V join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
+						join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
+					
+						where V.STATUS = 1 and R1.ID_CDADDESTINO =@id_ciudad_destino
+						and R1.ID_CDADORIGEN = @id_ciudad_origen and upper(A.MATRICULA) = upper(@matricula))
+	
+	IF @id_viaje is null BEGIN 
+		set @hayErr = 1
+		set @errores = 'No existe ningún Viaje  para los datos  ingresados .'
+		RETURN
+	END
+		
+	
+
+	DECLARE @id_aeronave int
+	select @id_aeronave = (select V.ID_AERONAVE from HAY_TABLA.VIAJE V where V.ID = @id_viaje)		
+	
+	
+	
+	BEGIN TRANSACTION						 							 
+	INSERT INTO HAY_TABLA.LLEGADA(ID_VIAJE, ID_AERONAVE, MATRICULA, ID_CIUDAD_ORIGEN, ID_CIUDAD_DESTINO, F_LLEGADA)		 
+	VALUES(@id_viaje, @id_aeronave, upper(@matricula), @id_ciudad_origen, @id_ciudad_destino, @f_llegada)
+	COMMIT TRANSACTION
+	
+END
+
+GO
