@@ -593,7 +593,7 @@ AS
 	COMMIT TRANSACTION
 	GO
 
-ALTER PROCEDURE [HAY_TABLA].[sp_get_aeronaves_generar_viaje]
+CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronaves_generar_viaje]
 	@fecha datetime ,
 	@id_tipo_ser int
 AS
