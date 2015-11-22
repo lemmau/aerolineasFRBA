@@ -106,9 +106,10 @@ namespace Logica
             Data.Usuario.SetIntentos(username, intentos);
         }
 
-
-
-
+        public static void SetStatus(String username, Int32 status)
+        {
+            Data.Usuario.SetStatus(username, status);
+        }
 
     }
 }

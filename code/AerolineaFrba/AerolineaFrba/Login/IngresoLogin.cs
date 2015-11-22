@@ -30,9 +30,7 @@ namespace AerolineaFrba.Login
                     Usuario.SetIntentos(txtUsuario.Text, 0);
 
                     SharedData.Instance().currentUserId = _usuario.Id;
-                    //Menu _menu = new Menu();
-                    //_menu.Show();
-                    //this.Hide();
+
                     if (_usuario.Roles.Count > 1)
                     {
                         SeleccionarRol _selectRol = new SeleccionarRol(this);
@@ -41,7 +39,6 @@ namespace AerolineaFrba.Login
                     }
                     else if (_usuario.Roles.Count == 1)
                     {
-                        //if (_usuario.Hoteles.Count == 1)
                         SharedData.Instance().currentRolId = _usuario.Roles[0].Id;
                         Menu _menu = new Menu(this);
                         _menu.Show();
@@ -57,7 +54,10 @@ namespace AerolineaFrba.Login
                 }
             }
             else
+            {
+                Usuario.SetStatus(txtUsuario.Text, 0);    // actualizo status en 0
                 MessageBox.Show("Usuario bloqueado por repetidos intentos de logueo");
+            }
         }
 
         private void btnSalir_Click(object sender, EventArgs e)

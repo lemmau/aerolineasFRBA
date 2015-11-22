@@ -14,6 +14,7 @@ namespace Data
         private const String SP_GET_BY_LOGIN = "[HAY_TABLA].sp_get_usuario_by_login";
         private const String SP_GET_INTENTOS = "[HAY_TABLA].sp_get_usuario_intentos";
         private const String SP_SET_INTENTOS = "[HAY_TABLA].sp_set_usuario_intentos";
+        private const String SP_SET_STATUS = "[HAY_TABLA].sp_set_status_usuario";
         private const String SP_GET_ROLES = "[HAY_TABLA].sp_select_roles_de_usuario";
 
 
@@ -63,6 +64,22 @@ namespace Data
 
                 cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = username;
                 cmd.Parameters.Add("@intentos", SqlDbType.Int).Value = intentos;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public static void SetStatus(String username, int status)
+        {
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_SET_STATUS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = username;
+                cmd.Parameters.Add("@status", SqlDbType.Int).Value = status;
 
                 con.Open();
                 cmd.ExecuteNonQuery();
