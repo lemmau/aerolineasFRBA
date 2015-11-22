@@ -196,6 +196,19 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [HAY_TABLA].[sp_set_status_usuario]
+	@username NVARCHAR(255),
+	@status int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE [HAY_TABLA].USUARIO 
+	SET STATUS = @status 
+	WHERE USERNAME = @username
+END
+GO
+
 CREATE PROCEDURE [HAY_TABLA].[sp_modificacion_rol]
 	@id	int,
 	@nombre nvarchar(50),
