@@ -96,11 +96,14 @@ namespace AerolineaFrba.Registro_Llegada_Destino
                     SqlParameter idCiudadOrigen = cmd.Parameters.Add("@id_ciudad_origen", SqlDbType.Int);
                     SqlParameter idCiudadDestino = cmd.Parameters.Add("@id_ciudad_destino", SqlDbType.Int);
 
+                    SqlParameter fechaActual = cmd.Parameters.Add("@f_actual", SqlDbType.DateTime);
+
                     SqlParameter HAY_ERROR = cmd.Parameters.Add("@hayErr", SqlDbType.Int);
                     SqlParameter ERRORES = cmd.Parameters.Add("@errores", SqlDbType.VarChar, 200);
 
 
                     matricula.Value = lbMatricula.Text;
+                    fecha_actual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
                     fechaLlegada.Value = getfecha();
                     idCiudadOrigen.Value = ((ComboboxItem)cbCiudadOrigen.SelectedItem).Value;
                     idCiudadDestino.Value = ((ComboboxItem)cbCiudadDestino.SelectedItem).Value;
@@ -139,25 +142,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
         }
 
 
-        public Boolean fechaSalidaMenorActual()
-        {
-
-            //le sumo 1 para que programen viajes posteriores a una hora. Es decir, si
-            //son las 18hs no puedo programar un viaje para las 18hs
-            this.fecha_actual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
-            this.fecha_actual = this.fecha_actual.AddHours(DateTime.Now.Hour);
-            this.fecha_actual = this.fecha_actual.AddHours(1);
-            this.fecha_actual = this.fecha_actual.AddMinutes(DateTime.Now.Minute);
-
-            DateTime v_f_salida = getfecha();
-
-            if (v_f_salida < this.fecha_actual)
-                return true;
-
-            return false;
-
-        }
-
+     
 
 
         private Boolean validar()

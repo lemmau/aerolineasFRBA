@@ -584,7 +584,6 @@ GO
 
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_viaje]
     @f_salida datetime,
-	@f_llegada datetime ,
 	@f_llegada_est  datetime ,
 	@id_aeronave int,
 	@id_ruta int,
@@ -596,7 +595,7 @@ AS
 	
 	BEGIN TRANSACTION
 	
-	INSERT INTO HAY_TABLA.VIAJE VALUES (@id_aeronave ,@id_ruta,@f_salida ,@f_llegada ,@f_llegada_est , 1);
+	INSERT INTO HAY_TABLA.VIAJE VALUES (@id_aeronave ,@id_ruta,@f_salida ,null ,@f_llegada_est , 0);
 	IF @@error != 0 BEGIN
 		ROLLBACK TRANSACTION
 		SET @hayErr = 1
@@ -655,10 +654,9 @@ SELECT * FROM HAY_TABLA.SERVICIO S  ORDER BY 2;
 END
 
 GO
-
-
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@matricula VARCHAR(255),
+		@f_actual datetime,
 		@f_llegada datetime,
     	@id_ciudad_origen int,
     	@id_ciudad_destino int,
@@ -666,7 +664,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@errores varchar(200) OUT
 AS
 	SET @hayErr = 0
-	SET @errores = ''
+	SET @errores = 'Se ha registrado la llegada del Micro'
 	
 BEGIN
 
@@ -686,16 +684,29 @@ BEGIN
 						from HAY_TABLA.VIAJE V join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
 						join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
 					
-						where V.STATUS = 1 and R1.ID_CDADDESTINO =@id_ciudad_destino
+						where V.FECHALLEGADA is null and  V.STATUS = 1
 						and R1.ID_CDADORIGEN = @id_ciudad_origen and upper(A.MATRICULA) = upper(@matricula))
+						
 	
 	IF @id_viaje is null BEGIN 
 		set @hayErr = 1
-		set @errores = 'No existe ningún Viaje  para los datos  ingresados .'
+		set @errores = 'No existe ningún Viaje  para la ciudad de origen seleccionada'
 		RETURN
 	END
+    
+	DECLARE @d_error varchar (255)		
+	DECLARE @ciudadLlegada int  
+	select @ciudadLlegada = (select count (*) from HAY_TABLA.VIAJE V join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
+	 where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino and V.STATUS = 1  ) 
+
+
+	 	IF @id_viaje = 0 BEGIN 
+		set @hayErr = 1
+		set @errores = 'La ciudad de Destino no es la correspondiente al que tenia programado el viaje'
+		set @d_error = 'Se registra el viaje con otra con la Ciudad de Destino  '
 		
-	
+	END
+
 
 	DECLARE @id_aeronave int
 	select @id_aeronave = (select V.ID_AERONAVE from HAY_TABLA.VIAJE V where V.ID = @id_viaje)		
@@ -710,3 +721,13 @@ BEGIN
 END
 
 GO
+
+CREATE TRIGGER tr_actualizar on HAY_TABLA.LLEGADA FOR INSERT 
+
+AS 
+BEGIN 
+
+
+END  
+
+

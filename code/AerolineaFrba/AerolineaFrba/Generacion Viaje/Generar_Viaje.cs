@@ -263,7 +263,7 @@ namespace AerolineaFrba.Generacion_Viaje
         }
 
 
-        private DateTime get_fecha_llegada()
+      /*  private DateTime get_fecha_llegada()
         {
             DateTime fecha = fechaLlegada1.Value;
             fecha = fecha.AddHours(-fecha.Hour);
@@ -280,7 +280,7 @@ namespace AerolineaFrba.Generacion_Viaje
 
 
 
-        }
+        }*/
 
         private DateTime get_fecha_llegada_est()
         {
@@ -340,8 +340,6 @@ namespace AerolineaFrba.Generacion_Viaje
 
                 DateTime f_salida = get_fecha_salida();
 
-                DateTime f_llegada = get_fecha_llegada();
-
                 DateTime f_llegada_est = get_fecha_llegada_est();
 
                 using (var conn = DataAccess.GetConnection())
@@ -352,7 +350,6 @@ namespace AerolineaFrba.Generacion_Viaje
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     SqlParameter fechaSalida = cmd.Parameters.Add("@f_salida", SqlDbType.DateTime);
-                    SqlParameter fechaLlegada = cmd.Parameters.Add("@f_llegada", SqlDbType.DateTime);
                     SqlParameter fechaLlegadaEstimada = cmd.Parameters.Add("@f_llegada_est", SqlDbType.DateTime);
                     SqlParameter idAeronave = cmd.Parameters.Add("@id_aeronave", SqlDbType.Int);
                     SqlParameter idRuta = cmd.Parameters.Add("@id_ruta", SqlDbType.Int);
@@ -363,7 +360,7 @@ namespace AerolineaFrba.Generacion_Viaje
 
 
                     fechaSalida.Value = f_salida;
-                    fechaLlegada.Value = f_llegada;
+                
                     fechaLlegadaEstimada.Value = f_llegada_est;
                     idAeronave.Value = this.id_aeronave;
                     idRuta.Value = this.id_ruta_selec;
