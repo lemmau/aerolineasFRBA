@@ -1,0 +1,7 @@
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Release\Logica.dll
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Release\Logica.pdb
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Release\Data.dll
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\bin\Release\Data.pdb
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\obj\Release\Logica.csprojResolveAssemblyReference.cache
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\obj\Release\Logica.dll
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Logica\obj\Release\Logica.pdb

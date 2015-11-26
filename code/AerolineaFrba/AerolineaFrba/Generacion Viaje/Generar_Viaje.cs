@@ -32,8 +32,6 @@ namespace AerolineaFrba.Generacion_Viaje
         {
             fechaSalida.Format = DateTimePickerFormat.Time;
             fechaSalida.ShowUpDown = true;
-            fechaLlegada.Format = DateTimePickerFormat.Time;
-            fechaLlegada.ShowUpDown = true;
             fechaEst.Format = DateTimePickerFormat.Time;
             fechaEst.ShowUpDown = true;
             llenarCombo();
@@ -390,8 +388,7 @@ namespace AerolineaFrba.Generacion_Viaje
                         return;
                     }
 
-                    Generar_Viaje.ActiveForm.Close();
-
+                   this.Close();
                 }
             }
 

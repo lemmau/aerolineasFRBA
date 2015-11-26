@@ -1,0 +1,5 @@
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Data\bin\Release\Data.dll
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Data\bin\Release\Data.pdb
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Data\obj\Release\Data.dll
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Data\obj\Release\Data.pdb
+C:\Users\eulalia\Documents\GitHub\aerolineasFRBA\code\AerolineaFrba\Data\obj\Release\Data.csprojResolveAssemblyReference.cache

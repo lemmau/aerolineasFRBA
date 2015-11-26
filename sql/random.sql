@@ -111,6 +111,9 @@ BEGIN
     VALUES
           (@nombre, @estado)
 END
+
+
+
 GO
 
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_rol]
@@ -582,6 +585,7 @@ BEGIN
 END
 GO
 
+
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_viaje]
     @f_salida datetime,
 	@f_llegada_est  datetime ,
@@ -592,18 +596,25 @@ CREATE PROCEDURE [HAY_TABLA].[sp_alta_viaje]
 AS
 	SET @hayErr = 0
 	SET @errores = ''
-	
+	BEGIN
+	BEGIN  TRY 
 	BEGIN TRANSACTION
 	
-	INSERT INTO HAY_TABLA.VIAJE VALUES (@id_aeronave ,@id_ruta,@f_salida ,null ,@f_llegada_est , 0);
-	IF @@error != 0 BEGIN
+	INSERT INTO HAY_TABLA.VIAJE VALUES (@id_aeronave ,@id_ruta,@f_salida ,null ,@f_llegada_est , 1);
+	  COMMIT TRANSACTION 
+	  END TRY 
+	  BEGIN CATCH 
+	  IF @@error != 0 
+	    BEGIN
 		ROLLBACK TRANSACTION
 		SET @hayErr = 1
-		RETURN
-	END
-	
-	COMMIT TRANSACTION
-	GO
+		RETURN  
+	     END  
+	   END CATCH 
+
+ END
+ GO
+
 
 CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronaves_generar_viaje]
 	@fecha datetime ,
@@ -654,13 +665,14 @@ SELECT * FROM HAY_TABLA.SERVICIO S  ORDER BY 2;
 END
 
 GO
+
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@matricula VARCHAR(255),
-		@f_actual datetime,
 		@f_llegada datetime,
     	@id_ciudad_origen int,
     	@id_ciudad_destino int,
-    	@hayErr int OUT,
+		@f_actual datetime ,
+		@hayErr int OUT,
     	@errores varchar(200) OUT
 AS
 	SET @hayErr = 0
@@ -700,10 +712,10 @@ BEGIN
 	 where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino and V.STATUS = 1  ) 
 
 
-	 	IF @id_viaje = 0 BEGIN 
-		set @hayErr = 1
-		set @errores = 'La ciudad de Destino no es la correspondiente al que tenia programado el viaje'
-		set @d_error = 'Se registra el viaje con otra con la Ciudad de Destino  '
+	 	IF @ciudadLlegada = 0 BEGIN 
+		set @hayErr = 2
+		set @errores = 'Se registrara el viaje con una ciudad de destino diferente al promagramado'
+		set @d_error = 'Se registra la llegada  viaje con una Ciudad  Destino distinta al original '
 		
 	END
 
@@ -720,16 +732,27 @@ BEGIN
 	
 END
 
-GO
-
-CREATE TRIGGER tr_actualizar on HAY_TABLA.LLEGADA FOR INSERT 
-
-AS 
-BEGIN 
 
 
+
+
+CREATE TRIGGER HAY_TABLA.tr_actualizar_viaje on HAY_TABLA.LLEGADA FOR INSERT 
+
+AS
+
+BEGIN  
+BEGIN TRANSACTION 
+    declare @id_viaje int
+    declare @f_llegada datetime
+	select @id_viaje=id_viaje, @f_llegada=f_llegada from inserted
+	
+	UPDATE HAY_TABLA.VIAJE SET FECHALLEGADA = @f_llegada WHERE ID = @id_viaje
+
+
+COMMIT TRANSACTION 
 END  
 
+GO
 
 /*-------------   SP  PARA AERONAVES   -------------*/
 

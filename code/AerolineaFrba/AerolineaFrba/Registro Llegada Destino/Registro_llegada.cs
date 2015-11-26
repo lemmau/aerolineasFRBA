@@ -14,7 +14,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 {
     public partial class Registro_llegada : Form
     {
-        DateTime fecha_actual;
+       
         public Registro_llegada()
         {
             InitializeComponent();
@@ -103,7 +103,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 
 
                     matricula.Value = lbMatricula.Text;
-                    fecha_actual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+                    fechaActual.Value = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
                     fechaLlegada.Value = getfecha();
                     idCiudadOrigen.Value = ((ComboboxItem)cbCiudadOrigen.SelectedItem).Value;
                     idCiudadDestino.Value = ((ComboboxItem)cbCiudadDestino.SelectedItem).Value;
@@ -124,15 +124,33 @@ namespace AerolineaFrba.Registro_Llegada_Destino
                             MessageBox.Show("Error: \n" + errores, null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             conn.Close();
                             return;
+                        
                         }
-                        MessageBox.Show("El registro de llegada de la Aeronave", "", MessageBoxButtons.OK);
+
+                        if (hayError == 2)
+                        {
+                            string errores = cmd.Parameters["@errores"].Value.ToString();
+                            MessageBox.Show("Atención: \n" + errores+ "\n" + "Se ha registrado de llegada de la Aeronave: " + lbMatricula.Text, "", MessageBoxButtons.OK);
+
+                            conn.Close();
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Se ha registrado de llegada de la Aeronave: " + lbMatricula.Text, "", MessageBoxButtons.OK);
+                            conn.Close();
+                        }
+                        
                     }
 
                     catch (Exception error)
                     {
                         MessageBox.Show("Error  en el registro de llegada " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        conn.Close();
                         return;
+                        
                     }
+                    this.Close();
                 }
 
             }
