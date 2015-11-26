@@ -45,11 +45,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Aeronave\Form1.cs">
+    <Compile Include="Abm Aeronave\FormActualizarAeronave.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Aeronave\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Aeronave\FormActualizarAeronave.Designer.cs">
+      <DependentUpon>FormActualizarAeronave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Aeronave\FormEliminarAeronave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Aeronave\FormEliminarAeronave.Designer.cs">
+      <DependentUpon>FormEliminarAeronave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Aeronave\FormInsertarAeronave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Aeronave\FormInsertarAeronave.Designer.cs">
+      <DependentUpon>FormInsertarAeronave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Aeronave\ListadoAeronaves.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Aeronave\ListadoAeronaves.Designer.cs">
+      <DependentUpon>ListadoAeronaves.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Ciudad\AMBCiudad.cs">
       <SubType>Form</SubType>
@@ -180,6 +198,18 @@
     <Compile Include="Registro Llegada Destino\Registro_llegada.Designer.cs">
       <DependentUpon>Registro_llegada.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Abm Aeronave\FormActualizarAeronave.resx">
+      <DependentUpon>FormActualizarAeronave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Aeronave\FormEliminarAeronave.resx">
+      <DependentUpon>FormEliminarAeronave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Aeronave\FormInsertarAeronave.resx">
+      <DependentUpon>FormInsertarAeronave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Aeronave\ListadoAeronaves.resx">
+      <DependentUpon>ListadoAeronaves.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Ciudad\AMBCiudad.resx">
       <DependentUpon>AMBCiudad.cs</DependentUpon>
     </EmbeddedResource>

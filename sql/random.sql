@@ -731,3 +731,223 @@ BEGIN
 END  
 
 
+/*-------------   SP  PARA AERONAVES   -------------*/
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_baja_fuera_de_servicio]
+	@id int,
+	@fechaActual datetime,
+	@fechaReincorporacion datetime
+AS
+BEGIN
+	if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+				where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 2))
+		begin
+			RAISERROR(N' Esta aeronave ya cumplio su Vida Util ', 16, 1)
+			return
+		end		
+	else
+		begin
+			if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+					   where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 1 AND HB.FECHAREINICIO > @fechaActual))
+				begin
+					RAISERROR(N' Esta aeronave ya se encontraba fuera de servicio ', 16, 1)
+					return
+				end		
+			else
+				begin
+					if (@fechaActual > @fechaReincorporacion)
+						begin
+							RAISERROR(N' La fecha de reincorporacion debe ser mayor a la fecha actual ', 16, 1)
+							return
+						end
+				end 
+		end
+
+		INSERT INTO [HAY_TABLA].HISTORIALBAJA_AERONAVE
+			(ID_AERONAVE, ID_TIPOBAJA, FECHABAJA, FECHAREINICIO)
+		OUTPUT
+			inserted.id
+		VALUES
+			(@id, 1, @fechaActual, @fechaReincorporacion)
+			
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_baja_vida_util]
+	@id int,
+	@fechaActual datetime
+AS
+BEGIN
+	if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+				where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 2))
+		begin
+			RAISERROR(N' La aeronave ya estaba dada de baja por Fin de Vida Util ', 16, 1)
+			return
+		end		
+		INSERT INTO [HAY_TABLA].HISTORIALBAJA_AERONAVE
+			(ID_AERONAVE, ID_TIPOBAJA, FECHABAJA, FECHAREINICIO)
+		OUTPUT
+			inserted.id
+		VALUES
+			(@id, 2, @fechaActual, null)
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronave_by_id]
+	@id int
+AS
+BEGIN
+	select
+		A.ID, A.MATRICULA, A.MODELO, A.FABRICANTE, A.CANTBUTACAS, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE'
+	from 
+		HAY_TABLA.AERONAVE A, HAY_TABLA.SERVICIO S
+	where
+		A.ID = @id
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_get_fabricantes]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT 
+		DISTINCT FABRICANTE
+	FROM 
+		[HAY_TABLA].AERONAVE
+	ORDER BY
+		FABRICANTE
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_insertar_aeronave]
+	@fechaAlta datetime,
+	@fabricante nvarchar(255),
+	@modelo nvarchar(255),
+	@matricula nvarchar(255),
+	@espacioKg int,
+	@cantButacas int,
+	@idTipoServicio int,
+	@cantPasillo int,
+	@cantVentanilla int
+AS
+BEGIN
+	
+	/*   YA LO CHEQUEAMOS EN EL APLICATIVO
+	if ((@fabricante = '') or (@modelo = '') or (@matricula = '') or (@espacioKg = null) or (@idTipoServicio = null))
+	    begin
+		    RAISERROR(N' Debe completar todos los campos ', 16, 1)
+			return	
+		end
+	else
+		begin*/
+
+	if (@cantButacas = 0) 
+		begin
+			RAISERROR(N' La aeronave debe contar con al menos una butaca ', 16, 1)
+			return	
+		end
+
+	if (@espacioKg = 0) 
+		begin
+			RAISERROR(N' La aeronave debe contar con espacio para encomiendas ', 16, 1)
+			return	
+		end
+	
+	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like '%' + @matricula))
+		begin
+			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
+			return
+		end		
+	
+	INSERT INTO [HAY_TABLA].AERONAVE
+		(FECHAALTA, ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACAS, ESPACIOKGENCOMIENDAS)
+	OUTPUT
+		inserted.id
+	VALUES
+		(@fechaAlta, @idTipoServicio, @modelo, @matricula, @fabricante, @cantButacas, @espacioKg)
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_modificar_aeronave]
+	@id int,
+	@fechaAlta datetime,
+	@fabricante nvarchar(255),
+	@modelo nvarchar(255),
+	@matricula nvarchar(255),
+	@espacioKg int,
+	@cantButacas int,
+	@idTipoServicio int,
+	@cantPasillo int,
+	@cantVentanilla int
+AS
+BEGIN
+
+	if (@cantButacas = 0) 
+		begin
+			RAISERROR(N' La aeronave debe contar con al menos una butaca ', 16, 1)
+			return	
+		end
+
+	if (@espacioKg = 0) 
+		begin
+			RAISERROR(N' La aeronave debe contar con espacio para encomiendas ', 16, 1)
+			return	
+		end
+
+	UPDATE 
+		[HAY_TABLA].AERONAVE
+	SET 
+		FECHAALTA = @fechaAlta,
+		FABRICANTE = @fabricante,
+		MODELO = @modelo,
+		MATRICULA = @matricula,
+		ESPACIOKGENCOMIENDAS = @espacioKg,
+		CANTBUTACAS = @cantButacas,
+		ID_SERVICIO = @idTipoServicio
+	WHERE
+		ID = @id
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_select_aeronaves]
+	@matricula nvarchar(255) = null,
+	@idTipoDeServicio numeric(18,0) = null,
+	@fabricante nvarchar(255) = null
+AS
+BEGIN
+	SELECT 
+		A.ID, A.MATRICULA, A.MODELO, A.FABRICANTE, A.FECHAALTA, A.CANTBUTACAS, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE'
+		--,HB.ID_TIPOBAJA as 'HB_ID', HB.FECHAREINICIO as 'HB_FECHAREINICIO'
+	FROM 
+		[HAY_TABLA].SERVICIO S, [HAY_TABLA].AERONAVE A-- inner join [HAY_TABLA].HISTORIALBAJA_AERONAVE HB on A.ID = HB.ID_AERONAVE
+	WHERE
+		-- TODOS LOS CAMPOS VACIOS
+		(@matricula is null AND @idTipoDeServicio is null AND @fabricante is null AND A.ID_SERVICIO = S.ID) or
+		-- SOLO UN CAMPO DE BUSQUEDA
+		(A.MATRICULA = @matricula AND @idTipoDeServicio is null AND @fabricante is null AND A.ID_SERVICIO = S.ID) or 
+		(A.ID_SERVICIO = @idTipoDeServicio AND @matricula is null AND @fabricante is null AND A.ID_SERVICIO = S.ID) or
+		(A.FABRICANTE = @fabricante AND @idTipoDeServicio is null AND @matricula is null AND A.ID_SERVICIO = S.ID) or
+		-- SOLO DOS CAMPOS DE BUSQUEDA
+		(A.MATRICULA = @matricula AND A.ID_SERVICIO = @idTipoDeServicio AND @fabricante is null AND A.ID_SERVICIO = S.ID) or
+		(A.MATRICULA = @matricula AND @idTipoDeServicio is null AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID) or
+		(@matricula is null AND A.ID_SERVICIO = @idTipoDeServicio AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID) or
+		-- LOS 3 CAMPOS
+		(A.MATRICULA = @matricula AND A.ID_SERVICIO = @idTipoDeServicio AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID)
+END
+
+----------------
+
