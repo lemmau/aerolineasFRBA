@@ -123,11 +123,11 @@
     <Compile Include="Abm Ruta\ListadoRutas.Designer.cs">
       <DependentUpon>ListadoRutas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Canje Millas\Form1.cs">
+    <Compile Include="Canje Millas\ConsultaMillas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Canje Millas\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Canje Millas\ConsultaMillas.Designer.cs">
+      <DependentUpon>ConsultaMillas.cs</DependentUpon>
     </Compile>
     <Compile Include="Compra\Form1.cs">
       <SubType>Form</SubType>
@@ -237,6 +237,9 @@
     <EmbeddedResource Include="Abm Ruta\ListadoRutas.resx">
       <DependentUpon>ListadoRutas.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Canje Millas\ConsultaMillas.resx">
+      <DependentUpon>ConsultaMillas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Generacion Viaje\Generar_Viaje.resx">
       <DependentUpon>Generar_Viaje.cs</DependentUpon>

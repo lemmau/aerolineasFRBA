@@ -992,3 +992,80 @@ BEGIN
 END
 
 ----------------
+
+/*-------------   SP  PARA MILLAS   -------------*/
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_listado_millas]
+	@id int
+
+AS
+BEGIN
+	
+	SELECT ((-1) * pr.MILLASNECESARIAS * c.CANTIDAD) as 'Millas', c.FECHA as 'Fecha', 'Canje de producto: ' + pr.DESCRIPCION + ' (Cant: ' + cast(c.CANTIDAD as varchar) + ')' as 'Detalle'
+	from HAY_TABLA.PERSONA pe join HAY_TABLA.CANJE c on pe.ID = c.ID_PERSONA
+							  join HAY_TABLA.PRODUCTO pr on c.ID_PRODUCTO = pr.ID
+	where pe.ID = @id
+
+	UNION ALL
+
+	SELECT (CAST(pe.IMPORTE AS int) / 10) as 'Millas', 
+		   c.FECHA as 'Fecha',  
+		   case 
+		   when ((pe.PESO_ENCOMIENDA = null) or (pe.PESO_ENCOMIENDA = 0))
+		   then 'Pasaje desde ' + ciu1.NOMBRE + ' hasta ' + ciu2.NOMBRE
+		   else 'Encomienda de ' + cast(pe.PESO_ENCOMIENDA as varchar) + 'Kg desde' + ciu1.NOMBRE + ' hasta' + ciu2.NOMBRE
+		   end
+		   as 'Detalle'
+	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE_ENCOMIENDA pe on p.ID = pe.ID_CLIENTE
+							 join HAY_TABLA.COMPRA c on pe.ID_COMPRA = c.ID
+							 join HAY_TABLA.VIAJE v on c.ID_VIAJE = v.ID
+							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+							 join HAY_TABLA.CIUDAD ciu1 on r.ID_CDADORIGEN = ciu1.ID
+							 join HAY_TABLA.CIUDAD ciu2 on r.ID_CDADDESTINO = ciu2.ID
+	where p.ID = @id and not exists (select * from HAY_TABLA.ITEMSDEVOLUCION itemd join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
+									 where pe2.ID = pe.ID)
+	order by c.FECHA desc
+END
+
+----------------
+
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_get_datos_clie]
+	@DNI int
+AS
+BEGIN
+	if (exists(select ID from HAY_TABLA.PERSONA
+				where @DNI = DNI))
+		begin
+			SELECT ID as 'id', (APELLIDO + ', ' + NOMBRE) as 'nombre'
+			from HAY_TABLA.PERSONA
+			where @DNI = DNI
+		end		
+	else
+		begin
+			RAISERROR(N' El DNI ingresado no pertenece a ningún cliente existente ', 16, 1)
+			return
+		end
+
+END
+GO
+
+----------------
+--  ESTA POR AHORA NO ESTA COMPLETA, SOLO CALCULA EL TOTAL DE MILLAS NO VENCIDAS, PERO NO DESCUENTA CANJES
+GO
+CREATE PROCEDURE [HAY_TABLA].[sp_get_millas_acumuladas]
+	@id int,
+	@fechaActual DateTime
+AS
+BEGIN
+	SELECT sum(CAST(pe.IMPORTE AS int) / 10) as 'acumuladas'
+	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE_ENCOMIENDA pe on p.ID = pe.ID_CLIENTE
+						   	 join HAY_TABLA.COMPRA co on pe.ID_COMPRA = co.ID
+	where p.ID = @id 
+	 	  and not exists (select * from HAY_TABLA.ITEMSDEVOLUCION itemd join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
+						  where pe2.ID = pe.ID)
+		  and (DATEDIFF(day, co.FECHA, @fechaActual) <= 365)
+
+END
+GO

@@ -36,12 +36,12 @@
             this.itemRoles = new System.Windows.Forms.ToolStripMenuItem();
             this.itemRutas = new System.Windows.Forms.ToolStripMenuItem();
             this.itemCiudades = new System.Windows.Forms.ToolStripMenuItem();
-            this.aeronavesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemAeronaves = new System.Windows.Forms.ToolStripMenuItem();
             this.generarViajeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.registroLlegadaDeAeronaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compraDePasajeEncomiendaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.devolCancelDePasajeEncomiendaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultaDeMillasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemConsultaMillas = new System.Windows.Forms.ToolStripMenuItem();
             this.canjeDeMillasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.estadisticasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbFecha = new System.Windows.Forms.Label();
@@ -76,12 +76,12 @@
             this.itemRoles,
             this.itemRutas,
             this.itemCiudades,
-            this.aeronavesToolStripMenuItem1,
+            this.itemAeronaves,
             this.generarViajeToolStripMenuItem1,
             this.registroLlegadaDeAeronaveToolStripMenuItem,
             this.compraDePasajeEncomiendaToolStripMenuItem1,
             this.devolCancelDePasajeEncomiendaToolStripMenuItem1,
-            this.consultaDeMillasToolStripMenuItem1,
+            this.itemConsultaMillas,
             this.canjeDeMillasToolStripMenuItem1,
             this.estadisticasToolStripMenuItem});
             this.seccionesToolStripMenuItem.Name = "seccionesToolStripMenuItem";
@@ -113,12 +113,13 @@
             this.itemCiudades.Text = "Ciudades";
             this.itemCiudades.Click += new System.EventHandler(this.itemCiudades_Click);
             // 
-            // aeronavesToolStripMenuItem1
+            // itemAeronaves
             // 
-            this.aeronavesToolStripMenuItem1.Name = "aeronavesToolStripMenuItem1";
-            this.aeronavesToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
-            this.aeronavesToolStripMenuItem1.Tag = "ABM DE AERONAVE";
-            this.aeronavesToolStripMenuItem1.Text = "Aeronaves";
+            this.itemAeronaves.Name = "itemAeronaves";
+            this.itemAeronaves.Size = new System.Drawing.Size(268, 22);
+            this.itemAeronaves.Tag = "ABM DE AERONAVE";
+            this.itemAeronaves.Text = "Aeronaves";
+            this.itemAeronaves.Click += new System.EventHandler(this.itemAeronaves_Click);
             // 
             // generarViajeToolStripMenuItem1
             // 
@@ -150,12 +151,13 @@
             this.devolCancelDePasajeEncomiendaToolStripMenuItem1.Tag = "DEVOLUCION/CANCELACION DE PASAJE/ENCOMIENDA";
             this.devolCancelDePasajeEncomiendaToolStripMenuItem1.Text = "Devol/Cancel de Pasaje/Encomienda";
             // 
-            // consultaDeMillasToolStripMenuItem1
+            // itemConsultaMillas
             // 
-            this.consultaDeMillasToolStripMenuItem1.Name = "consultaDeMillasToolStripMenuItem1";
-            this.consultaDeMillasToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
-            this.consultaDeMillasToolStripMenuItem1.Tag = "CONSULTA DE MILLAS";
-            this.consultaDeMillasToolStripMenuItem1.Text = "Consulta de Millas";
+            this.itemConsultaMillas.Name = "itemConsultaMillas";
+            this.itemConsultaMillas.Size = new System.Drawing.Size(268, 22);
+            this.itemConsultaMillas.Tag = "CONSULTA DE MILLAS";
+            this.itemConsultaMillas.Text = "Consulta de Millas";
+            this.itemConsultaMillas.Click += new System.EventHandler(this.itemConsultaMillas_Click);
             // 
             // canjeDeMillasToolStripMenuItem1
             // 
@@ -213,12 +215,12 @@
         private System.Windows.Forms.ToolStripMenuItem itemRoles;
         private System.Windows.Forms.ToolStripMenuItem itemRutas;
         private System.Windows.Forms.ToolStripMenuItem itemCiudades;
-        private System.Windows.Forms.ToolStripMenuItem aeronavesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem itemAeronaves;
         private System.Windows.Forms.ToolStripMenuItem generarViajeToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem registroLlegadaDeAeronaveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compraDePasajeEncomiendaToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem devolCancelDePasajeEncomiendaToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem consultaDeMillasToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem itemConsultaMillas;
         private System.Windows.Forms.ToolStripMenuItem canjeDeMillasToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem estadisticasToolStripMenuItem;
         private System.Windows.Forms.Label lbFecha;

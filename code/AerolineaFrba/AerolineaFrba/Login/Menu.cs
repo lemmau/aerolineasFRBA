@@ -113,5 +113,17 @@ namespace AerolineaFrba.Login
             Registro_Llegada_Destino.Registro_llegada _registro_llegada = new Registro_Llegada_Destino.Registro_llegada();
             _registro_llegada.ShowDialog();
         }
+
+        private void itemConsultaMillas_Click(object sender, EventArgs e)
+        {
+            Consulta_Millas.ConsultaMillas millas = new Consulta_Millas.ConsultaMillas();
+            millas.Show();
+        }
+
+        private void itemAeronaves_Click(object sender, EventArgs e)
+        {
+            Abm_Aeronave.ListadoAeronaves aeronave = new Abm_Aeronave.ListadoAeronaves();
+            aeronave.Show();
+        }
     }
 }

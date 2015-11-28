@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Aeronave.cs" />
     <Compile Include="Ciudad.cs" />
+    <Compile Include="Millas.cs" />
     <Compile Include="Ruta.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="Funcionalidad.cs" />
