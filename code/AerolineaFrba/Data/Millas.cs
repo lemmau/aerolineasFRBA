@@ -60,7 +60,7 @@ namespace Data
             return table;
         }
 
-        public static DataTable Get(Int32 id)
+        public static DataTable Get(Int32 id, DateTime fechaActual)
         {
             var table = new DataTable();
 
@@ -70,6 +70,7 @@ namespace Data
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
 
                 con.Open();
                 table.Load(cmd.ExecuteReader());

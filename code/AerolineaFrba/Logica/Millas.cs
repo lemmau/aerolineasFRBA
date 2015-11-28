@@ -25,10 +25,10 @@ namespace Logica
             return Data.Millas.GetDatosClieByDNI(DNI);
         }
 
-        public static List<Millas> Get(Int32 id)
+        public static List<Millas> Get(Int32 id, DateTime fechaActual)
         {
 
-            var dt = Data.Millas.Get(id);
+            var dt = Data.Millas.Get(id, fechaActual);
             var millas = new List<Millas>(dt.Rows.Count);
             Millas milla = null;
 

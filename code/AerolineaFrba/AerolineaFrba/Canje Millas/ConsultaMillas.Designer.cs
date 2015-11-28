@@ -174,6 +174,7 @@
             this.Controls.Add(this.dgvMillas);
             this.Name = "ConsultaMillas";
             this.Text = "Consulta de Millas";
+            this.Load += new System.EventHandler(this.ConsultaMillas_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMillas)).EndInit();

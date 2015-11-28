@@ -53,7 +53,7 @@ namespace AerolineaFrba.Consulta_Millas
 
             dgvMillas.Rows.Clear();
 
-            foreach (Millas milla in Millas.Get(id))
+            foreach (Millas milla in Millas.Get(id, fechaActual))
                 AgregarMilla(milla);
         }
 
@@ -68,6 +68,11 @@ namespace AerolineaFrba.Consulta_Millas
         private void btnConsultar_Click(object sender, EventArgs e)
         {
             CargarDGVMillas();
+        }
+
+        private void ConsultaMillas_Load(object sender, EventArgs e)
+        {
+
         }
 
     }

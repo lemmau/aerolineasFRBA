@@ -997,15 +997,18 @@ END
 
 GO
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_millas]
-	@id int
-
+	@id int,
+	@fechaActual datetime
 AS
 BEGIN
 	
-	SELECT ((-1) * pr.MILLASNECESARIAS * c.CANTIDAD) as 'Millas', c.FECHA as 'Fecha', 'Canje de producto: ' + pr.DESCRIPCION + ' (Cant: ' + cast(c.CANTIDAD as varchar) + ')' as 'Detalle'
-	from HAY_TABLA.PERSONA pe join HAY_TABLA.CANJE c on pe.ID = c.ID_PERSONA
+	SELECT 	((-1) * pr.MILLASNECESARIAS * c.CANTIDAD) as 'Millas', 
+			c.FECHA as 'Fecha', 
+			'Canje de producto: ' + pr.DESCRIPCION + ' (Cant: ' + cast(c.CANTIDAD as varchar) + ')' as 'Detalle'
+	from HAY_TABLA.PERSONA pe join HAY_TABLA.CANJE c on pe.ID = c.ID_CLIENTE
 							  join HAY_TABLA.PRODUCTO pr on c.ID_PRODUCTO = pr.ID
 	where pe.ID = @id
+	and c.FECHA > DATEADD (MONTH, -12, @fechaActual)
 
 	UNION ALL
 
@@ -1023,8 +1026,11 @@ BEGIN
 							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
 							 join HAY_TABLA.CIUDAD ciu1 on r.ID_CDADORIGEN = ciu1.ID
 							 join HAY_TABLA.CIUDAD ciu2 on r.ID_CDADDESTINO = ciu2.ID
-	where p.ID = @id and not exists (select * from HAY_TABLA.ITEMSDEVOLUCION itemd join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
-									 where pe2.ID = pe.ID)
+	where p.ID = @id 
+	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+					join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
+					where pe2.ID = pe.ID)
+	and c.FECHA > DATEADD (MONTH, -12, @fechaActual)
 	order by c.FECHA desc
 END
 
@@ -1063,9 +1069,10 @@ BEGIN
 	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE_ENCOMIENDA pe on p.ID = pe.ID_CLIENTE
 						   	 join HAY_TABLA.COMPRA co on pe.ID_COMPRA = co.ID
 	where p.ID = @id 
-	 	  and not exists (select * from HAY_TABLA.ITEMSDEVOLUCION itemd join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
+	and not exists 	(select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+	  					join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
 						  where pe2.ID = pe.ID)
-		  and (DATEDIFF(day, co.FECHA, @fechaActual) <= 365)
+	and (DATEDIFF(day, co.FECHA, @fechaActual) <= 365)
 
 END
 GO
