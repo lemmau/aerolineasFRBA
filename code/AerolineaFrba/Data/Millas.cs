@@ -56,7 +56,6 @@ namespace Data
                 table.Load(cmd.ExecuteReader());
                 con.Close();
             }
-
             return table;
         }
 

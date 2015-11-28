@@ -1039,8 +1039,10 @@ END
 GO
 CREATE PROCEDURE [HAY_TABLA].[sp_get_datos_clie]
 	@DNI int
-AS
+AS 
 BEGIN
+	SET NOCOUNT ON;
+
 	if (exists(select ID from HAY_TABLA.PERSONA
 				where @DNI = DNI))
 		begin

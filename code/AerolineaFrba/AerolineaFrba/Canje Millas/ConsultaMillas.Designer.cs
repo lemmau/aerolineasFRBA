@@ -173,6 +173,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dgvMillas);
             this.Name = "ConsultaMillas";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Consulta de Millas";
             this.Load += new System.EventHandler(this.ConsultaMillas_Load);
             this.groupBox1.ResumeLayout(false);

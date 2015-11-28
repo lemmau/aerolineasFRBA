@@ -14,6 +14,12 @@ namespace AerolineaFrba.Consulta_Millas
 {
     public partial class ConsultaMillas : Form
     {
+        Int32 dniNum = 0;
+        Int32 id;
+        String nombre;
+        Int32 acumuladas;
+        DateTime fechaActual;
+
         public ConsultaMillas()
         {
             InitializeComponent();
@@ -21,21 +27,6 @@ namespace AerolineaFrba.Consulta_Millas
 
         private void CargarDGVMillas()
         {
-            Int32 dniNum = 0;
-            Int32 id;
-            String nombre;
-            Int32 acumuladas;
-            DateTime fechaActual;
-
-            try
-            {
-                dniNum = Int32.Parse(tbDNI.Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("El número de DNI debe ser numérico y sin puntos");
-            }
-
             using (var datadatosClie = Millas.GetDatosClieByDNI(dniNum))
             {
                 id = Int32.Parse(datadatosClie.Rows[0][datadatosClie.Columns["Id"].Ordinal].ToString());
@@ -67,9 +58,39 @@ namespace AerolineaFrba.Consulta_Millas
 
         private void btnConsultar_Click(object sender, EventArgs e)
         {
-            CargarDGVMillas();
+            if (!FormularioValido()) return;
+            try
+            {
+                dniNum = Int32.Parse(tbDNI.Text);
+                CargarDGVMillas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
+        private bool FormularioValido()
+        {
+            Boolean valido = true;
+            Int32 numeroEntero;
+
+            if (!String.IsNullOrEmpty(tbDNI.Text)
+                && !Int32.TryParse(tbDNI.Text, out numeroEntero))
+            {
+                valido = false;
+                MessageBox.Show("El número de DNI debe ser numérico y sin puntos.");
+            }
+
+            if (String.IsNullOrEmpty(tbDNI.Text))
+            {
+                valido = false;
+                MessageBox.Show("Indique DNI de búsqueda (sin puntos).");
+            }
+
+            return valido;
+        }
         private void ConsultaMillas_Load(object sender, EventArgs e)
         {
 
