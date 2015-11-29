@@ -1078,3 +1078,39 @@ BEGIN
 
 END
 GO
+
+----
+-- ESTA ES LA FORMA, REVISALO IGUAL MAXI !!
+CREATE TRIGGER [HAY_TABLA].tr_generar_butacas
+   ON  [HAY_TABLA].AERONAVE
+   AFTER INSERT
+AS 
+BEGIN
+	DECLARE @I INT, @CANT_PAS INT, @CANT_VEN INT, @MATRICULA nvarchar(255)
+	SET @I = 1
+	SET @CANT_PAS = (select i.CANTBUTACASPASILLO from inserted i)
+	SET @CANT_VEN = (select i.CANTBUTACASVENTANILLA from inserted i)
+	SET @ID_AERONAVE = (select i.ID from inserted i WHERE i.MATRICULA = @MATRICULA)
+
+    WHILE @I <= @CANT_PAS
+    BEGIN
+        INSERT INTO [HAY_TABLA].BUTACA
+        (ID_AERONAVE, NUMERO, PISO, TIPO)
+        VALUES
+        (@ID_AERONAVE, @I, 1, 'PASILLO')
+
+        SET @I = @I + 1
+    END
+
+	WHILE @I <= (@CANT_PAS + @CANT_VEN)
+    BEGIN
+        INSERT INTO [HAY_TABLA].BUTACA
+        (ID_AERONAVE, NUMERO, PISO, TIPO)
+        VALUES
+        (@ID_AERONAVE, @I, 1, 'VENTANILLA')
+
+        SET @I = @I + 1
+    END
+
+END
+GO
