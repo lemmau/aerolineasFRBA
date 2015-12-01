@@ -17,12 +17,15 @@ namespace AerolineaFrba.Generacion_Viaje
         int id_aeronave = 0;
         string tipo_servicio_aer;
         int id_ruta_selec = 0;
+        String matricula_seleccionada;
+        String ciudadOrigen_seleccionada;
+        String ciudadDestino_seleccionada;
 
         int id_tipo_ser_ruta=0;
         int id_tipo_ser_aer=0;
 
         DateTime fecha_actual;
-
+        DateTime fechaSis;
         public Generar_Viaje()
         {
             InitializeComponent();
@@ -30,8 +33,19 @@ namespace AerolineaFrba.Generacion_Viaje
 
         private void Generar_Viaje_Load(object sender, EventArgs e)
         {
+            fechaSis = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+            fechaSis = fechaSis.AddHours(00);
+            fechaSis = fechaSis.AddMinutes(00);
+            fechaSis = fechaSis.AddSeconds(00);
+            fechaSalida1.Value = fechaSis;
+            fechaEst1.Value = fechaSis;
+            fechaSalida.Value = fechaSis;
+            
+            fechaEst.Value = fechaSis;
             fechaSalida.Format = DateTimePickerFormat.Time;
             fechaSalida.ShowUpDown = true;
+            
+           
             fechaEst.Format = DateTimePickerFormat.Time;
             fechaEst.ShowUpDown = true;
             llenarCombo();
@@ -158,7 +172,7 @@ namespace AerolineaFrba.Generacion_Viaje
         {
             String str_error = "";
             if (fechaLLegadaEstimMayor24hs())
-                str_error += "El tiempo estimado de viaje no puede ser mayor a 24 hs\n";
+                str_error += "El tiempo estimado de viaje no puede ser mayor a 24 hs\n ";
 
             if (!str_error.Equals(""))
             {
@@ -305,10 +319,12 @@ namespace AerolineaFrba.Generacion_Viaje
         {
             if (!e.RowIndex.Equals(-1))
             {
-                id_aeronave = Convert.ToInt32(aeronaves.Rows[e.RowIndex].Cells["id"].Value.ToString());
+                this.id_aeronave = Convert.ToInt32(aeronaves.Rows[e.RowIndex].Cells["id"].Value.ToString());
+                this.matricula_seleccionada = aeronaves.Rows[e.RowIndex].Cells["matricula"].Value.ToString();
+
                 tipo_servicio_aer = aeronaves.Rows[e.RowIndex].Cells["tipoServicio1"].Value.ToString();
                 this.id_tipo_ser_aer = ((ComboboxItem)cbTipoServicio1.SelectedItem).Value;
-                MessageBox.Show("Usted a seleccionado la Aeronave con ID " + id_aeronave.ToString(), "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Usted a seleccionado la Aeronave con la matricula " + this.matricula_seleccionada, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             
@@ -321,7 +337,9 @@ namespace AerolineaFrba.Generacion_Viaje
             {
                 this.id_ruta_selec = Convert.ToInt32(rutas.Rows[e.RowIndex].Cells["id_ruta"].Value.ToString());
                 this.id_tipo_ser_ruta = ((ComboboxItem)cbTipoServicio.SelectedItem).Value;
-                MessageBox.Show("Usted selecciono la ruta con ID :" + id_ruta_selec.ToString(), "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.ciudadOrigen_seleccionada =rutas.Rows[e.RowIndex].Cells["ciudad_origen"].Value.ToString();
+                this.ciudadDestino_seleccionada = rutas.Rows[e.RowIndex].Cells["ciudad_destino"].Value.ToString();
+                MessageBox.Show("Usted selecciono la ruta con ciudad de origen :" + this.ciudadOrigen_seleccionada  +" ciudad destino: "+ this.ciudadDestino_seleccionada , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

@@ -685,6 +685,31 @@ SELECT * FROM HAY_TABLA.SERVICIO ORDER BY 2;
 END
 GO
 
+ALTER PROCEDURE [HAY_TABLA].[sp_aeronave_x_matricula]
+  @matricula varchar (255),
+  @hayErr int OUT,
+  @errores varchar(200) OUT
+  
+  AS 
+   
+ BEGIN
+   SET @hayErr = 0
+   DECLARE @exite int 
+   SET @exite =  (select count (*) from HAY_TABLA.AERONAVE A  where upper(MATRICULA) = upper (@matricula) )
+   IF @exite != 0
+	BEGIN
+	 select A.ID, A.MODELO ,A.FABRICANTE , S.NOMBRE  from HAY_TABLA.AERONAVE A join HAY_TABLA.SERVICIO S
+	 on A.ID_SERVICIO = S.ID where upper(MATRICULA) = upper (@matricula); 
+	 RETURN
+	END
+	ELSE 
+	BEGIN
+	SET @hayErr = 1
+	SET @errores = ' No se ha encontrado una Aeronave para la matricula ingresada'
+	END
+
+END
+GO
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@matricula VARCHAR(255),
 		@f_llegada datetime,
@@ -700,16 +725,6 @@ AS
 BEGIN
 
 	
-	DECLARE @existe int 
-	select @existe = (select COUNT(*) from HAY_TABLA.AERONAVE A where upper(A.MATRICULA) = upper(@matricula))
-	if @existe = 0
-	BEGIN
-		set @hayErr = 1
-		set @errores = 'La matricula ingresada no existe.'
-		RETURN
-	END
-	
-	/*verifico que exista el viaje segun los datos ingresados*/
 	DECLARE @id_viaje int 
 	select @id_viaje = (select V.ID 
 						from HAY_TABLA.VIAJE V join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
@@ -772,6 +787,26 @@ COMMIT TRANSACTION
 END  
 
 GO
+
+/*
+ TABLA  LLEGADA 
+
+CREATE TABLE [HAY_TABLA].LLEGADA (
+[ID]                INT IDENTITY(1,1) NOT NULL,
+[MATRICULA]         VARCHAR (255) NOT NULL,
+[ID_AERONAVE]       INT NULL,
+[F_LLEGADA]         DATETIME NOT NULL,
+[ID_VIAJE]          INT NOT NULL,
+[ID_CIUDAD_ORIGEN]  INT NOT NULL,
+[ID_CIUDAD_DESTINO] INT NOT NULL,
+[D_ERROR]           VARCHAR (255) NULL,
+
+PRIMARY KEY (ID),
+FOREIGN KEY (ID_VIAJE) REFERENCES [HAY_TABLA].VIAJE
+);
+GO
+
+*/
 
 /*-------------   SP  PARA AERONAVES   -------------*/
 
