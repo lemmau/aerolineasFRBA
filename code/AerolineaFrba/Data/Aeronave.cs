@@ -76,7 +76,7 @@ namespace Data
         */
 
         public static int Insertar(DateTime fechaAlta, String fabricante, String modelo, String matricula,
-            Int32 espacioKG, Int32 cantButacas, Int32 idTipoServicio, Int32 cantPasillo, Int32 cantVentanilla)
+            Int32 espacioKG, Int32 idTipoServicio, Int32 cantPasillo, Int32 cantVentanilla)
         {
             int id_insertado = -1;
             using (var con = DataAccess.GetConnection())
@@ -89,7 +89,6 @@ namespace Data
                 cmd.Parameters.Add("@modelo", SqlDbType.NVarChar).Value = modelo;
                 cmd.Parameters.Add("@matricula", SqlDbType.NVarChar).Value = matricula;
                 cmd.Parameters.Add("@espacioKG", SqlDbType.Int).Value = espacioKG;
-                cmd.Parameters.Add("@cantButacas", SqlDbType.Int).Value = cantButacas;
                 cmd.Parameters.Add("@idTipoServicio", SqlDbType.Int).Value = idTipoServicio;
                 cmd.Parameters.Add("@cantPasillo", SqlDbType.Int).Value = cantPasillo;
                 cmd.Parameters.Add("@cantVentanilla", SqlDbType.Int).Value = cantVentanilla;
@@ -103,7 +102,7 @@ namespace Data
         }
 
         public static void Actualizar(DateTime fechaAlta, Int32 id, String fabricante, String modelo, String matricula,
-            Int32 espacioKG, Int32 cantButacas, Int32 idTipoServicio, Int32 cantPasillo, Int32 cantVentanilla)
+            Int32 espacioKG, Int32 cantPasillo, Int32 cantVentanilla, Int32 idTipoServicio)
         {
              using (var con = DataAccess.GetConnection())
             {
@@ -116,7 +115,6 @@ namespace Data
                 cmd.Parameters.Add("@modelo", SqlDbType.NVarChar).Value = modelo;
                 cmd.Parameters.Add("@matricula", SqlDbType.NVarChar).Value = matricula;
                 cmd.Parameters.Add("@espacioKG", SqlDbType.Int).Value = espacioKG;
-                cmd.Parameters.Add("@cantButacas", SqlDbType.Int).Value = cantButacas;
                 cmd.Parameters.Add("@idTipoServicio", SqlDbType.Int).Value = idTipoServicio;
                 cmd.Parameters.Add("@cantPasillo", SqlDbType.Int).Value = cantPasillo;
                 cmd.Parameters.Add("@cantVentanilla", SqlDbType.Int).Value = cantVentanilla;

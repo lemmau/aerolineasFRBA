@@ -75,7 +75,7 @@ namespace AerolineaFrba.Abm_Aeronave
             dgvAeronaves.Rows[index].Cells["modeloDGV"].Value = aeronave.modelo;
             dgvAeronaves.Rows[index].Cells["matriculaDGV"].Value = aeronave.matricula;
             dgvAeronaves.Rows[index].Cells["tipoServicioDGV"].Value = aeronave.tipoServicio.Nombre;
-            dgvAeronaves.Rows[index].Cells["nButacasDGV"].Value = aeronave.cantButacas;
+            dgvAeronaves.Rows[index].Cells["nButacasDGV"].Value = aeronave.cantButacasPasillo + aeronave.cantButacasVentanilla;
             dgvAeronaves.Rows[index].Cells["kgDgv"].Value = aeronave.espacioKG;
 
             /*if (aeronave.idBaja == 2)

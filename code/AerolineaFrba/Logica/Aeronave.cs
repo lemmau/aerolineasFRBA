@@ -17,7 +17,8 @@ namespace Logica
         public String modelo { get; set; }
         public String fabricante { get; set; }
         public DateTime fechaAlta { get; set; }
-        public Int32 cantButacas { get; set; }
+        public Int32 cantButacasPasillo { get; set; }
+        public Int32 cantButacasVentanilla { get; set; }
         public Int32 espacioKG { get; set; }
         //public Int32 idBaja { get; set; }
         //public DateTime fechaReinicio { get; set; }
@@ -77,7 +78,7 @@ namespace Logica
                 trans = con.BeginTransaction();
 
                 aeronave.Id = Data.Aeronave.Insertar(aeronave.fechaAlta, aeronave.fabricante, aeronave.modelo, aeronave.matricula,
-                      aeronave.espacioKG, aeronave.cantButacas, aeronave.tipoServicio.Id, cantPasillo, cantVentanilla);
+                      aeronave.espacioKG, cantPasillo, cantVentanilla, aeronave.tipoServicio.Id);
 
                 trans.Commit();
                 con.Close();
@@ -105,7 +106,7 @@ namespace Logica
                 trans = con.BeginTransaction();
 
                 Data.Aeronave.Actualizar(aeronave.fechaAlta, aeronave.Id, aeronave.fabricante, aeronave.modelo, aeronave.matricula,
-                      aeronave.espacioKG, aeronave.cantButacas, aeronave.tipoServicio.Id, cantPasillo, cantVentanilla);
+                      aeronave.espacioKG, cantPasillo, cantVentanilla, aeronave.tipoServicio.Id);
 
                 trans.Commit();
                 con.Close();
@@ -136,7 +137,8 @@ namespace Logica
                 aeronave.modelo = row["modelo"].ToString();
                 aeronave.fabricante = row["fabricante"].ToString();
                 aeronave.fechaAlta = DateTime.Parse(row["fechaAlta"].ToString());
-                aeronave.cantButacas = Int32.Parse(row["cantButacas"].ToString());
+                aeronave.cantButacasPasillo = Int32.Parse(row["cantButacasPasillo"].ToString());
+                aeronave.cantButacasVentanilla = Int32.Parse(row["cantButacasVentanilla"].ToString());
                 aeronave.espacioKG = Int32.Parse(row["espacioKgEncomiendas"].ToString());
                 aeronave.tipoServicio = new TipoServicio(Int32.Parse(row["S_ID"].ToString()), row["S_NOMBRE"].ToString());
                 //aeronave.idBaja = Int32.Parse(row["HB_ID"].ToString());
@@ -166,7 +168,8 @@ namespace Logica
                 aeronave.matricula = data.Rows[0][data.Columns["matricula"].Ordinal].ToString();
                 aeronave.modelo = data.Rows[0][data.Columns["modelo"].Ordinal].ToString();
                 aeronave.fabricante = data.Rows[0][data.Columns["fabricante"].Ordinal].ToString();
-                aeronave.cantButacas = Int32.Parse(data.Rows[0][data.Columns["cantButacas"].Ordinal].ToString());
+                aeronave.cantButacasPasillo = Int32.Parse(data.Rows[0][data.Columns["cantButacasPasillo"].Ordinal].ToString());
+                aeronave.cantButacasVentanilla = Int32.Parse(data.Rows[0][data.Columns["cantButacasVentanilla"].Ordinal].ToString());
                 aeronave.espacioKG = Int32.Parse(data.Rows[0][data.Columns["espacioKGEncomiendas"].Ordinal].ToString());
                 /* COMO SERIA ESTO????? */
                 aeronave.tipoServicio = new TipoServicio(Int32.Parse(data.Rows[0][data.Columns["S_ID"].Ordinal].ToString()), data.Rows[0][data.Columns["S_ID"].Ordinal].ToString());

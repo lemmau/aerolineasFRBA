@@ -766,10 +766,25 @@ BEGIN
 	
 END
 
+/*
+CREATE TABLE [HAY_TABLA].LLEGADA (
+[ID]                INT IDENTITY(1,1) NOT NULL,
+[MATRICULA]         VARCHAR (255) NOT NULL,
+[ID_AERONAVE]       INT NULL,
+[F_LLEGADA]         DATETIME NOT NULL,
+[ID_VIAJE]          INT NOT NULL,
+[ID_CIUDAD_ORIGEN]  INT NOT NULL,
+[ID_CIUDAD_DESTINO] INT NOT NULL,
+[D_ERROR]           VARCHAR (255) NULL,
 
-
-
-
+PRIMARY KEY (ID),
+FOREIGN KEY (ID_VIAJE) REFERENCES [HAY_TABLA].VIAJE,
+FOREIGN KEY (ID_CIUDAD_ORIGEN) REFERENCES [HAY_TABLA].CIUDAD,
+FOREIGN KEY (ID_CIUDAD_DESTINO) REFERENCES [HAY_TABLA].CIUDAD,
+FOREIGN KEY (ID_AERONAVE) REFERENCES [HAY_TABLA].AERONAVE
+);
+GO
+*/
 CREATE TRIGGER HAY_TABLA.tr_actualizar_viaje on HAY_TABLA.LLEGADA FOR INSERT 
 
 AS
@@ -787,26 +802,6 @@ COMMIT TRANSACTION
 END  
 
 GO
-
-/*
- TABLA  LLEGADA 
-
-CREATE TABLE [HAY_TABLA].LLEGADA (
-[ID]                INT IDENTITY(1,1) NOT NULL,
-[MATRICULA]         VARCHAR (255) NOT NULL,
-[ID_AERONAVE]       INT NULL,
-[F_LLEGADA]         DATETIME NOT NULL,
-[ID_VIAJE]          INT NOT NULL,
-[ID_CIUDAD_ORIGEN]  INT NOT NULL,
-[ID_CIUDAD_DESTINO] INT NOT NULL,
-[D_ERROR]           VARCHAR (255) NULL,
-
-PRIMARY KEY (ID),
-FOREIGN KEY (ID_VIAJE) REFERENCES [HAY_TABLA].VIAJE
-);
-GO
-
-*/
 
 /*-------------   SP  PARA AERONAVES   -------------*/
 
@@ -873,14 +868,13 @@ BEGIN
 END
 
 ----------------
-
 GO
 CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronave_by_id]
 	@id int
 AS
 BEGIN
 	select
-		A.ID, A.MATRICULA, A.MODELO, A.FABRICANTE, A.CANTBUTACAS, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE'
+		A.ID, A.MATRICULA, A.MODELO, A.FABRICANTE, A.CANTBUTACASPASILLO, A.CANTBUTACASVENTANILLA, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE'
 	from 
 		HAY_TABLA.AERONAVE A, HAY_TABLA.SERVICIO S
 	where
@@ -912,7 +906,8 @@ CREATE PROCEDURE [HAY_TABLA].[sp_insertar_aeronave]
 	@modelo nvarchar(255),
 	@matricula nvarchar(255),
 	@espacioKg int,
-	@cantButacas int,
+	@cantButacasPasillo int,
+	@cantButacasVentanilla int,
 	@idTipoServicio int,
 	@cantPasillo int,
 	@cantVentanilla int
@@ -928,7 +923,7 @@ BEGIN
 	else
 		begin*/
 
-	if (@cantButacas = 0) 
+	if (@cantButacasPasillo = 0 OR @cantButacasVentanilla = 0) 
 		begin
 			RAISERROR(N' La aeronave debe contar con al menos una butaca ', 16, 1)
 			return	
@@ -947,11 +942,11 @@ BEGIN
 		end		
 	
 	INSERT INTO [HAY_TABLA].AERONAVE
-		(FECHAALTA, ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACAS, ESPACIOKGENCOMIENDAS)
+		(FECHAALTA, ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACASPASILLO, CANTBUTACASVENTANILLA, ESPACIOKGENCOMIENDAS)
 	OUTPUT
 		inserted.id
 	VALUES
-		(@fechaAlta, @idTipoServicio, @modelo, @matricula, @fabricante, @cantButacas, @espacioKg)
+		(@fechaAlta, @idTipoServicio, @modelo, @matricula, @fabricante, @cantButacasPasillo, @cantButacasVentanilla, @espacioKg)
 END
 
 ----------------
@@ -964,14 +959,15 @@ CREATE PROCEDURE [HAY_TABLA].[sp_modificar_aeronave]
 	@modelo nvarchar(255),
 	@matricula nvarchar(255),
 	@espacioKg int,
-	@cantButacas int,
+	@cantButacasPasillo int,
+	@cantButacasVentanilla int,
 	@idTipoServicio int,
 	@cantPasillo int,
 	@cantVentanilla int
 AS
 BEGIN
 
-	if (@cantButacas = 0) 
+	if (@cantButacasPasillo = 0 OR @cantButacasVentanilla = 0) 
 		begin
 			RAISERROR(N' La aeronave debe contar con al menos una butaca ', 16, 1)
 			return	
@@ -991,7 +987,8 @@ BEGIN
 		MODELO = @modelo,
 		MATRICULA = @matricula,
 		ESPACIOKGENCOMIENDAS = @espacioKg,
-		CANTBUTACAS = @cantButacas,
+		CANTBUTACASPASILLO = @cantButacasPasillo,
+		CANTBUTACASVENTANILLA = @cantButacasVentanilla,
 		ID_SERVICIO = @idTipoServicio
 	WHERE
 		ID = @id
@@ -1007,7 +1004,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_select_aeronaves]
 AS
 BEGIN
 	SELECT 
-		A.ID, A.MATRICULA, A.MODELO, A.FABRICANTE, A.FECHAALTA, A.CANTBUTACAS, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE'
+		A.ID, A.MATRICULA, A.MODELO, A.FABRICANTE, A.FECHAALTA, A.CANTBUTACASPASILLO, A.CANTBUTACASVENTANILLA, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE'
 		--,HB.ID_TIPOBAJA as 'HB_ID', HB.FECHAREINICIO as 'HB_FECHAREINICIO'
 	FROM 
 		[HAY_TABLA].SERVICIO S, [HAY_TABLA].AERONAVE A-- inner join [HAY_TABLA].HISTORIALBAJA_AERONAVE HB on A.ID = HB.ID_AERONAVE
@@ -1115,13 +1112,12 @@ END
 GO
 
 ----
--- ESTA ES LA FORMA, REVISALO IGUAL MAXI !!
 CREATE TRIGGER [HAY_TABLA].tr_generar_butacas
    ON  [HAY_TABLA].AERONAVE
    AFTER INSERT
 AS 
 BEGIN
-	DECLARE @I INT, @CANT_PAS INT, @CANT_VEN INT, @MATRICULA nvarchar(255)
+	DECLARE @I INT, @CANT_PAS INT, @CANT_VEN INT, @MATRICULA nvarchar(255), @ID_AERONAVE INT
 	SET @I = 1
 	SET @CANT_PAS = (select i.CANTBUTACASPASILLO from inserted i)
 	SET @CANT_VEN = (select i.CANTBUTACASVENTANILLA from inserted i)

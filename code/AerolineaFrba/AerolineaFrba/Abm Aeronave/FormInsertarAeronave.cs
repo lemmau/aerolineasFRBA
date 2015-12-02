@@ -81,7 +81,8 @@ namespace AerolineaFrba.Abm_Aeronave
                         aeronave.modelo = tbModelo.Text;
                         aeronave.matricula = tbMatricula.Text;
                         aeronave.espacioKG = Int32.Parse(tbKG.Text);
-                        aeronave.cantButacas = cantPasillo + cantVentanilla;
+                        aeronave.cantButacasVentanilla = cantVentanilla;
+                        aeronave.cantButacasPasillo = cantPasillo;
                         aeronave.tipoServicio = new TipoServicio();
                         aeronave.tipoServicio.Id = IdTipoDeServicioSeleccionado.Value;
 
