@@ -118,7 +118,23 @@ CREATE PROCEDURE [HAY_TABLA].[sp_listado_4]
 	@hasta DATETIME
 AS
 BEGIN	
-	SELECT 	TOP 5 
+select top 5 ci.NOMBRE , count (*) from  HAY_TABLA.PASAJE p
+inner join HAY_TABLA.COMPRA c on c.ID = p.ID_COMPRA 
+inner join HAY_TABLA.VIAJE  v on v.ID = p.ID_VIAJE
+inner join HAY_TABLA.RUTA r on r.ID= v.ID_RUTA 
+inner join HAY_TABLA.CIUDAD ci on ci.ID=r.ID_CDADDESTINO
+where YEAR( c.FECHA ) = YEAR (@desde) and MONTH (c.FECHA)  between MONTH (@desde) and MONTH (@hasta)
+and p.ID in (select pa.ID from HAY_TABLA.DEVOLUCION d
+inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
+inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
+inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
+where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta))
+
+group by ci.NOMBRE  order by 2 asc 
+
+
+END 
+GO
 
 END
 GO
@@ -128,7 +144,18 @@ CREATE PROCEDURE [HAY_TABLA].[sp_listado_5]
 	@hasta DATETIME
 AS
 BEGIN	
-	SELECT 	TOP 5 
+	select top 5 a.ID ,( select sum (datediff(DD,hi.FECHABAJA ,hi.FECHAREINICIO)) from HAY_TABLA.AERONAVE ae
+ inner join HAY_TABLA.HISTORIALBAJA_AERONAVE hi on ae.ID = hi.ID_AERONAVE
+ where ae.ID = a.ID) from HAY_TABLA.AERONAVE a
+inner join HAY_TABLA.HISTORIALBAJA_AERONAVE h on a.ID = h.ID_AERONAVE
+
+
+where  h.ID_TIPOBAJA = 1 
+and YEAR (h.FECHABAJA) = YEAR (@desde) and MONTH(h.FECHABAJA)  between MONTH (@desde) and MONTH (@hasta)
+and YEAR (h.FECHAREINICIO) = YEAR (@hasta) and MONTH(h.FECHAREINICIO) between MONTH (@desde) and MONTH (@hasta)
+ group by a.ID 
+ order by 2 desc ;
+
 
 END
 GO
