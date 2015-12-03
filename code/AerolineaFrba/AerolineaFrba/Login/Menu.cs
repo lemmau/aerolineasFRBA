@@ -130,5 +130,11 @@ namespace AerolineaFrba.Login
             Listado_Estadistico.ListadoEstadistico _listado = new Listado_Estadistico.ListadoEstadistico();
             _listado.ShowDialog();
         }
+
+        private void itemDevolucion_Click(object sender, EventArgs e)
+        {
+            DevolucionPasajeEncomienda.DevolucionPasajeEncomienda devolucion = new DevolucionPasajeEncomienda.DevolucionPasajeEncomienda();
+            devolucion.Show();
+        }
     }
 }

@@ -40,7 +40,7 @@
             this.generarViajeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.registroLlegadaDeAeronaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compraDePasajeEncomiendaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.devolCancelDePasajeEncomiendaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemDevolucion = new System.Windows.Forms.ToolStripMenuItem();
             this.itemConsultaMillas = new System.Windows.Forms.ToolStripMenuItem();
             this.canjeDeMillasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.estadisticasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +80,7 @@
             this.generarViajeToolStripMenuItem1,
             this.registroLlegadaDeAeronaveToolStripMenuItem,
             this.compraDePasajeEncomiendaToolStripMenuItem1,
-            this.devolCancelDePasajeEncomiendaToolStripMenuItem1,
+            this.itemDevolucion,
             this.itemConsultaMillas,
             this.canjeDeMillasToolStripMenuItem1,
             this.estadisticasToolStripMenuItem});
@@ -144,12 +144,13 @@
             this.compraDePasajeEncomiendaToolStripMenuItem1.Tag = "COMPRA DE PASAJE/ENCOMIENDA";
             this.compraDePasajeEncomiendaToolStripMenuItem1.Text = "Compra de Pasaje/Encomienda";
             // 
-            // devolCancelDePasajeEncomiendaToolStripMenuItem1
+            // itemDevolucion
             // 
-            this.devolCancelDePasajeEncomiendaToolStripMenuItem1.Name = "devolCancelDePasajeEncomiendaToolStripMenuItem1";
-            this.devolCancelDePasajeEncomiendaToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
-            this.devolCancelDePasajeEncomiendaToolStripMenuItem1.Tag = "DEVOLUCION/CANCELACION DE PASAJE/ENCOMIENDA";
-            this.devolCancelDePasajeEncomiendaToolStripMenuItem1.Text = "Devol/Cancel de Pasaje/Encomienda";
+            this.itemDevolucion.Name = "itemDevolucion";
+            this.itemDevolucion.Size = new System.Drawing.Size(268, 22);
+            this.itemDevolucion.Tag = "DEVOLUCION/CANCELACION DE PASAJE/ENCOMIENDA";
+            this.itemDevolucion.Text = "Devol/Cancel de Pasaje/Encomienda";
+            this.itemDevolucion.Click += new System.EventHandler(this.itemDevolucion_Click);
             // 
             // itemConsultaMillas
             // 
@@ -220,7 +221,7 @@
         private System.Windows.Forms.ToolStripMenuItem generarViajeToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem registroLlegadaDeAeronaveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compraDePasajeEncomiendaToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem devolCancelDePasajeEncomiendaToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem itemDevolucion;
         private System.Windows.Forms.ToolStripMenuItem itemConsultaMillas;
         private System.Windows.Forms.ToolStripMenuItem canjeDeMillasToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem estadisticasToolStripMenuItem;

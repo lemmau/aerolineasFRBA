@@ -1159,3 +1159,300 @@ BEGIN
 
 END
 GO
+
+/*-------------   SP  PARA DEVOLUCIONES   -------------*/
+
+CREATE PROCEDURE [HAY_TABLA].[sp_select_items]
+	@idCompra int,
+	@idPasaje int,
+	@idEncomienda int,
+	@fechaActual datetime
+AS
+BEGIN
+--Caso 1--------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Si ingresó sólo el id de compra
+	if ((@idCompra <> -1) and (@idPasaje = -1) and (@idEncomienda = -1))
+		begin
+			-- Busco pasajes existentes para esta compra
+			SELECT pa.ID_COMPRA as 'idCompra', 
+				   'Pasaje' as 'tipo',
+				   pa.ID as 'idPasajeEncomienda',
+				   c.FECHA as 'fechaCompra',
+				   (p.APELLIDO + ', ' + p.NOMBRE) as 'nombreCompleto'
+			FROM HAY_TABLA.PASAJE pa join HAY_TABLA.COMPRA c on pa.ID_COMPRA = c.ID
+												join HAY_TABLA.PERSONA p on pa.ID_CLIENTE = p.ID
+												join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
+			WHERE @idCompra = pa.ID_COMPRA and 
+				  --Chequeo que la fecha actual sea previa a la de salida del viaje
+				  @fechaActual < v.FECHASALIDA and
+				  --Chequeo que el pasaje a cancelar, no este ya cancelado
+				  not exists (SELECT *
+							  FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
+							  WHERE pa2.ID = pa.ID)
+			UNION ALL
+			-- Busco encomiendas existentes para esta compra
+			SELECT e.ID_COMPRA as 'idCompra', 
+				   'Encomienda' as 'tipo',
+				   e.ID as 'idPasajeEncomienda',
+				   c.FECHA as 'fechaCompra',
+				   (p.APELLIDO + ', ' + p.NOMBRE) as 'nombreCompleto'
+			FROM HAY_TABLA.ENCOMIENDA e join HAY_TABLA.COMPRA c on e.ID_COMPRA = c.ID
+												join HAY_TABLA.PERSONA p on c.ID_COMPRADOR = p.ID
+												join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
+			WHERE @idCompra = e.ID_COMPRA and 
+				  --Chequeo que la fecha actual sea previa a la de salida del viaje
+				  @fechaActual < v.FECHASALIDA and
+				  --Chequeo que la encomienda a cancelar, no este ya cancelada
+				  not exists (SELECT *
+							  FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCION itemd on e2.ID = itemd.ID_ENCOMIENDA
+							  WHERE e2.ID = e.ID)
+		end
+--Caso 2--------------------------------------------------------------------------------------------------------------------------------------------------------
+	else
+		begin
+			-- Si ingresó sólo el id de compra y de pasaje
+			if ((@idCompra <> -1) and (@idPasaje <> -1) and (@idEncomienda = -1))
+				begin
+					-- Busco pasajes existentes para esta compra
+					SELECT pa.ID_COMPRA as 'idCompra', 
+						   'Pasaje' as 'tipo',
+						   pa.ID as 'idPasajeEncomienda',
+					       c.FECHA as 'fechaCompra',
+				           (p.APELLIDO + ', ' + p.NOMBRE) as 'nombreCompleto'
+					FROM HAY_TABLA.PASAJE pa join HAY_TABLA.COMPRA c on pa.ID_COMPRA = c.ID
+										     join HAY_TABLA.PERSONA p on pa.ID_CLIENTE = p.ID
+											 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
+					WHERE @idCompra = pa.ID_COMPRA and 
+					--Chequeo que la fecha actual sea previa a la de salida del viaje
+					@fechaActual < v.FECHASALIDA and
+					@idPasaje = pa.ID and
+					--Chequeo que el pasaje a cancelar, no este ya cancelado
+					not exists (SELECT *
+							    FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
+							    WHERE pa2.ID = pa.ID)
+				end
+--Caso 3--------------------------------------------------------------------------------------------------------------------------------------------------------
+			else
+				begin
+					-- Si ingresó sólo el id de compra y de encomienda
+					if ((@idCompra <> -1) and (@idPasaje = -1) and (@idEncomienda <> -1))
+						begin
+							SELECT e.ID_COMPRA as 'idCompra', 
+								   'Encomienda' as 'tipo',
+								   e.ID as 'idPasajeEncomienda',
+								   c.FECHA as 'fechaCompra',
+								   (p.APELLIDO + ', ' + p.NOMBRE) as 'nombreCompleto'
+							FROM HAY_TABLA.ENCOMIENDA e join HAY_TABLA.COMPRA c on e.ID_COMPRA = c.ID
+													    join HAY_TABLA.PERSONA p on c.ID_COMPRADOR = p.ID
+														join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
+							WHERE @idCompra = e.ID_COMPRA and 
+							--Chequeo que la fecha actual sea previa a la de salida del viaje
+							@fechaActual < v.FECHASALIDA and
+							@idEncomienda = e.ID and
+							--Chequeo que la encomienda a cancelar, no este ya cancelada
+							not exists (SELECT *
+									    FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCION itemd on e2.ID = itemd.ID_ENCOMIENDA
+										WHERE e2.ID = e.ID)
+						end
+--Caso 4--------------------------------------------------------------------------------------------------------------------------------------------------------
+					else
+						begin
+							-- Si ingresó sólo el id de encomienda
+							if ((@idCompra = -1) and (@idPasaje = -1) and (@idEncomienda <> -1))
+								begin
+									SELECT e.ID_COMPRA as 'idCompra', 
+										   'Encomienda' as 'tipo',
+										   e.ID as 'idPasajeEncomienda',
+										   c.FECHA as 'fechaCompra',
+										   (p.APELLIDO + ', ' + p.NOMBRE) as 'nombreCompleto'
+									FROM HAY_TABLA.ENCOMIENDA e join HAY_TABLA.COMPRA c on e.ID_COMPRA = c.ID
+																join HAY_TABLA.PERSONA p on c.ID_COMPRADOR = p.ID
+																join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
+									WHERE @idEncomienda = e.ID and 
+									--Chequeo que la fecha actual sea previa a la de salida del viaje
+									@fechaActual < v.FECHASALIDA and
+									--Chequeo que la encomienda a cancelar, no este ya cancelada
+									not exists (SELECT *
+												FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCION itemd on e2.ID = itemd.ID_ENCOMIENDA
+												WHERE e2.ID = e.ID)
+								end
+--Caso 5--------------------------------------------------------------------------------------------------------------------------------------------------------
+							else
+								-- Si ingresó sólo el id de pasaje
+								if ((@idCompra = -1) and (@idPasaje <> -1) and (@idEncomienda = -1))
+									begin
+										SELECT pa.ID_COMPRA as 'idCompra', 
+											   'Pasaje' as 'tipo',
+											   pa.ID as 'idPasajeEncomienda',
+											   c.FECHA as 'fechaCompra',
+											   (p.APELLIDO + ', ' + p.NOMBRE) as 'nombreCompleto'
+										FROM HAY_TABLA.PASAJE pa join HAY_TABLA.COMPRA c on pa.ID_COMPRA = c.ID
+																 join HAY_TABLA.PERSONA p on pa.ID_CLIENTE = p.ID
+																 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
+										WHERE @idPasaje = pa.ID and 
+										--Chequeo que la fecha actual sea previa a la de salida del viaje
+										@fechaActual < v.FECHASALIDA and
+										--Chequeo que el pasaje a cancelar, no este ya cancelado
+										not exists (SELECT *
+													FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
+													WHERE pa2.ID = pa.ID)
+									end
+--Caso 6--------------------------------------------------------------------------------------------------------------------------------------------------------
+						end
+				end
+		end
+
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_cancelar_pasaje_encomienda]
+	@idCompra int,
+	@tipoItem nvarchar(20),
+	@idPasajeEncomienda int,
+	@fechaActual datetime,
+	@motivoDevolucion nvarchar(255)
+AS
+	DECLARE @idDevolucion int
+BEGIN
+	
+	--No chequea si el Item que quiero cancelar ya existe, ya que eso lo controla el sp_select_items, y de existir NO lo muestra en el DGV de Devoluciones
+
+	if --Si no existe una devolucion para esa compra
+	   ((not exists(SELECT * 
+		 			FROM HAY_TABLA.ITEMSDEVOLUCION itemd 
+					WHERE @idCompra = itemd.ID_COMPRA)) or
+	   --Ya existe una devolucion para esa compra, PERO fue echa en alguna operacion previa, ahora es una devolucion parcial de OTRO item de la misma compra
+	   (exists(SELECT * 
+		 	   FROM HAY_TABLA.ITEMSDEVOLUCION itemd join HAY_TABLA.DEVOLUCION d on itemd.ID_DEVOLUCION = d.ID 
+			   WHERE @idCompra = itemd.ID_COMPRA and @fechaActual > d.FECHA)))
+	   begin
+			INSERT INTO [HAY_TABLA].[DEVOLUCION]
+				(FECHA, MOTIVO)
+			OUTPUT
+				inserted.ID
+			VALUES
+				(@fechaActual, @motivoDevolucion)	
+
+			--Busco el ID de devolucion recien insertado para completar la devolucion parcial de la misma operacion
+			SET @idDevolucion = (SELECT top 1 (d.ID) 
+								 FROM HAY_TABLA.DEVOLUCION d 
+								 order by d.ID desc)
+
+			--Inserto nuevo registro en ItemDevolucion para otro Item de la misma Compra
+			if (@tipoItem = 'Pasaje')
+				begin
+					INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
+						(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+					OUTPUT
+						inserted.ID
+					VALUES
+						(@idDevolucion, @idCompra, @idPasajeEncomienda, null)
+				end
+			else
+				begin
+					if (@tipoItem = 'Encomienda')
+						begin
+							INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
+								(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+							OUTPUT
+								inserted.ID
+							VALUES
+								(@idDevolucion, @idCompra, null, @idPasajeEncomienda)
+						end
+				end
+	   end
+	else
+		--Existe una devolucion para esa compra y es la misma fecha y horario, por lo tanto es OTRO item mas que me llega de esta devolucion parcial
+		begin
+			--Busco el ID de devolucion recien insertado para completar la devolucion parcial de la misma operacion
+			SET @idDevolucion = (SELECT top 1 (d.ID) 
+								 FROM HAY_TABLA.DEVOLUCION d 
+								 order by d.ID desc)
+
+			--Inserto nuevo registro en ItemDevolucion para otro Item de la misma Compra
+			if (@tipoItem = 'Pasaje')
+				begin
+					INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
+						(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+					OUTPUT
+						inserted.ID
+					VALUES
+						(@idDevolucion, @idCompra, @idPasajeEncomienda, null)
+				end
+			else
+				begin
+					if (@tipoItem = 'Encomienda')
+						begin
+							INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
+								(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+							OUTPUT
+								inserted.ID
+							VALUES
+								(@idDevolucion, @idCompra, null, @idPasajeEncomienda)
+						end
+				end
+		end
+END
+GO
+----------------
+CREATE TRIGGER [HAY_TABLA].tr_actualizacion_importes_devolucion
+   ON  [HAY_TABLA].ITEMSDEVOLUCION
+   AFTER INSERT
+AS 
+BEGIN
+	DECLARE @ID_COMPRA INT, @ID_PASAJE INT, @ID_ENCOMIENDA INT, @IMPORTE_A_DESCONTAR NUMERIC(18,2), @IMPORTE_TOTAL_COMPRA NUMERIC(18,2)
+	SET @ID_COMPRA = (select i.ID_COMPRA from inserted i)
+	SET @ID_PASAJE = (select i.ID_PASAJE from inserted i)
+	SET @ID_ENCOMIENDA = (select i.ID_ENCOMIENDA from inserted i)
+	
+	SET @IMPORTE_TOTAL_COMPRA = (select c.IMPORTETOTAL
+								 from HAY_TABLA.COMPRA c
+								 where @ID_COMPRA = c.ID)
+
+    if (@ID_PASAJE = null)
+		begin
+			SET @IMPORTE_A_DESCONTAR = (select e.IMPORTE
+										from HAY_TABLA.ENCOMIENDA e 
+										where @ID_ENCOMIENDA = e.ID)
+			
+			-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
+			UPDATE 
+				[HAY_TABLA].ENCOMIENDA
+			SET 
+				IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
+			where @ID_ENCOMIENDA = ID
+			-- Actualizo el importe total de la compra restando el monto del item cancelado
+			UPDATE 
+				[HAY_TABLA].COMPRA
+			SET 
+				IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
+			where @ID_COMPRA = ID
+
+ 		end
+	else
+		begin
+			if (@ID_ENCOMIENDA = null)
+				begin
+					SET @IMPORTE_A_DESCONTAR = (select p.IMPORTE
+												from HAY_TABLA.PASAJE p
+												where @ID_PASAJE = p.ID)
+
+					-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
+					UPDATE 
+						[HAY_TABLA].PASAJE
+					SET 
+						IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
+					where @ID_PASAJE = ID
+					-- Actualizo el importe total de la compra restando el monto del item cancelado
+					UPDATE 
+						[HAY_TABLA].COMPRA
+					SET 
+						IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
+					where @ID_COMPRA = ID
+
+ 				end
+		end
+
+END
+GO
+----------------
