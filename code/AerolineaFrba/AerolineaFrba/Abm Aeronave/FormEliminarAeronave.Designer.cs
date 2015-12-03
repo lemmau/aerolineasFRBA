@@ -108,6 +108,7 @@
             this.Name = "FormEliminarAeronave";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormEliminarAeronave";
+            this.Load += new System.EventHandler(this.FormEliminarAeronave_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

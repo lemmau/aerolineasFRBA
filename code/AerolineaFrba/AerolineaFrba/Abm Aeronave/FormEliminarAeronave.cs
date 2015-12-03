@@ -14,13 +14,19 @@ namespace AerolineaFrba.Abm_Aeronave
 {
     public partial class FormEliminarAeronave : Form
     {
-
-        Aeronave _aeronave = null;
+        Aeronave _aeronave = null; 
+        DateTime fechaActual;
 
         public FormEliminarAeronave(Int32 idAeronave)
         {
             InitializeComponent();
             _aeronave = Aeronave.GetById(idAeronave);
+
+            fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+            fechaActual.AddHours(00);
+            fechaActual = fechaActual.AddMinutes(00);
+            fechaActual = fechaActual.AddSeconds(00);
+            fechaReincorporacion.Value = fechaActual;
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -35,13 +41,12 @@ namespace AerolineaFrba.Abm_Aeronave
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+
             //  SI ES BAJA POR VIDA UTIL
             if (rbFinVidaUtil.Checked == true)
             {
                 try
                 {
-                    DateTime fechaActual;
-                    fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
                     _aeronave.BajateVidaUtil(fechaActual);
                     MessageBox.Show("La aeronave ha cumplido su vida util");
                     Close();
@@ -56,9 +61,6 @@ namespace AerolineaFrba.Abm_Aeronave
             {
                 try
                 {
-                    DateTime fechaActual;
-                    fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
-
                     _aeronave.BajateFueraDeServicio(fechaActual, fechaReincorporacion.Value);
 
                     MessageBox.Show("La aeronave ha quedado fuera de servicio");
@@ -69,6 +71,11 @@ namespace AerolineaFrba.Abm_Aeronave
                     MessageBox.Show(ex.Message);
                 }
             }
+
+        }
+
+        private void FormEliminarAeronave_Load(object sender, EventArgs e)
+        {
 
         }
     }
