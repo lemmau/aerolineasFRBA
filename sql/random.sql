@@ -592,7 +592,6 @@ CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ruta]
 	@idTipoServicio int,
 	@precioBasePasaje numeric(18,0),
 	@precioBaseKG numeric(18,0)
-
 AS
 BEGIN
 	DECLARE @codRuta int, @ultimoID int
@@ -697,7 +696,7 @@ AS
 CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronaves_generar_viaje]
 	@fecha datetime ,
 	@id_tipo_ser int
-AS
+AS 
 BEGIN
 	
 SELECT A.ID , A.MODELO ,A.MATRICULA ,A.FABRICANTE , S.NOMBRE
@@ -736,8 +735,7 @@ GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_tipo_servicio]
 AS BEGIN
-SELECT * FROM HAY_TABLA.SERVICIO ORDER BY 2;
-
+	SELECT * FROM HAY_TABLA.SERVICIO ORDER BY 2;
 END
 GO
 ------
@@ -746,9 +744,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_aeronave_x_matricula]
   @hayErr int OUT,
   @errores varchar(200) OUT
   
-  AS 
-   
- BEGIN
+AS BEGIN
    SET @hayErr = 0
    DECLARE @exite int 
    SET @exite =  (select count (*) from HAY_TABLA.AERONAVE A  where upper(MATRICULA) = upper (@matricula) )
@@ -777,8 +773,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@errores varchar(200) OUT
 AS
 	SET @hayErr = 0
-	SET @errores = 'Se ha registrado la llegada de la Aeronave'
-	
+	SET @errores = 'Se ha registrado la llegada de la Aeronave'	
 BEGIN
 
 	DECLARE @id_viaje int 
@@ -838,18 +833,19 @@ FOREIGN KEY (ID_AERONAVE) REFERENCES [HAY_TABLA].AERONAVE
 );
 GO
 */
-CREATE TRIGGER HAY_TABLA.tr_actualizar_viaje on HAY_TABLA.LLEGADA FOR INSERT 
-
-AS
-
-BEGIN  
+CREATE TRIGGER HAY_TABLA.tr_actualizar_viaje 
+	on HAY_TABLA.LLEGADA FOR INSERT 
+AS BEGIN  
 BEGIN TRANSACTION 
-    declare @id_viaje int
-    declare @f_llegada datetime
-	select @id_viaje=id_viaje, @f_llegada=f_llegada from inserted
-	
-	UPDATE HAY_TABLA.VIAJE SET FECHALLEGADA = @f_llegada WHERE ID = @id_viaje
 
+    declare @id_viaje int, @f_llegada datetime
+	select 	@id_viaje=id_viaje, 
+			@f_llegada=f_llegada 
+	from inserted
+
+	UPDATE HAY_TABLA.VIAJE
+	SET FECHALLEGADA = @f_llegada 
+	WHERE ID = @id_viaje
 
 COMMIT TRANSACTION 
 END  
@@ -955,14 +951,6 @@ CREATE PROCEDURE [HAY_TABLA].[sp_insertar_aeronave]
 AS
 BEGIN
 
-	if ((@fabricante = '') or (@modelo = '') or (@matricula = '') or (@espacioKg = null) or (@idTipoServicio = null))
-	    begin
-		    RAISERROR(N' Debe completar todos los campos ', 16, 1)
-			return	
-		end
-	else
-		begin
-
 	if (@cantButacasPasillo = 0 OR @cantButacasVentanilla = 0) 
 		begin
 			RAISERROR(N' La aeronave debe contar con al menos una butaca ', 16, 1)
@@ -980,7 +968,7 @@ BEGIN
 			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
 			return
 		end		
-end
+
 	declare @t table (id int)
 
 	INSERT INTO [HAY_TABLA].AERONAVE
@@ -989,6 +977,41 @@ end
 		inserted.id INTO @t
 	VALUES
 		(@fechaAlta, @idTipoServicio, @modelo, @matricula, @fabricante, @cantButacasPasillo, @cantButacasVentanilla, @espacioKg)
+END
+GO
+------
+CREATE TRIGGER [HAY_TABLA].tr_generar_butacas
+   ON  [HAY_TABLA].AERONAVE 
+   AFTER INSERT
+AS 
+BEGIN
+	DECLARE @I INT, @CANT_PAS INT, @CANT_VEN INT, @ID_AERONAVE INT
+	SET @I = 1
+	SELECT 	@CANT_PAS = i.CANTBUTACASPASILLO,
+			@CANT_VEN = i.CANTBUTACASVENTANILLA,
+			@ID_AERONAVE = i.ID 
+	FROM inserted i
+
+    WHILE @I <= @CANT_PAS
+    BEGIN
+        INSERT INTO [HAY_TABLA].BUTACA
+        (ID_AERONAVE, NUMERO, PISO, TIPO)
+        VALUES
+        (@ID_AERONAVE, @I, 1, 'Pasillo')
+
+        SET @I = @I + 1
+    END
+
+	WHILE @I <= (@CANT_PAS + @CANT_VEN)
+    BEGIN
+        INSERT INTO [HAY_TABLA].BUTACA
+        (ID_AERONAVE, NUMERO, PISO, TIPO)
+        VALUES
+        (@ID_AERONAVE, @I, 1, 'Ventanilla')
+
+        SET @I = @I + 1
+    END
+
 END
 GO
 ----------------
@@ -1151,42 +1174,6 @@ BEGIN
 
 END
 GO
-----
-CREATE TRIGGER [HAY_TABLA].tr_generar_butacas
-   ON  [HAY_TABLA].AERONAVE 
-   AFTER INSERT
-AS 
-BEGIN
-	DECLARE @I INT, @CANT_PAS INT, @CANT_VEN INT, @ID_AERONAVE INT
-	SET @I = 1
-	SELECT 	@CANT_PAS = i.CANTBUTACASPASILLO,
-			@CANT_VEN = i.CANTBUTACASVENTANILLA,
-			@ID_AERONAVE = i.ID 
-	FROM inserted i
-
-    WHILE @I <= @CANT_PAS
-    BEGIN
-        INSERT INTO [HAY_TABLA].BUTACA
-        (ID_AERONAVE, NUMERO, PISO, TIPO)
-        VALUES
-        (@ID_AERONAVE, @I, 1, 'Pasillo')
-
-        SET @I = @I + 1
-    END
-
-	WHILE @I <= (@CANT_PAS + @CANT_VEN)
-    BEGIN
-        INSERT INTO [HAY_TABLA].BUTACA
-        (ID_AERONAVE, NUMERO, PISO, TIPO)
-        VALUES
-        (@ID_AERONAVE, @I, 1, 'Ventanilla')
-
-        SET @I = @I + 1
-    END
-
-END
-GO
-
 /*-------------   SP  PARA DEVOLUCIONES   -------------*/
 
 CREATE PROCEDURE [HAY_TABLA].[sp_select_items]

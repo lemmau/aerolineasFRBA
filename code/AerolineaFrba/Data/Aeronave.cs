@@ -76,7 +76,7 @@ namespace Data
         */
 
         public static int Insertar(DateTime fechaAlta, String fabricante, String modelo, String matricula,
-            Int32 espacioKG, Int32 idTipoServicio, Int32 cantPasillo, Int32 cantVentanilla)
+            Int32 espacioKG, Int32 cantPasillo, Int32 cantVentanilla, Int32 idTipoServicio)
         {
             int id_insertado = -1;
             using (var con = DataAccess.GetConnection())
