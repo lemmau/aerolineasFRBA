@@ -984,7 +984,6 @@ BEGIN
 		(A.MATRICULA = @matricula AND A.ID_SERVICIO = @idTipoDeServicio AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID)
 END
 GO
-
 /*-------------   SP  PARA MILLAS   -------------*/
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_millas]
 	@id int,
@@ -1005,7 +1004,7 @@ BEGIN
 	SELECT (CAST(pe.IMPORTE AS int) / 10) as 'Millas', 
 		   c.FECHA as 'Fecha',  
 		   case 
-		   when ((pe.PESO_ENCOMIENDA = null) or (pe.PESO_ENCOMIENDA = 0))
+		   when ((pe.PESO_ENCOMIENDA IS null) or (pe.PESO_ENCOMIENDA = 0))
 		   then 'Pasaje desde ' + ciu1.NOMBRE + ' hasta ' + ciu2.NOMBRE
 		   else 'Encomienda de ' + cast(pe.PESO_ENCOMIENDA as varchar) + 'Kg desde' + ciu1.NOMBRE + ' hasta' + ciu2.NOMBRE
 		   end
