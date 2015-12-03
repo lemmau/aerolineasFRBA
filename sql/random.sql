@@ -92,7 +92,7 @@ BEGIN
 		Id = @id
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_rol]
 	@nombre NVARCHAR(50),
 	@estado bit
@@ -111,11 +111,8 @@ BEGIN
     VALUES
           (@nombre, @estado)
 END
-
-
-
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_rol]
 	@id	int
 AS
@@ -129,7 +126,7 @@ BEGIN
 		id = @id
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_roles]
 	@nombre nvarchar(50)
 AS
@@ -148,7 +145,7 @@ BEGIN
 		Nombre 
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_usuario_by_id]
 	@id int
 AS
@@ -160,7 +157,7 @@ BEGIN
 	WHERE USUARIO.Id = @id
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_usuario_by_login]
 	@username NVARCHAR(255),
 	@password NVARCHAR(256)
@@ -173,7 +170,7 @@ BEGIN
 	WHERE USERNAME = @username AND PASSWORD = @password
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_usuario_intentos]
 	@username NVARCHAR(255)
 AS
@@ -185,7 +182,7 @@ BEGIN
 	WHERE USERNAME = @username
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_set_usuario_intentos]
 	@username NVARCHAR(255),
 	@intentos int
@@ -198,7 +195,7 @@ BEGIN
 	WHERE USERNAME = @username
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_set_status_usuario]
 	@username NVARCHAR(255),
 	@status int
@@ -211,7 +208,7 @@ BEGIN
 	WHERE USERNAME = @username
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_modificacion_rol]
 	@id	int,
 	@nombre nvarchar(50),
@@ -235,8 +232,7 @@ BEGIN
 		id = @id
 END
 GO
-
------------------------
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_funcionalidades_de_rol]
 	@rol_id int,
 	@nombre varchar(255) = null
@@ -263,10 +259,7 @@ BEGIN
 		Nombre
 END
 GO
-
---- =============================================
---- Description:	Devuelve un listado de funcionalidades de un rol nuevo
---- =============================================
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_funcionalidades_de_rol_nuevo]
 AS
 BEGIN
@@ -282,7 +275,7 @@ BEGIN
 		Nombre
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_funcionalidad_a_rol]
 	@idRol int,
 	@idFuncionalidad int
@@ -298,7 +291,7 @@ BEGIN
            ,@IdFuncionalidad)
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_borrar_funcionalidades_de_rol]
        @idRol int 
 AS
@@ -311,7 +304,7 @@ BEGIN
 		ID_ROL = @idRol
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_roles_de_usuario]
 	@id_usuario int
 AS
@@ -326,7 +319,7 @@ BEGIN
 		ID_USUARIO = @id_usuario
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_ciudades]
 AS
 BEGIN
@@ -342,7 +335,7 @@ BEGIN
 		NOMBRE
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ciudad]
 	@nombre nvarchar(100)
 AS
@@ -381,7 +374,7 @@ BEGIN
 		end
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_eliminar_ciudad]
 	@id int
 AS
@@ -396,7 +389,7 @@ BEGIN
 		ID = @id
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_tipos_de_servicio]
 AS
 BEGIN
@@ -409,7 +402,7 @@ BEGIN
 	ORDER BY NOMBRE DESC
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_ciudades]
 AS
 BEGIN
@@ -425,25 +418,7 @@ BEGIN
 		NOMBRE ASC
 END
 GO
-/*
-CREATE PROCEDURE [HAY_TABLA].[sp_select_rutas_con_ciudadOrigen]
-	@cdadOrigen nvarchar(50)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT TOP 10
-		R.ID, R.CODIGO, CO.NOMBRE as "CO_NOMBRE", CD.NOMBRE as "CD_NOMBRE", R.PRECIOBASEKG, R.PRECIOBASEPASAJE, R.STATUS
-	FROM	
-		[HAY_TABLA].RUTA R, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD
-	WHERE		
-		((@cdadOrigen is null) or CO.NOMBRE like '%' + @cdadOrigen + '%' AND CO.ID = R.ID_CDADORIGEN AND CD.ID = R.ID_CDADDESTINO)
-	ORDER BY
-		CO.NOMBRE 
-END
-GO
-*/
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_ruta_by_id]
 	@id int
 AS
@@ -466,7 +441,7 @@ BEGIN
 		AND R.ID = SR.ID_RUTA
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_rutas]
 	@codRuta nvarchar(12) = null,
 	@idCiudadOrigen numeric(18,0) = null,
@@ -496,7 +471,7 @@ BEGIN
 		R.CODIGO, CO.NOMBRE
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_ruta]
 	@id int
 AS
@@ -510,7 +485,7 @@ BEGIN
 		AND R.ID_CDADORIGEN=CO.ID AND R.ID_CDADDESTINO=CD.ID AND S.ID=SR.ID_SERVICIO AND R.ID=SR.ID_RUTA
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_ruta]
 	@id	int
 AS
@@ -525,7 +500,7 @@ BEGIN
 		id = @id
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ruta]
 	@idCiudadOrigen int,
 	@idCiudadDestino int,
@@ -560,12 +535,11 @@ BEGIN
     SELECT @ultimoID = MAX(ID) FROM [HAY_TABLA].RUTA
 
     INSERT INTO [HAY_TABLA].SERVICIOS_RUTA
-    		(ID_RUTA, ID_SERVICIO)
-    		VALUES
-    		(@ultimoID, @idTipoServicio)
+    			(ID_RUTA, ID_SERVICIO)
+    	VALUES	(@ultimoID, @idTipoServicio)
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_modificacion_ruta]
 	@id	int,
 	@idCiudadOrigen int,
@@ -605,8 +579,7 @@ BEGIN
 		ID_RUTA = @id	
 END
 GO
-
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_viaje]
     @f_salida datetime,
 	@f_llegada_est  datetime ,
@@ -635,8 +608,7 @@ AS
 
  END
  GO
-
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronaves_generar_viaje]
 	@fecha datetime ,
 	@id_tipo_ser int
@@ -657,8 +629,7 @@ AND @fecha BETWEEN H.FECHABAJA AND H.FECHAREINICIO
 
 END
 GO
-
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_rutas_generar_viaje]
 	@servicio varchar(255)
 AS
@@ -677,15 +648,15 @@ BEGIN
 	WHERE 	SR.ID_SERVICIO = @id_tipo_servicio ;
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_tipo_servicio]
 AS BEGIN
 SELECT * FROM HAY_TABLA.SERVICIO ORDER BY 2;
 
 END
 GO
-
-ALTER PROCEDURE [HAY_TABLA].[sp_aeronave_x_matricula]
+------
+CREATE PROCEDURE [HAY_TABLA].[sp_aeronave_x_matricula]
   @matricula varchar (255),
   @hayErr int OUT,
   @errores varchar(200) OUT
@@ -710,6 +681,7 @@ ALTER PROCEDURE [HAY_TABLA].[sp_aeronave_x_matricula]
 
 END
 GO
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@matricula VARCHAR(255),
 		@f_llegada datetime,
@@ -720,11 +692,10 @@ CREATE PROCEDURE [HAY_TABLA].[sp_alta_registro_llegada]
     	@errores varchar(200) OUT
 AS
 	SET @hayErr = 0
-	SET @errores = 'Se ha registrado la llegada del Micro'
+	SET @errores = 'Se ha registrado la llegada de la Aeronave'
 	
 BEGIN
 
-	
 	DECLARE @id_viaje int 
 	select @id_viaje = (select V.ID 
 						from HAY_TABLA.VIAJE V join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
@@ -753,11 +724,8 @@ BEGIN
 		
 	END
 
-
 	DECLARE @id_aeronave int
 	select @id_aeronave = (select V.ID_AERONAVE from HAY_TABLA.VIAJE V where V.ID = @id_viaje)		
-	
-	
 	
 	BEGIN TRANSACTION						 							 
 	INSERT INTO HAY_TABLA.LLEGADA(ID_VIAJE, ID_AERONAVE, MATRICULA, ID_CIUDAD_ORIGEN, ID_CIUDAD_DESTINO, F_LLEGADA)		 
@@ -765,7 +733,7 @@ BEGIN
 	COMMIT TRANSACTION
 	
 END
-
+GO
 /*
 CREATE TABLE [HAY_TABLA].LLEGADA (
 [ID]                INT IDENTITY(1,1) NOT NULL,
@@ -800,12 +768,9 @@ BEGIN TRANSACTION
 
 COMMIT TRANSACTION 
 END  
-
 GO
-
 /*-------------   SP  PARA AERONAVES   -------------*/
 
-GO
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_fuera_de_servicio]
 	@id int,
 	@fechaActual datetime,
@@ -844,10 +809,8 @@ BEGIN
 			(@id, 1, @fechaActual, @fechaReincorporacion)
 			
 END
-
-----------------
-
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_vida_util]
 	@id int,
 	@fechaActual datetime
@@ -866,9 +829,8 @@ BEGIN
 		VALUES
 			(@id, 2, @fechaActual, null)
 END
-
-----------------
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_aeronave_by_id]
 	@id int
 AS
@@ -880,10 +842,8 @@ BEGIN
 	where
 		A.ID = @id
 END
-
-----------------
-
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_fabricantes]
 AS
 BEGIN
@@ -896,10 +856,8 @@ BEGIN
 	ORDER BY
 		FABRICANTE
 END
-
-----------------
-
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_aeronave]
 	@fechaAlta datetime,
 	@fabricante nvarchar(255),
@@ -911,7 +869,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_insertar_aeronave]
 	@idTipoServicio int
 AS
 BEGIN
-	
+
 	if ((@fabricante = '') or (@modelo = '') or (@matricula = '') or (@espacioKg = null) or (@idTipoServicio = null))
 	    begin
 		    RAISERROR(N' Debe completar todos los campos ', 16, 1)
@@ -937,18 +895,18 @@ BEGIN
 			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
 			return
 		end		
-	
+end
+	declare @t table (id int)
+
 	INSERT INTO [HAY_TABLA].AERONAVE
 		(FECHAALTA, ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACASPASILLO, CANTBUTACASVENTANILLA, ESPACIOKGENCOMIENDAS)
-	OUTPUT
-		inserted.id
+	OUTPUT 
+		inserted.id INTO @t
 	VALUES
 		(@fechaAlta, @idTipoServicio, @modelo, @matricula, @fabricante, @cantButacasPasillo, @cantButacasVentanilla, @espacioKg)
 END
-
-----------------
-
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_modificar_aeronave]
 	@id int,
 	@fechaAlta datetime,
@@ -988,10 +946,8 @@ BEGIN
 	WHERE
 		ID = @id
 END
-
-----------------
-
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_aeronaves]
 	@matricula nvarchar(255) = null,
 	@idTipoDeServicio numeric(18,0) = null,
@@ -1017,12 +973,9 @@ BEGIN
 		-- LOS 3 CAMPOS
 		(A.MATRICULA = @matricula AND A.ID_SERVICIO = @idTipoDeServicio AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID)
 END
-
-----------------
+GO
 
 /*-------------   SP  PARA MILLAS   -------------*/
-
-GO
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_millas]
 	@id int,
 	@fechaActual datetime
@@ -1060,10 +1013,8 @@ BEGIN
 	and c.FECHA > DATEADD (MONTH, -12, @fechaActual)
 	order by c.FECHA desc
 END
-
-----------------
-
 GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_datos_clie]
 	@DNI int
 AS 
@@ -1085,10 +1036,8 @@ BEGIN
 
 END
 GO
-
 ----------------
 --  ESTA POR AHORA NO ESTA COMPLETA, SOLO CALCULA EL TOTAL DE MILLAS NO VENCIDAS, PERO NO DESCUENTA CANJES
-GO
 CREATE PROCEDURE [HAY_TABLA].[sp_get_millas_acumuladas]
 	@id int,
 	@fechaActual DateTime
@@ -1105,7 +1054,6 @@ BEGIN
 
 END
 GO
-
 ----
 CREATE TRIGGER [HAY_TABLA].tr_generar_butacas
    ON  [HAY_TABLA].AERONAVE 
@@ -1124,7 +1072,7 @@ BEGIN
         INSERT INTO [HAY_TABLA].BUTACA
         (ID_AERONAVE, NUMERO, PISO, TIPO)
         VALUES
-        (@ID_AERONAVE, @I, 1, 'PASILLO')
+        (@ID_AERONAVE, @I, 1, 'Pasillo')
 
         SET @I = @I + 1
     END
@@ -1134,7 +1082,7 @@ BEGIN
         INSERT INTO [HAY_TABLA].BUTACA
         (ID_AERONAVE, NUMERO, PISO, TIPO)
         VALUES
-        (@ID_AERONAVE, @I, 1, 'VENTANILLA')
+        (@ID_AERONAVE, @I, 1, 'Ventanilla')
 
         SET @I = @I + 1
     END

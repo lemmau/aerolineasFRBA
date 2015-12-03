@@ -284,6 +284,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnBuscar);
             this.Name = "ListadoAeronaves";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listado de Aeronaves";
             this.Load += new System.EventHandler(this.ListadoAeronaves_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAeronaves)).EndInit();

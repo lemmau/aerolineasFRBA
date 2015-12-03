@@ -31,7 +31,7 @@ namespace AerolineaFrba.Abm_Aeronave
             //  OJO, ESTOY MOSTRANDO EL TOTAL, NO LAS DE PASILLO
             //tbButacasPasillo POSTA falta
             tbButacasPasillo.Text = aeronaveSeleccionada.cantButacasPasillo.ToString();
-            //tbButacasVentanilla = 
+            tbButacasVentanilla.Text = aeronaveSeleccionada.cantButacasVentanilla.ToString();
             CargarTiposDeServicio();
             cbTipoDeServicio.SelectedValue = aeronaveSeleccionada.tipoServicio;//aca, quiero que se muestre por defecto en el menu, la opcion que traigo elegida del dgv, pero no sale
         }
@@ -107,6 +107,11 @@ namespace AerolineaFrba.Abm_Aeronave
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void FormActualizarAeronave_Load(object sender, EventArgs e)
+        {
+
         }
 
 

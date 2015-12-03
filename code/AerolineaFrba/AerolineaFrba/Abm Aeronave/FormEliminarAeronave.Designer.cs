@@ -52,15 +52,15 @@
             // 
             // fechaReincorporacion
             // 
-            this.fechaReincorporacion.Location = new System.Drawing.Point(363, 61);
+            this.fechaReincorporacion.Location = new System.Drawing.Point(304, 77);
             this.fechaReincorporacion.Name = "fechaReincorporacion";
-            this.fechaReincorporacion.Size = new System.Drawing.Size(90, 20);
+            this.fechaReincorporacion.Size = new System.Drawing.Size(206, 20);
             this.fechaReincorporacion.TabIndex = 68;
             // 
             // label_fs_2
             // 
             this.label_fs_2.AutoSize = true;
-            this.label_fs_2.Location = new System.Drawing.Point(210, 64);
+            this.label_fs_2.Location = new System.Drawing.Point(151, 80);
             this.label_fs_2.Name = "label_fs_2";
             this.label_fs_2.Size = new System.Drawing.Size(136, 13);
             this.label_fs_2.TabIndex = 67;
@@ -69,7 +69,7 @@
             // rbFueraServicio
             // 
             this.rbFueraServicio.AutoSize = true;
-            this.rbFueraServicio.Location = new System.Drawing.Point(71, 62);
+            this.rbFueraServicio.Location = new System.Drawing.Point(12, 78);
             this.rbFueraServicio.Name = "rbFueraServicio";
             this.rbFueraServicio.Size = new System.Drawing.Size(108, 17);
             this.rbFueraServicio.TabIndex = 18;
@@ -80,7 +80,7 @@
             // rbFinVidaUtil
             // 
             this.rbFinVidaUtil.AutoSize = true;
-            this.rbFinVidaUtil.Location = new System.Drawing.Point(71, 109);
+            this.rbFinVidaUtil.Location = new System.Drawing.Point(12, 125);
             this.rbFinVidaUtil.Name = "rbFinVidaUtil";
             this.rbFinVidaUtil.Size = new System.Drawing.Size(81, 17);
             this.rbFinVidaUtil.TabIndex = 17;
@@ -106,6 +106,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnEliminar);
             this.Name = "FormEliminarAeronave";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormEliminarAeronave";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

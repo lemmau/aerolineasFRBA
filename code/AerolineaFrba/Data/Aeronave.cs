@@ -90,8 +90,8 @@ namespace Data
                 cmd.Parameters.Add("@matricula", SqlDbType.NVarChar).Value = matricula;
                 cmd.Parameters.Add("@espacioKG", SqlDbType.Int).Value = espacioKG;
                 cmd.Parameters.Add("@idTipoServicio", SqlDbType.Int).Value = idTipoServicio;
-                cmd.Parameters.Add("@cantPasillo", SqlDbType.Int).Value = cantPasillo;
-                cmd.Parameters.Add("@cantVentanilla", SqlDbType.Int).Value = cantVentanilla;
+                cmd.Parameters.Add("@cantButacasPasillo", SqlDbType.Int).Value = cantPasillo;
+                cmd.Parameters.Add("@cantButacasVentanilla", SqlDbType.Int).Value = cantVentanilla;
 
                 con.Open();
                 id_insertado = (int)cmd.ExecuteScalar();
@@ -116,8 +116,8 @@ namespace Data
                 cmd.Parameters.Add("@matricula", SqlDbType.NVarChar).Value = matricula;
                 cmd.Parameters.Add("@espacioKG", SqlDbType.Int).Value = espacioKG;
                 cmd.Parameters.Add("@idTipoServicio", SqlDbType.Int).Value = idTipoServicio;
-                cmd.Parameters.Add("@cantPasillo", SqlDbType.Int).Value = cantPasillo;
-                cmd.Parameters.Add("@cantVentanilla", SqlDbType.Int).Value = cantVentanilla;
+                cmd.Parameters.Add("@cantButacasPasillo", SqlDbType.Int).Value = cantPasillo;
+                cmd.Parameters.Add("@cantButacasVentanilla", SqlDbType.Int).Value = cantVentanilla;
 
                 con.Open();
                 cmd.ExecuteNonQuery();
