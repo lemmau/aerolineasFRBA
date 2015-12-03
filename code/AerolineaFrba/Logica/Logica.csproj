@@ -44,6 +44,7 @@
     <Compile Include="Ciudad.cs" />
     <Compile Include="Funcionalidad.cs" />
     <Compile Include="FuncionalidadesDeRol.cs" />
+    <Compile Include="ListadoEstadistico.cs" />
     <Compile Include="Millas.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="Ruta.cs" />

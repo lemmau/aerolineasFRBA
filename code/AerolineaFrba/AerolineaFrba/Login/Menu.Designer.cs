@@ -172,6 +172,7 @@
             this.estadisticasToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
             this.estadisticasToolStripMenuItem.Tag = "LISTADO ESTADISTICO";
             this.estadisticasToolStripMenuItem.Text = "Estadisticas";
+            this.estadisticasToolStripMenuItem.Click += new System.EventHandler(this.estadisticasToolStripMenuItem_Click);
             // 
             // lbFecha
             // 

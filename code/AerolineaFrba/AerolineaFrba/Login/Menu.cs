@@ -104,7 +104,6 @@ namespace AerolineaFrba.Login
         private void generarViajeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Generacion_Viaje.Generar_Viaje _generar_viaje = new Generacion_Viaje.Generar_Viaje();
-
             _generar_viaje.ShowDialog();
         }
 
@@ -124,6 +123,12 @@ namespace AerolineaFrba.Login
         {
             Abm_Aeronave.ListadoAeronaves aeronave = new Abm_Aeronave.ListadoAeronaves();
             aeronave.Show();
+        }
+
+        private void estadisticasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Listado_Estadistico.ListadoEstadistico _listado = new Listado_Estadistico.ListadoEstadistico();
+            _listado.ShowDialog();
         }
     }
 }
