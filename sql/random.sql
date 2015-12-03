@@ -141,6 +141,7 @@ BEGIN
 		[HAY_TABLA].Rol
 	WHERE		
 		((@nombre is null) or Nombre like '%' + @nombre + '%')
+		and id<>2
 	ORDER BY
 		Nombre 
 END
