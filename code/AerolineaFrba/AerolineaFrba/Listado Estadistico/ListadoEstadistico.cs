@@ -33,8 +33,6 @@ namespace AerolineaFrba.Listado_Estadistico
 
             cbSemestre.Items.Add(new KeyValuePair<Int32, String>(1, "1er"));
             cbSemestre.Items.Add(new KeyValuePair<Int32, String>(2, "2do"));
-            cbSemestre.Items.Add(new KeyValuePair<Int32, String>(3, "3er"));
-            cbSemestre.Items.Add(new KeyValuePair<Int32, String>(4, "4to"));
 
             cbSemestre.ValueMember = "Key";
             cbSemestre.DisplayMember = "Value";
@@ -57,14 +55,14 @@ namespace AerolineaFrba.Listado_Estadistico
                 dgvListado.DataSource = null;
 
 
-                Int32 cuatrimestre = ((KeyValuePair<Int32, String>)cbSemestre.SelectedItem).Key - 1;
-                DateTime desde = new DateTime(anio, 1 + cuatrimestre * 3, 1);
+                Int32 semestre = ((KeyValuePair<Int32, String>)cbSemestre.SelectedItem).Key - 1;
+                DateTime desde = new DateTime(anio, 1 + semestre * 6, 1);
                 DateTime hasta;
 
-                if (cuatrimestre == 3)
+                if (semestre == 1)  // 2do semestre (el ultimo)
                     hasta = new DateTime(anio + 1, 1, 1).AddDays(-1);
                 else
-                    hasta = new DateTime(anio, 1 + (cuatrimestre + 1) * 3, 1).AddDays(-1);
+                    hasta = new DateTime(anio, 1 + (semestre + 1) * 6, 1).AddDays(-1);
 
                 Cursor.Current = Cursors.WaitCursor;
                 dgvListado.DataSource = Logica.ListadoEstadistico.Get(NumeroListado, desde, hasta);

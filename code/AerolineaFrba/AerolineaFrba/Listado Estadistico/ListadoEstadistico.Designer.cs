@@ -33,11 +33,11 @@
             this.cbSemestre = new System.Windows.Forms.ComboBox();
             this.tbAnio = new System.Windows.Forms.TextBox();
             this.gbListados = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.dgvListado = new System.Windows.Forms.DataGridView();
             this.btListar = new System.Windows.Forms.Button();
             this.gbListados.SuspendLayout();
@@ -47,7 +47,7 @@
             // lbSemestre
             // 
             this.lbSemestre.AutoSize = true;
-            this.lbSemestre.Location = new System.Drawing.Point(12, 9);
+            this.lbSemestre.Location = new System.Drawing.Point(12, 40);
             this.lbSemestre.Name = "lbSemestre";
             this.lbSemestre.Size = new System.Drawing.Size(51, 13);
             this.lbSemestre.TabIndex = 0;
@@ -56,7 +56,7 @@
             // lbAnio
             // 
             this.lbAnio.AutoSize = true;
-            this.lbAnio.Location = new System.Drawing.Point(12, 37);
+            this.lbAnio.Location = new System.Drawing.Point(12, 9);
             this.lbAnio.Name = "lbAnio";
             this.lbAnio.Size = new System.Drawing.Size(26, 13);
             this.lbAnio.TabIndex = 1;
@@ -65,14 +65,14 @@
             // cbSemestre
             // 
             this.cbSemestre.FormattingEnabled = true;
-            this.cbSemestre.Location = new System.Drawing.Point(69, 6);
+            this.cbSemestre.Location = new System.Drawing.Point(69, 37);
             this.cbSemestre.Name = "cbSemestre";
             this.cbSemestre.Size = new System.Drawing.Size(46, 21);
             this.cbSemestre.TabIndex = 2;
             // 
             // tbAnio
             // 
-            this.tbAnio.Location = new System.Drawing.Point(69, 37);
+            this.tbAnio.Location = new System.Drawing.Point(69, 6);
             this.tbAnio.Name = "tbAnio";
             this.tbAnio.Size = new System.Drawing.Size(46, 20);
             this.tbAnio.TabIndex = 3;
@@ -91,38 +91,16 @@
             this.gbListados.TabStop = false;
             this.gbListados.Text = "Listados";
             // 
-            // radioButton1
+            // radioButton5
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(20, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(203, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Destinos con más pasajes comprados";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(20, 42);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(196, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Destinos con aeronaves más vacias";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(20, 65);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(250, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Clientes con más puntos acumulados a la fecha";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Location = new System.Drawing.Point(20, 111);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(292, 17);
+            this.radioButton5.TabIndex = 5;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Aeronaves con mayor cantidad de días fuera de servicio";
+            this.radioButton5.UseVisualStyleBackColor = true;
             // 
             // radioButton4
             // 
@@ -135,16 +113,38 @@
             this.radioButton4.Text = "Destinos con más pasajes cancelados";
             this.radioButton4.UseVisualStyleBackColor = true;
             // 
-            // radioButton5
+            // radioButton3
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(20, 111);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(292, 17);
-            this.radioButton5.TabIndex = 5;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Aeronaves con mayor cantidad de días fuera de servicio";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(20, 65);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(250, 17);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "Clientes con más puntos acumulados a la fecha";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(20, 42);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(196, 17);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Destinos con aeronaves más vacias";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(20, 19);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(203, 17);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Destinos con más pasajes comprados";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // dgvListado
             // 
