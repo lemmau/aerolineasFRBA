@@ -132,6 +132,12 @@ namespace AerolineaFrba.Abm_Ruta
                 MessageBox.Show("Debe seleccionar una 'Ciudad Destino' .");
             }
 
+            if (String.Equals(cbCiudadDestino.Text, cbCiudadOrigen.Text, StringComparison.OrdinalIgnoreCase))
+            {
+                valido = false;
+                MessageBox.Show("Ciudad Origen = Ciudad Destino\n ¿loo que?\n ¿Dónde la viste champion?");
+            }
+
             if (String.IsNullOrEmpty(cbTipoDeServicio.Text))
             {
                 valido = false;
