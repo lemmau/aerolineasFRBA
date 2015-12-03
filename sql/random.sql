@@ -20,6 +20,35 @@ BEGIN
 END
 GO
 
+----- 
+
+CREATE PROCEDURE [HAY_TABLA].[sp_listado_1]
+	@desde DATETIME,
+	@hasta DATETIME
+AS
+BEGIN	
+
+select top 5 ci.NOMBRE,COUNT(ci.NOMBRE) cant from  HAY_TABLA.PASAJE p
+inner join HAY_TABLA.COMPRA c on c.ID = p.ID_COMPRA 
+inner join HAY_TABLA.VIAJE  v on v.ID = p.ID_VIAJE
+inner join HAY_TABLA.RUTA r on r.ID= v.ID_RUTA 
+inner join HAY_TABLA.CIUDAD ci on ci.ID=r.ID_CDADDESTINO
+where YEAR( c.FECHA ) = YEAR (@desde) and MONTH (c.FECHA)  between MONTH (@desde) and MONTH (@hasta) 
+and p.ID not in (select pa.ID from HAY_TABLA.DEVOLUCION d
+inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
+inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
+inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
+where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta) )
+group by ci.NOMBRE order by cant 
+
+END
+GO
+
+----------
+
+
+
+
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
 	@desde DATETIME,
 	@hasta DATETIME
@@ -45,13 +74,41 @@ BEGIN
 
 END
 GO
+---------------------
+
+CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
+	@desde DATETIME,
+	@hasta DATETIME
+AS
+BEGIN	
+
+select  top 5 ci.NOMBRE from 
+ hay_tabla.BUTACA b
+inner join HAY_TABLA.PASAJE p  on b.ID = p.ID_BUTACA
+inner join HAY_TABLA.COMPRA  c on c.ID = p.ID_COMPRA
+inner join HAY_TABLA.VIAJE v on v.ID = p.ID_VIAJE
+inner join HAY_TABLA.AERONAVE  a on v.ID_AERONAVE = a.ID
+inner join HAY_TABLA.RUTA r on r.ID = v.ID_RUTA
+inner join HAY_TABLA.CIUDAD ci on ci.ID = r.ID_CDADDESTINO
+where YEAR( c.FECHA ) = YEAR (@desde) and MONTH (c.FECHA)  between MONTH (@desde) and MONTH (@hasta) 
+and p.ID not in (select pa.ID from HAY_TABLA.DEVOLUCION d
+inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
+inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
+inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
+where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta)   )
+group by ci.NOMBRE ,a.CANTBUTACASPASILLO ,a.CANTBUTACASVENTANILLA 
+ order by  (a.CANTBUTACASPASILLO+ a.CANTBUTACASVENTANILLA ) - count(*) desc 
+
+
+ END
+GO 
 
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_3]
 	@desde DATETIME,
 	@hasta DATETIME
 AS
 BEGIN	
-	SELECT 	TOP 5 
+	SELECT 	TOP 5  
 
 END
 GO
@@ -1013,7 +1070,8 @@ BEGIN
 		   end
 		   as 'Detalle'
 	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE_ENCOMIENDA pe on p.ID = pe.ID_CLIENTE
-							 join HAY_TABLA.COMPRA c on pe.ID_COMPRA = c.ID
+							 join 
+							 c on pe.ID_COMPRA = c.ID
 							 join HAY_TABLA.VIAJE v on c.ID_VIAJE = v.ID
 							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
 							 join HAY_TABLA.CIUDAD ciu1 on r.ID_CDADORIGEN = ciu1.ID
