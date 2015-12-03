@@ -908,20 +908,17 @@ CREATE PROCEDURE [HAY_TABLA].[sp_insertar_aeronave]
 	@espacioKg int,
 	@cantButacasPasillo int,
 	@cantButacasVentanilla int,
-	@idTipoServicio int,
-	@cantPasillo int,
-	@cantVentanilla int
+	@idTipoServicio int
 AS
 BEGIN
 	
-	/*   YA LO CHEQUEAMOS EN EL APLICATIVO
 	if ((@fabricante = '') or (@modelo = '') or (@matricula = '') or (@espacioKg = null) or (@idTipoServicio = null))
 	    begin
 		    RAISERROR(N' Debe completar todos los campos ', 16, 1)
 			return	
 		end
 	else
-		begin*/
+		begin
 
 	if (@cantButacasPasillo = 0 OR @cantButacasVentanilla = 0) 
 		begin
@@ -961,9 +958,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_modificar_aeronave]
 	@espacioKg int,
 	@cantButacasPasillo int,
 	@cantButacasVentanilla int,
-	@idTipoServicio int,
-	@cantPasillo int,
-	@cantVentanilla int
+	@idTipoServicio int
 AS
 BEGIN
 
