@@ -64,6 +64,7 @@ namespace AerolineaFrba.Abm_Aeronave
 
             //como el textbox filtro tiene un maximo de 255 no valido rango.
             foreach (Aeronave aeronave in Aeronave.Get(Matricula.Trim(), IdTipoDeServicioSeleccionado, FabricanteSeleccionado))
+                //MessageBox.Show("fecha" + aeronave.fechaAlta);
                 AgregarAeronave(aeronave);
         }
 
@@ -77,19 +78,26 @@ namespace AerolineaFrba.Abm_Aeronave
             dgvAeronaves.Rows[index].Cells["tipoServicioDGV"].Value = aeronave.tipoServicio.Nombre;
             dgvAeronaves.Rows[index].Cells["nButacasDGV"].Value = aeronave.cantButacasPasillo + aeronave.cantButacasVentanilla;
             dgvAeronaves.Rows[index].Cells["kgDgv"].Value = aeronave.espacioKG;
+            dgvAeronaves.Rows[index].Cells["fechaReinicioDGV"].Value = aeronave.fechaReinicio;
 
-            /*if (aeronave.idBaja == 2)
-            {
+            if (aeronave.idBaja == 0)
+            {   // se encuentra activa
                 dgvAeronaves.Rows[index].Cells["fueraServicioDGV"].Value = false;
-                dgvAeronaves.Rows[index].Cells["fechaReinicioDGV"].Value = null;//aeronave.fechaReinicio;
-                dgvAeronaves.Rows[index].Cells["finVidaUtilDGV"].Value = true;
+                dgvAeronaves.Rows[index].Cells["finVidaUtilDGV"].Value = false;
             }
             else
             {
-                dgvAeronaves.Rows[index].Cells["fueraServicioDGV"].Value = true;
-                dgvAeronaves.Rows[index].Cells["fechaReinicioDGV"].Value = null; //aeronave.fechaReinicio;
-                dgvAeronaves.Rows[index].Cells["finVidaUtilDGV"].Value = false;
-            }*/
+                if (aeronave.idBaja == 2)
+                {   // Baja Definitiva de Vida Util
+                    dgvAeronaves.Rows[index].Cells["fueraServicioDGV"].Value = false;
+                    dgvAeronaves.Rows[index].Cells["finVidaUtilDGV"].Value = true;
+                }
+                else
+                {   // Fuera de Servicio
+                    dgvAeronaves.Rows[index].Cells["fueraServicioDGV"].Value = true;
+                    dgvAeronaves.Rows[index].Cells["finVidaUtilDGV"].Value = false;
+                }
+            }
         }
 
         /* CARGO EL CB.FABRICANTE */

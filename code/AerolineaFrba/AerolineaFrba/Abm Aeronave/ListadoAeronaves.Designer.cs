@@ -28,11 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnAlta = new System.Windows.Forms.Button();
             this.btnBaja = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.dgvAeronaves = new System.Windows.Forms.DataGridView();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbMatricula = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbTipoDeServicio = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbFabricante = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.IdDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fabricanteDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modeloDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,14 +58,6 @@
             this.fueraServicioDGV = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.fechaReinicioDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.finVidaUtilDGV = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tbMatricula = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cbTipoDeServicio = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbFabricante = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnBuscar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAeronaves)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -119,82 +126,6 @@
             this.dgvAeronaves.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAeronaves.Size = new System.Drawing.Size(740, 240);
             this.dgvAeronaves.TabIndex = 26;
-            // 
-            // IdDGV
-            // 
-            this.IdDGV.DataPropertyName = "ID";
-            this.IdDGV.HeaderText = "Id";
-            this.IdDGV.MinimumWidth = 100;
-            this.IdDGV.Name = "IdDGV";
-            this.IdDGV.ReadOnly = true;
-            this.IdDGV.Visible = false;
-            // 
-            // fabricanteDGV
-            // 
-            this.fabricanteDGV.HeaderText = "Fabricante";
-            this.fabricanteDGV.Name = "fabricanteDGV";
-            this.fabricanteDGV.ReadOnly = true;
-            this.fabricanteDGV.Width = 80;
-            // 
-            // modeloDGV
-            // 
-            this.modeloDGV.HeaderText = "Modelo";
-            this.modeloDGV.Name = "modeloDGV";
-            this.modeloDGV.ReadOnly = true;
-            this.modeloDGV.Width = 80;
-            // 
-            // matriculaDGV
-            // 
-            this.matriculaDGV.HeaderText = "Matricula";
-            this.matriculaDGV.Name = "matriculaDGV";
-            this.matriculaDGV.ReadOnly = true;
-            this.matriculaDGV.Width = 85;
-            // 
-            // tipoServicioDGV
-            // 
-            this.tipoServicioDGV.DataPropertyName = "S_NOMBRE";
-            this.tipoServicioDGV.HeaderText = "Servicio";
-            this.tipoServicioDGV.Name = "tipoServicioDGV";
-            this.tipoServicioDGV.ReadOnly = true;
-            this.tipoServicioDGV.Width = 90;
-            // 
-            // nButacasDGV
-            // 
-            this.nButacasDGV.HeaderText = "Butacas";
-            this.nButacasDGV.Name = "nButacasDGV";
-            this.nButacasDGV.ReadOnly = true;
-            this.nButacasDGV.Width = 50;
-            // 
-            // kgDgv
-            // 
-            this.kgDgv.HeaderText = "KG";
-            this.kgDgv.Name = "kgDgv";
-            this.kgDgv.ReadOnly = true;
-            this.kgDgv.Width = 50;
-            // 
-            // fueraServicioDGV
-            // 
-            this.fueraServicioDGV.HeaderText = "Fuera Servicio";
-            this.fueraServicioDGV.Name = "fueraServicioDGV";
-            this.fueraServicioDGV.ReadOnly = true;
-            this.fueraServicioDGV.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.fueraServicioDGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.fueraServicioDGV.Width = 81;
-            // 
-            // fechaReinicioDGV
-            // 
-            this.fechaReinicioDGV.HeaderText = "Reincorporacion";
-            this.fechaReinicioDGV.Name = "fechaReinicioDGV";
-            this.fechaReinicioDGV.ReadOnly = true;
-            // 
-            // finVidaUtilDGV
-            // 
-            this.finVidaUtilDGV.HeaderText = "Fin Vida Util";
-            this.finVidaUtilDGV.Name = "finVidaUtilDGV";
-            this.finVidaUtilDGV.ReadOnly = true;
-            this.finVidaUtilDGV.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.finVidaUtilDGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.finVidaUtilDGV.Width = 75;
             // 
             // groupBox1
             // 
@@ -271,6 +202,96 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
+            // IdDGV
+            // 
+            this.IdDGV.DataPropertyName = "ID";
+            this.IdDGV.HeaderText = "Id";
+            this.IdDGV.MinimumWidth = 100;
+            this.IdDGV.Name = "IdDGV";
+            this.IdDGV.ReadOnly = true;
+            this.IdDGV.Visible = false;
+            // 
+            // fabricanteDGV
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.fabricanteDGV.DefaultCellStyle = dataGridViewCellStyle1;
+            this.fabricanteDGV.HeaderText = "Fabricante";
+            this.fabricanteDGV.Name = "fabricanteDGV";
+            this.fabricanteDGV.ReadOnly = true;
+            this.fabricanteDGV.Width = 80;
+            // 
+            // modeloDGV
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.modeloDGV.DefaultCellStyle = dataGridViewCellStyle2;
+            this.modeloDGV.HeaderText = "Modelo";
+            this.modeloDGV.Name = "modeloDGV";
+            this.modeloDGV.ReadOnly = true;
+            this.modeloDGV.Width = 80;
+            // 
+            // matriculaDGV
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.matriculaDGV.DefaultCellStyle = dataGridViewCellStyle3;
+            this.matriculaDGV.HeaderText = "Matricula";
+            this.matriculaDGV.Name = "matriculaDGV";
+            this.matriculaDGV.ReadOnly = true;
+            this.matriculaDGV.Width = 85;
+            // 
+            // tipoServicioDGV
+            // 
+            this.tipoServicioDGV.DataPropertyName = "S_NOMBRE";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.tipoServicioDGV.DefaultCellStyle = dataGridViewCellStyle4;
+            this.tipoServicioDGV.HeaderText = "Servicio";
+            this.tipoServicioDGV.Name = "tipoServicioDGV";
+            this.tipoServicioDGV.ReadOnly = true;
+            // 
+            // nButacasDGV
+            // 
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.nButacasDGV.DefaultCellStyle = dataGridViewCellStyle5;
+            this.nButacasDGV.HeaderText = "Butacas";
+            this.nButacasDGV.Name = "nButacasDGV";
+            this.nButacasDGV.ReadOnly = true;
+            this.nButacasDGV.Width = 50;
+            // 
+            // kgDgv
+            // 
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.kgDgv.DefaultCellStyle = dataGridViewCellStyle6;
+            this.kgDgv.HeaderText = "KG";
+            this.kgDgv.Name = "kgDgv";
+            this.kgDgv.ReadOnly = true;
+            this.kgDgv.Width = 50;
+            // 
+            // fueraServicioDGV
+            // 
+            this.fueraServicioDGV.HeaderText = "Fuera Servicio";
+            this.fueraServicioDGV.Name = "fueraServicioDGV";
+            this.fueraServicioDGV.ReadOnly = true;
+            this.fueraServicioDGV.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.fueraServicioDGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.fueraServicioDGV.Width = 81;
+            // 
+            // fechaReinicioDGV
+            // 
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.fechaReinicioDGV.DefaultCellStyle = dataGridViewCellStyle7;
+            this.fechaReinicioDGV.HeaderText = "Fec Reinicio";
+            this.fechaReinicioDGV.Name = "fechaReinicioDGV";
+            this.fechaReinicioDGV.ReadOnly = true;
+            this.fechaReinicioDGV.Width = 80;
+            // 
+            // finVidaUtilDGV
+            // 
+            this.finVidaUtilDGV.HeaderText = "Fin Vida Util";
+            this.finVidaUtilDGV.Name = "finVidaUtilDGV";
+            this.finVidaUtilDGV.ReadOnly = true;
+            this.finVidaUtilDGV.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.finVidaUtilDGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.finVidaUtilDGV.Width = 75;
+            // 
             // ListadoAeronaves
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,6 +322,14 @@
         private System.Windows.Forms.Button btnEditar;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.DataGridView dgvAeronaves;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tbMatricula;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbTipoDeServicio;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbFabricante;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdDGV;
         private System.Windows.Forms.DataGridViewTextBoxColumn fabricanteDGV;
         private System.Windows.Forms.DataGridViewTextBoxColumn modeloDGV;
@@ -311,13 +340,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn fueraServicioDGV;
         private System.Windows.Forms.DataGridViewTextBoxColumn fechaReinicioDGV;
         private System.Windows.Forms.DataGridViewCheckBoxColumn finVidaUtilDGV;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbMatricula;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbTipoDeServicio;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbFabricante;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnBuscar;
     }
 }

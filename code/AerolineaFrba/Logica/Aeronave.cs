@@ -20,8 +20,8 @@ namespace Logica
         public Int32 cantButacasPasillo { get; set; }
         public Int32 cantButacasVentanilla { get; set; }
         public Int32 espacioKG { get; set; }
-        //public Int32 idBaja { get; set; }
-        //public DateTime fechaReinicio { get; set; }
+        public Int32 idBaja { get; set; }
+        public String fechaReinicio { get; set; }
 
 
         public TipoServicio tipoServicio { get; set; }
@@ -128,6 +128,7 @@ namespace Logica
             var dt = Data.Aeronave.Get(Matricula, IdTipoDeServicioSeleccionado, FabricanteSeleccionado);
             var aeronaves = new List<Aeronave>(dt.Rows.Count);
             Aeronave aeronave = null;
+            Int32 entero;
 
             foreach (DataRow row in dt.Rows)
             {
@@ -141,8 +142,15 @@ namespace Logica
                 aeronave.cantButacasVentanilla = Int32.Parse(row["cantButacasVentanilla"].ToString());
                 aeronave.espacioKG = Int32.Parse(row["espacioKgEncomiendas"].ToString());
                 aeronave.tipoServicio = new TipoServicio(Int32.Parse(row["S_ID"].ToString()), row["S_NOMBRE"].ToString());
-                //aeronave.idBaja = Int32.Parse(row["HB_ID"].ToString());
-                //aeronave.fechaReinicio = DateTime.Parse(row["HB_FECHAREINICIO"].ToString());
+                aeronave.idBaja = Int32.Parse(row["HB_ID"].ToString());
+                if (row["HB_FECHAREINICIO"].ToString().Equals("NO"))
+                {
+                    aeronave.fechaReinicio = row["HB_FECHAREINICIO"].ToString();
+                }
+                else
+                {
+                    aeronave.fechaReinicio = row["HB_FECHAREINICIO"].ToString();
+                }
 
                 aeronaves.Add(aeronave);
             }
