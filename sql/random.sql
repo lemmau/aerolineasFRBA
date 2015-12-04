@@ -974,9 +974,11 @@ BEGIN
 	INSERT INTO [HAY_TABLA].AERONAVE
 		(FECHAALTA, ID_SERVICIO, MODELO, MATRICULA, FABRICANTE, CANTBUTACASPASILLO, CANTBUTACASVENTANILLA, ESPACIOKGENCOMIENDAS)
 	OUTPUT 
-		inserted.id INTO @t
+		inserted.id INTO @t -- esta villereada es "gracias" a SQL SERVER para devolver un unico valor y que deje correr el trigger !!
 	VALUES
 		(@fechaAlta, @idTipoServicio, @modelo, @matricula, @fabricante, @cantButacasPasillo, @cantButacasVentanilla, @espacioKg)
+
+	SELECT * FROM @t -- IDEM -> http://blogs.msdn.com/b/sqlprogrammability/archive/2008/07/11/update-with-output-clause-triggers-and-sqlmoreresults.aspx
 END
 GO
 ------
