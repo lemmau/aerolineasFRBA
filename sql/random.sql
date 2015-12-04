@@ -1305,6 +1305,66 @@ BEGIN
 END
 GO
 ----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_actualizacion_importes_devolucion]
+	@idCompra int,
+	@idPasaje int,
+	@idEncomienda int
+	
+AS
+	DECLARE @IMPORTE_A_DESCONTAR NUMERIC(18,2), @IMPORTE_TOTAL_COMPRA NUMERIC(18,2)
+BEGIN
+	
+	SET @IMPORTE_TOTAL_COMPRA = (select c.IMPORTETOTAL
+								 from HAY_TABLA.COMPRA c
+								 where @idCompra = c.ID)
+
+    if (@idPasaje is null)
+		begin
+			SET @IMPORTE_A_DESCONTAR = (select e.IMPORTE
+										from HAY_TABLA.ENCOMIENDA e 
+										where @idEncomienda = e.ID)
+			
+			-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
+			UPDATE 
+				[HAY_TABLA].ENCOMIENDA
+			SET 
+				IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
+			where @idEncomienda = ID
+			-- Actualizo el importe total de la compra restando el monto del item cancelado
+			UPDATE 
+				[HAY_TABLA].COMPRA
+			SET 
+				IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
+			where @idCompra = ID
+
+ 		end
+	else
+		begin
+			if (@idEncomienda is null)
+				begin
+					SET @IMPORTE_A_DESCONTAR = (select p.IMPORTE
+												from HAY_TABLA.PASAJE p
+												where @idPasaje = p.ID)
+
+					-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
+					UPDATE 
+						[HAY_TABLA].PASAJE
+					SET 
+						IMPORTE = (-1 * IMPORTE)
+					where @idPasaje = ID
+					-- Actualizo el importe total de la compra restando el monto del item cancelado
+					UPDATE 
+						[HAY_TABLA].COMPRA
+					SET 
+						IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
+					where @idCompra = ID
+
+ 				end
+		end
+
+END
+GO
+----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_cancelar_pasaje_encomienda]
 	@idCompra int,
 	@tipoItem nvarchar(20),
@@ -1398,66 +1458,6 @@ BEGIN
 							exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, null, @idPasajeEncomienda
 						end
 				end
-		end
-
-END
-GO
-----------------
-CREATE PROCEDURE [HAY_TABLA].[sp_actualizacion_importes_devolucion]
-	@idCompra int,
-	@idPasaje int,
-	@idEncomienda int
-	
-AS
-	DECLARE @IMPORTE_A_DESCONTAR NUMERIC(18,2), @IMPORTE_TOTAL_COMPRA NUMERIC(18,2)
-BEGIN
-	
-	SET @IMPORTE_TOTAL_COMPRA = (select c.IMPORTETOTAL
-								 from HAY_TABLA.COMPRA c
-								 where @idCompra = c.ID)
-
-    if (@idPasaje is null)
-		begin
-			SET @IMPORTE_A_DESCONTAR = (select e.IMPORTE
-										from HAY_TABLA.ENCOMIENDA e 
-										where @idEncomienda = e.ID)
-			
-			-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
-			UPDATE 
-				[HAY_TABLA].ENCOMIENDA
-			SET 
-				IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
-			where @idEncomienda = ID
-			-- Actualizo el importe total de la compra restando el monto del item cancelado
-			UPDATE 
-				[HAY_TABLA].COMPRA
-			SET 
-				IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
-			where @idCompra = ID
-
- 		end
-	else
-		begin
-			if (@idEncomienda is null)
-				begin
-					SET @IMPORTE_A_DESCONTAR = (select p.IMPORTE
-												from HAY_TABLA.PASAJE p
-												where @idPasaje = p.ID)
-
-					-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
-					UPDATE 
-						[HAY_TABLA].PASAJE
-					SET 
-						IMPORTE = (-1 * IMPORTE)
-					where @idPasaje = ID
-					-- Actualizo el importe total de la compra restando el monto del item cancelado
-					UPDATE 
-						[HAY_TABLA].COMPRA
-					SET 
-						IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
-					where @idCompra = ID
-
- 				end
 		end
 
 END
