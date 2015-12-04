@@ -1111,27 +1111,39 @@ BEGIN
 
 	UNION ALL
 
-	SELECT (CAST(pe.IMPORTE AS int) / 10) as 'Millas', 
-		   c.FECHA as 'Fecha',  
-		   case 
-		   when ((pe.PESO_ENCOMIENDA IS null) or (pe.PESO_ENCOMIENDA = 0))
-		   then 'Pasaje desde ' + ciu1.NOMBRE + ' hasta ' + ciu2.NOMBRE
-		   else 'Encomienda de ' + cast(pe.PESO_ENCOMIENDA as varchar) + 'Kg desde' + ciu1.NOMBRE + ' hasta' + ciu2.NOMBRE
-		   end
-		   as 'Detalle'
-	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE_ENCOMIENDA pe on p.ID = pe.ID_CLIENTE
-							 join 
-							 c on pe.ID_COMPRA = c.ID
-							 join HAY_TABLA.VIAJE v on c.ID_VIAJE = v.ID
+	SELECT (CAST(pa.IMPORTE AS int) / 10) as 'Millas',
+		   v.FECHALLEGADA as 'Fecha',
+		   'Pasaje desde ' + c1.NOMBRE + ' hasta ' + c2.NOMBRE as 'Detalle'
+	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE pa on p.ID = pa.ID_CLIENTE
+							 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
 							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
-							 join HAY_TABLA.CIUDAD ciu1 on r.ID_CDADORIGEN = ciu1.ID
-							 join HAY_TABLA.CIUDAD ciu2 on r.ID_CDADDESTINO = ciu2.ID
-	where p.ID = @id 
+							 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
+							 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
+	where p.ID = @id
 	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-					join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
-					where pe2.ID = pe.ID)
-	and c.FECHA > DATEADD (MONTH, -12, @fechaActual)
+					join HAY_TABLA.PASAJE pa2 on itemd.ID_PASAJE = pa2.ID
+					where pa2.ID = pa.ID)
+	and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
+
+	UNION ALL
+
+	SELECT (CAST(e.IMPORTE AS int) / 10) as 'Millas',
+		   v.FECHALLEGADA as 'Fecha',
+		   'Encomienda de ' + cast(e.PESO as varchar) + 'Kg desde' + c1.NOMBRE + ' hasta' + c2.NOMBRE as 'Detalle'
+	from HAY_TABLA.PERSONA p join HAY_TABLA.COMPRA c on p.ID = c.ID_COMPRADOR
+							 join HAY_TABLA.ENCOMIENDA e on c.ID = e.ID_COMPRA
+							 join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
+							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+							 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
+							 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
+	where p.ID = @id
+	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+					join HAY_TABLA.ENCOMIENDA e2 on itemd.ID_ENCOMIENDA = e2.ID
+					where e2.ID = e.ID)
+	and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
+
 	order by c.FECHA desc
+
 END
 GO
 ----------------
@@ -1163,14 +1175,37 @@ CREATE PROCEDURE [HAY_TABLA].[sp_get_millas_acumuladas]
 	@fechaActual DateTime
 AS
 BEGIN
-	SELECT sum(CAST(pe.IMPORTE AS int) / 10) as 'acumuladas'
-	from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE_ENCOMIENDA pe on p.ID = pe.ID_CLIENTE
-						   	 join HAY_TABLA.COMPRA co on pe.ID_COMPRA = co.ID
-	where p.ID = @id 
-	and not exists 	(select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-	  					join HAY_TABLA.PASAJE_ENCOMIENDA pe2 on itemd.ID_PASAJE_ENCOMIENDA = pe2.ID
-						  where pe2.ID = pe.ID)
-	and (DATEDIFF(day, co.FECHA, @fechaActual) <= 365)
+	
+	SELECT sum (millas.acumuladas)
+	from
+	(
+		SELECT sum(CAST(pa.IMPORTE AS int) / 10) as 'acumuladas'
+		from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE pa on p.ID = pa.ID_CLIENTE
+								 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
+								 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+								 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
+								 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
+		where p.ID = @id
+		and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+						join HAY_TABLA.PASAJE pa2 on itemd.ID_PASAJE = pa2.ID
+						where pa2.ID = pa.ID)
+		and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
+
+		UNION ALL
+
+		SELECT sum(CAST(e.IMPORTE AS int) / 10) as 'acumuladas'
+		from HAY_TABLA.PERSONA p join HAY_TABLA.COMPRA c on p.ID = c.ID_COMPRADOR
+								 join HAY_TABLA.ENCOMIENDA e on c.ID = e.ID_COMPRA
+								 join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
+								 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+								 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
+								 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
+		where p.ID = @id
+		and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+						join HAY_TABLA.ENCOMIENDA e2 on itemd.ID_ENCOMIENDA = e2.ID
+						where e2.ID = e.ID)
+		and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
+	) millas
 
 END
 GO
@@ -1311,7 +1346,7 @@ BEGIN
 													FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
 													WHERE pa2.ID = pa.ID)
 									end
---Caso 6--------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 						end
 				end
 		end
@@ -1409,6 +1444,7 @@ BEGIN
 END
 GO
 ----------------
+
 CREATE TRIGGER [HAY_TABLA].tr_actualizacion_importes_devolucion
    ON  [HAY_TABLA].ITEMSDEVOLUCION
    AFTER INSERT
@@ -1469,4 +1505,5 @@ BEGIN
 
 END
 GO
+
 ----------------

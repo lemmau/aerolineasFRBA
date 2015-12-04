@@ -123,10 +123,10 @@
     <Compile Include="Abm Ruta\ListadoRutas.Designer.cs">
       <DependentUpon>ListadoRutas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Canje Millas\ConsultaMillas.cs">
+    <Compile Include="Consulta Millas\ConsultaMillas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Canje Millas\ConsultaMillas.Designer.cs">
+    <Compile Include="Consulta Millas\ConsultaMillas.Designer.cs">
       <DependentUpon>ConsultaMillas.cs</DependentUpon>
     </Compile>
     <Compile Include="Compra\Form1.cs">
@@ -135,10 +135,10 @@
     <Compile Include="Compra\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Consulta Millas\Form1.cs">
+    <Compile Include="Canje Millas\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Consulta Millas\Form1.Designer.cs">
+    <Compile Include="Canje Millas\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="DataAccess.cs" />
@@ -233,7 +233,7 @@
       <DependentUpon>ListadoRutas.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Canje Millas\ConsultaMillas.resx">
+    <EmbeddedResource Include="Consulta Millas\ConsultaMillas.resx">
       <DependentUpon>ConsultaMillas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DevolucionPasajeEncomienda\DevolucionPasajeEncomienda.resx">
