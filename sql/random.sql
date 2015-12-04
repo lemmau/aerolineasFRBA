@@ -20,15 +20,16 @@ BEGIN
 END
 GO
 
------ 
+----- */
 
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_1]
+CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_1]
 	@desde DATETIME,
 	@hasta DATETIME
 AS
 BEGIN	
 
-select top 5 ci.NOMBRE,COUNT(ci.NOMBRE) cant from  HAY_TABLA.PASAJE p
+select top 5 ci.NOMBRE as 'Ciudad',COUNT(p.ID) as 'Cantidad de Pasajes comprados' ,
+ MIN(c.FECHA )as 'Desde la fecha' , MAX (c.FECHA) as 'Hasta la fecha' from  HAY_TABLA.PASAJE p 
 inner join HAY_TABLA.COMPRA c on c.ID = p.ID_COMPRA 
 inner join HAY_TABLA.VIAJE  v on v.ID = p.ID_VIAJE
 inner join HAY_TABLA.RUTA r on r.ID= v.ID_RUTA 
@@ -39,16 +40,15 @@ inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
 inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
 inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
 where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta) )
-group by ci.NOMBRE order by cant 
+group by ci.NOMBRE order by COUNT(p.ID)  desc
 
 END
-GO
 
 ----------
 
 
 
-
+/*
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
 	@desde DATETIME,
 	@hasta DATETIME
@@ -101,24 +101,45 @@ group by ci.NOMBRE ,a.CANTBUTACASPASILLO ,a.CANTBUTACASVENTANILLA
 
 
  END
-GO 
+GO */
 
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_3]
+CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_3]
+	@desde DATETIME,
+	@hasta DATETIME
+AS
+BEGIN
+	SELECT TOP 5 p.NOMBRE as 'Nombre' , p.APELLIDO as 'Apellido', p.MAIL as 'E.mail', (((CAST(pa.IMPORTE AS int) +CAST(e.IMPORTE AS int)) / 10)) as 'Millas'
+		    
+		 
+	from HAY_TABLA.PERSONA p 
+
+	join HAY_TABLA.PASAJE pa on p.ID = pa.ID_CLIENTE
+
+							 join HAY_TABLA.COMPRA c on c.ID_COMPRADOR = p.ID
+							 join HAY_TABLA.ENCOMIENDA e on e.ID_COMPRA =c.ID
+							 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
+							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+							 join HAY_TABLA.CIUDAD ciu1 on r.ID_CDADORIGEN = ciu1.ID
+							 join HAY_TABLA.CIUDAD ciu2 on r.ID_CDADDESTINO = ciu2.ID
+	where pa.ID not in (select i.ID_PASAJE from HAY_TABLA.DEVOLUCION d 
+
+	inner join  HAY_TABLA.ITEMSDEVOLUCION i  on d.ID = i.ID_DEVOLUCION)
+
+	and  YEAR (c.FECHA) =YEAR (@desde) and MONTH (c.FECHA) between MONTH(@desde) and MONTH(@hasta)
+	order by 4 desc 
+
+	END 
+
+	GO
+
+CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_4]
 	@desde DATETIME,
 	@hasta DATETIME
 AS
 BEGIN	
-	SELECT 	TOP 5  
-
-END
-GO
-
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_4]
-	@desde DATETIME,
-	@hasta DATETIME
-AS
-BEGIN	
-select top 5 ci.NOMBRE , count (*) from  HAY_TABLA.PASAJE p
+select top 5 ci.NOMBRE as 'Ciudad', count (*) as 'Cantidad de pasajes devueltos', count(r.ID) as 'Cantidad de Rutas' ,
+MIN (c.FECHA)as 'Desde la fecha ' , MAX(c.Fecha) as 'Hasta la fecha'
+from  HAY_TABLA.PASAJE p
 inner join HAY_TABLA.COMPRA c on c.ID = p.ID_COMPRA 
 inner join HAY_TABLA.VIAJE  v on v.ID = p.ID_VIAJE
 inner join HAY_TABLA.RUTA r on r.ID= v.ID_RUTA 
@@ -130,36 +151,38 @@ inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
 inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
 where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta))
 
-group by ci.NOMBRE  order by 2 asc 
-
-
+group by ci.NOMBRE  order by 2 desc
 END 
 GO
 
-END
-GO
 
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_5]
+CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_5]
 	@desde DATETIME,
 	@hasta DATETIME
 AS
 BEGIN	
-	select top 5 a.ID ,( select sum (datediff(DD,hi.FECHABAJA ,hi.FECHAREINICIO)) from HAY_TABLA.AERONAVE ae
- inner join HAY_TABLA.HISTORIALBAJA_AERONAVE hi on ae.ID = hi.ID_AERONAVE
- where ae.ID = a.ID) from HAY_TABLA.AERONAVE a
+	select top 5 a.MATRICULA as 'Matricula',a.FABRICANTE as 'Fabricante' , a.MODELO as 'modelo',a.FECHAALTA as 'Fecha de ingreso de la aeronave al sistema ',
+	(select sum (datediff(DD,hi.FECHABAJA ,hi.FECHAREINICIO))
+	 from HAY_TABLA.AERONAVE ae
+      inner join HAY_TABLA.HISTORIALBAJA_AERONAVE hi on ae.ID = hi.ID_AERONAVE
+      where ae.ID = a.ID 
+) as 'Cantidad de dias fuera de servicio'
+ 
+ 
+ 
+ from HAY_TABLA.AERONAVE a
 inner join HAY_TABLA.HISTORIALBAJA_AERONAVE h on a.ID = h.ID_AERONAVE
-
 
 where  h.ID_TIPOBAJA = 1 
 and YEAR (h.FECHABAJA) = YEAR (@desde) and MONTH(h.FECHABAJA)  between MONTH (@desde) and MONTH (@hasta)
 and YEAR (h.FECHAREINICIO) = YEAR (@hasta) and MONTH(h.FECHAREINICIO) between MONTH (@desde) and MONTH (@hasta)
- group by a.ID 
- order by 2 desc ;
+ group by a.ID ,a.MATRICULA,a.FABRICANTE ,a.MODELO ,a.FECHAALTA 
+ order by 5 desc 
 
 
 END
 GO
-*/
+
 CREATE PROCEDURE [HAY_TABLA].[sp_get_rol_by_id]
 	@id int
 AS
