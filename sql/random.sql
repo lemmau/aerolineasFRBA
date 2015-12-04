@@ -1314,7 +1314,6 @@ CREATE PROCEDURE [HAY_TABLA].[sp_cancelar_pasaje_encomienda]
 AS
 	DECLARE @idDevolucion int
 BEGIN
-	
 	--No chequea si el Item que quiero cancelar ya existe, ya que eso lo controla el sp_select_items, y de existir NO lo muestra en el DGV de Devoluciones
 
 	if --Si no existe una devolucion para esa compra
@@ -1328,8 +1327,8 @@ BEGIN
 	   begin
 			INSERT INTO [HAY_TABLA].[DEVOLUCION]
 				(FECHA, MOTIVO)
-			OUTPUT
-				inserted.ID
+			/*OUTPUT
+				inserted.ID*/
 			VALUES
 				(@fechaActual, @motivoDevolucion)	
 
@@ -1347,6 +1346,8 @@ BEGIN
 						inserted.ID
 					VALUES
 						(@idDevolucion, @idCompra, @idPasajeEncomienda, null)
+					--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
+					exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, @idPasajeEncomienda, null
 				end
 			else
 				begin
@@ -1358,6 +1359,8 @@ BEGIN
 								inserted.ID
 							VALUES
 								(@idDevolucion, @idCompra, null, @idPasajeEncomienda)
+							--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
+							exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, null, @idPasajeEncomienda
 						end
 				end
 	   end
@@ -1378,6 +1381,8 @@ BEGIN
 						inserted.ID
 					VALUES
 						(@idDevolucion, @idCompra, @idPasajeEncomienda, null)
+					--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
+					exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, @idPasajeEncomienda, null
 				end
 			else
 				begin
@@ -1389,72 +1394,72 @@ BEGIN
 								inserted.ID
 							VALUES
 								(@idDevolucion, @idCompra, null, @idPasajeEncomienda)
+							--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
+							exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, null, @idPasajeEncomienda
 						end
 				end
 		end
+
 END
 GO
 ----------------
-
-CREATE TRIGGER [HAY_TABLA].tr_actualizacion_importes_devolucion
-   ON  [HAY_TABLA].ITEMSDEVOLUCION
-   AFTER INSERT
-AS 
+CREATE PROCEDURE [HAY_TABLA].[sp_actualizacion_importes_devolucion]
+	@idCompra int,
+	@idPasaje int,
+	@idEncomienda int
+	
+AS
+	DECLARE @IMPORTE_A_DESCONTAR NUMERIC(18,2), @IMPORTE_TOTAL_COMPRA NUMERIC(18,2)
 BEGIN
-	DECLARE @ID_COMPRA INT, @ID_PASAJE INT, @ID_ENCOMIENDA INT, @IMPORTE_A_DESCONTAR NUMERIC(18,2), @IMPORTE_TOTAL_COMPRA NUMERIC(18,2)
-	SET @ID_COMPRA = (select i.ID_COMPRA from inserted i)
-	SET @ID_PASAJE = (select i.ID_PASAJE from inserted i)
-	SET @ID_ENCOMIENDA = (select i.ID_ENCOMIENDA from inserted i)
 	
 	SET @IMPORTE_TOTAL_COMPRA = (select c.IMPORTETOTAL
 								 from HAY_TABLA.COMPRA c
-								 where @ID_COMPRA = c.ID)
+								 where @idCompra = c.ID)
 
-    if (@ID_PASAJE = null)
+    if (@idPasaje is null)
 		begin
 			SET @IMPORTE_A_DESCONTAR = (select e.IMPORTE
 										from HAY_TABLA.ENCOMIENDA e 
-										where @ID_ENCOMIENDA = e.ID)
+										where @idEncomienda = e.ID)
 			
 			-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
 			UPDATE 
 				[HAY_TABLA].ENCOMIENDA
 			SET 
 				IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
-			where @ID_ENCOMIENDA = ID
+			where @idEncomienda = ID
 			-- Actualizo el importe total de la compra restando el monto del item cancelado
 			UPDATE 
 				[HAY_TABLA].COMPRA
 			SET 
 				IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
-			where @ID_COMPRA = ID
+			where @idCompra = ID
 
  		end
 	else
 		begin
-			if (@ID_ENCOMIENDA = null)
+			if (@idEncomienda is null)
 				begin
 					SET @IMPORTE_A_DESCONTAR = (select p.IMPORTE
 												from HAY_TABLA.PASAJE p
-												where @ID_PASAJE = p.ID)
+												where @idPasaje = p.ID)
 
 					-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
 					UPDATE 
 						[HAY_TABLA].PASAJE
 					SET 
-						IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
-					where @ID_PASAJE = ID
+						IMPORTE = (-1 * IMPORTE)
+					where @idPasaje = ID
 					-- Actualizo el importe total de la compra restando el monto del item cancelado
 					UPDATE 
 						[HAY_TABLA].COMPRA
 					SET 
 						IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
-					where @ID_COMPRA = ID
+					where @idCompra = ID
 
  				end
 		end
 
 END
 GO
-
 ----------------
