@@ -48,7 +48,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 
             using (var conn = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_get_ciudades", conn);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_get_ciudades", conn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -222,7 +222,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
             existe_matricula = false;
             using (var conn = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_aeronave_x_matricula", conn);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_aeronave_x_matricula", conn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter matricula = cmd.Parameters.Add("@matricula", SqlDbType.VarChar);

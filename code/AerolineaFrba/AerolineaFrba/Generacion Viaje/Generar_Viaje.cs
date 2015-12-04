@@ -65,7 +65,7 @@ namespace AerolineaFrba.Generacion_Viaje
         {
             using (var conn = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_get_tipo_servicio", conn);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_get_tipo_servicio", conn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -326,9 +326,6 @@ namespace AerolineaFrba.Generacion_Viaje
                 this.id_tipo_ser_aer = ((ComboboxItem)cbTipoServicio1.SelectedItem).Value;
                 MessageBox.Show("Usted a seleccionado la Aeronave con la matricula " + this.matricula_seleccionada, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            
-
         }
 
         private void rutas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -361,7 +358,7 @@ namespace AerolineaFrba.Generacion_Viaje
                 using (var conn = DataAccess.GetConnection())
                 {
 
-                    var cmd = new SqlCommand("HAY_TABLA.sp_alta_viaje", conn);
+                    var cmd = new SqlCommand("[HAY_TABLA].sp_alta_viaje", conn);
 
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -372,8 +369,6 @@ namespace AerolineaFrba.Generacion_Viaje
 
                     SqlParameter HAY_ERROR = cmd.Parameters.Add("@hayErr", SqlDbType.Int);
                     SqlParameter ERRORES = cmd.Parameters.Add("@errores", SqlDbType.VarChar, 200);
-
-
 
                     fechaSalida.Value = f_salida;
                 
@@ -409,9 +404,6 @@ namespace AerolineaFrba.Generacion_Viaje
                    this.Close();
                 }
             }
-
-
-
 
         }
 
@@ -451,7 +443,7 @@ namespace AerolineaFrba.Generacion_Viaje
             using (var conn = DataAccess.GetConnection())
             {
 
-                var cmd = new SqlCommand("HAY_TABLA.sp_get_rutas_generar_viaje", conn);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_get_rutas_generar_viaje", conn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -503,7 +495,7 @@ namespace AerolineaFrba.Generacion_Viaje
             using (var conn = DataAccess.GetConnection())
             {
 
-                var cmd = new SqlCommand("HAY_TABLA.sp_get_aeronaves_generar_viaje", conn);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_get_aeronaves_generar_viaje", conn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -560,8 +552,6 @@ namespace AerolineaFrba.Generacion_Viaje
                 return false;
             }
                 return true ; 
-            
-
         }
 
 
@@ -572,17 +562,17 @@ namespace AerolineaFrba.Generacion_Viaje
                 String str_error = "";
                 if (this.id_aeronave == 0)
                 {
-                    str_error += "Debe seleccionar una Aeronave";
+                    str_error += "Debe seleccionar una Aeronave\n";
                 }
                 if (this.id_ruta_selec == 0)
                 {
-                    str_error += "Debe seleccionar una Ruta";
+                    str_error += "Debe seleccionar una Ruta\n";
                 }
                 if (this.id_tipo_ser_aer != 0 && this.id_tipo_ser_ruta != 0)
                 {
                     if (id_tipo_ser_aer != id_tipo_ser_ruta)
                     {
-                        str_error += "El tipo de servicio de la Ruta y Aeronave seleccionada deben ser iguales ";
+                        str_error += "El tipo de servicio de la Ruta y Aeronave seleccionada deben ser iguales\n";
                     }
                 }
                 if (!str_error.Equals(""))

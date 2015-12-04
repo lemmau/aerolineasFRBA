@@ -672,23 +672,11 @@ CREATE PROCEDURE [HAY_TABLA].[sp_alta_viaje]
 	@hayErr int OUT,
     @errores varchar(200) OUT
 AS
-	SET @hayErr = 0
-	SET @errores = ''
-	BEGIN
-	BEGIN  TRY 
-	BEGIN TRANSACTION
-	
-	INSERT INTO HAY_TABLA.VIAJE VALUES (@id_aeronave ,@id_ruta,@f_salida ,null ,@f_llegada_est , 1);
-	  COMMIT TRANSACTION 
-	  END TRY 
-	  BEGIN CATCH 
-	  IF @@error != 0 
-	    BEGIN
-		ROLLBACK TRANSACTION
-		SET @hayErr = 1
-		RETURN  
-	     END  
-	   END CATCH 
+BEGIN
+	INSERT INTO [HAY_TABLA].VIAJE
+	(ID_AERONAVE, ID_RUTA, FECHASALIDA, FECHALLEGADA, FECHALLEGADAESTIMADA)
+	VALUES 
+	(@id_aeronave, @id_ruta, @f_salida, null, @f_llegada_est)
 
  END
  GO
@@ -790,8 +778,7 @@ BEGIN
 		set @errores = 'No existe ningún Viaje  para la ciudad de origen seleccionada'
 		RETURN
 	END
-    
-	DECLARE @d_error varchar (255)		
+    	
 	DECLARE @ciudadLlegada int  
 	select @ciudadLlegada = (select count (*) from HAY_TABLA.VIAJE V join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
 	 where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino and V.STATUS = 1  ) 
@@ -800,56 +787,18 @@ BEGIN
 	 	IF @ciudadLlegada = 0 BEGIN 
 		set @hayErr = 2
 		set @errores = 'Se registrara el viaje con una ciudad de destino diferente al promagramado'
-		set @d_error = 'Se registra la llegada  viaje con una Ciudad  Destino distinta al original '
 		
 	END
 
 	DECLARE @id_aeronave int
 	select @id_aeronave = (select V.ID_AERONAVE from HAY_TABLA.VIAJE V where V.ID = @id_viaje)		
-	
-	BEGIN TRANSACTION						 							 
-	INSERT INTO HAY_TABLA.LLEGADA(ID_VIAJE, ID_AERONAVE, MATRICULA, ID_CIUDAD_ORIGEN, ID_CIUDAD_DESTINO, F_LLEGADA)		 
-	VALUES(@id_viaje, @id_aeronave, upper(@matricula), @id_ciudad_origen, @id_ciudad_destino, @f_llegada)
-	COMMIT TRANSACTION
-	
-END
-GO
-/*
-CREATE TABLE [HAY_TABLA].LLEGADA (
-[ID]                INT IDENTITY(1,1) NOT NULL,
-[MATRICULA]         VARCHAR (255) NOT NULL,
-[ID_AERONAVE]       INT NULL,
-[F_LLEGADA]         DATETIME NOT NULL,
-[ID_VIAJE]          INT NOT NULL,
-[ID_CIUDAD_ORIGEN]  INT NOT NULL,
-[ID_CIUDAD_DESTINO] INT NOT NULL,
-[D_ERROR]           VARCHAR (255) NULL,
 
-PRIMARY KEY (ID),
-FOREIGN KEY (ID_VIAJE) REFERENCES [HAY_TABLA].VIAJE,
-FOREIGN KEY (ID_CIUDAD_ORIGEN) REFERENCES [HAY_TABLA].CIUDAD,
-FOREIGN KEY (ID_CIUDAD_DESTINO) REFERENCES [HAY_TABLA].CIUDAD,
-FOREIGN KEY (ID_AERONAVE) REFERENCES [HAY_TABLA].AERONAVE
-);
-GO
-*/
-CREATE TRIGGER HAY_TABLA.tr_actualizar_viaje 
-	on HAY_TABLA.LLEGADA FOR INSERT 
-AS BEGIN  
-BEGIN TRANSACTION 
-
-    declare @id_viaje int, @f_llegada datetime
-	select 	@id_viaje=id_viaje, 
-			@f_llegada=f_llegada 
-	from inserted
-
-	UPDATE HAY_TABLA.VIAJE
+	UPDATE [HAY_TABLA].VIAJE
 	SET FECHALLEGADA = @f_llegada 
 	WHERE ID = @id_viaje
-
-COMMIT TRANSACTION 
-END  
+END
 GO
+
 /*-------------   SP  PARA AERONAVES   -------------*/
 
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_fuera_de_servicio]

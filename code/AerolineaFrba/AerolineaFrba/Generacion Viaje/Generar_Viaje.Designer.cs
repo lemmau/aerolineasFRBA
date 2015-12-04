@@ -39,12 +39,6 @@
             this.cbTipoServicio1 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.aeronaves = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.matricula = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fabricante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipoServicio1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
@@ -61,6 +55,12 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.fechaSalida1 = new System.Windows.Forms.DateTimePicker();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.matricula = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fabricante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipoServicio1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aeronaves)).BeginInit();
             this.panel2.SuspendLayout();
@@ -162,42 +162,6 @@
             this.aeronaves.Size = new System.Drawing.Size(603, 191);
             this.aeronaves.TabIndex = 1;
             this.aeronaves.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.aeronaves_CellContentClick);
-            // 
-            // id
-            // 
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.Visible = false;
-            // 
-            // modelo
-            // 
-            this.modelo.HeaderText = "Modelo";
-            this.modelo.Name = "modelo";
-            // 
-            // matricula
-            // 
-            this.matricula.HeaderText = "Matricula";
-            this.matricula.Name = "matricula";
-            this.matricula.Width = 110;
-            // 
-            // fabricante
-            // 
-            this.fabricante.HeaderText = "Fabricante";
-            this.fabricante.Name = "fabricante";
-            this.fabricante.ReadOnly = true;
-            this.fabricante.Width = 110;
-            // 
-            // tipoServicio1
-            // 
-            this.tipoServicio1.HeaderText = "Tipo de Servicio";
-            this.tipoServicio1.Name = "tipoServicio1";
-            this.tipoServicio1.Width = 130;
-            // 
-            // selec
-            // 
-            this.selec.HeaderText = "Seleccionar";
-            this.selec.Image = ((System.Drawing.Image)(resources.GetObject("selec.Image")));
-            this.selec.Name = "selec";
             // 
             // label5
             // 
@@ -340,6 +304,44 @@
             this.fechaSalida1.Size = new System.Drawing.Size(200, 20);
             this.fechaSalida1.TabIndex = 21;
             // 
+            // id
+            // 
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // modelo
+            // 
+            this.modelo.HeaderText = "Modelo";
+            this.modelo.Name = "modelo";
+            this.modelo.Width = 110;
+            // 
+            // matricula
+            // 
+            this.matricula.HeaderText = "Matricula";
+            this.matricula.Name = "matricula";
+            this.matricula.Width = 110;
+            // 
+            // fabricante
+            // 
+            this.fabricante.HeaderText = "Fabricante";
+            this.fabricante.Name = "fabricante";
+            this.fabricante.ReadOnly = true;
+            this.fabricante.Width = 110;
+            // 
+            // tipoServicio1
+            // 
+            this.tipoServicio1.HeaderText = "Tipo de Servicio";
+            this.tipoServicio1.Name = "tipoServicio1";
+            this.tipoServicio1.Width = 130;
+            // 
+            // selec
+            // 
+            this.selec.HeaderText = "Seleccionar";
+            this.selec.Image = ((System.Drawing.Image)(resources.GetObject("selec.Image")));
+            this.selec.Name = "selec";
+            this.selec.Width = 130;
+            // 
             // Generar_Viaje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -394,17 +396,17 @@
         private System.Windows.Forms.ComboBox cbTipoServicio1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker fechaSalida1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modelo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn matricula;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fabricante;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipoServicio1;
-        private System.Windows.Forms.DataGridViewImageColumn selec;
         private System.Windows.Forms.DataGridViewTextBoxColumn id_ruta;
         private System.Windows.Forms.DataGridViewTextBoxColumn codigo_ruta;
         private System.Windows.Forms.DataGridViewTextBoxColumn ciudad_origen;
         private System.Windows.Forms.DataGridViewTextBoxColumn ciudad_destino;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipo_servicio_ruta;
         private System.Windows.Forms.DataGridViewImageColumn selec1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modelo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn matricula;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fabricante;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tipoServicio1;
+        private System.Windows.Forms.DataGridViewImageColumn selec;
     }
 }
