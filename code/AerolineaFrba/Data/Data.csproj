@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aeronave.cs" />
+    <Compile Include="Canje.cs" />
     <Compile Include="Ciudad.cs" />
     <Compile Include="Devolucion.cs" />
     <Compile Include="ListadoEstadistico.cs" />

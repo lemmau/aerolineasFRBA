@@ -42,7 +42,7 @@
             this.compraDePasajeEncomiendaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.itemDevolucion = new System.Windows.Forms.ToolStripMenuItem();
             this.itemConsultaMillas = new System.Windows.Forms.ToolStripMenuItem();
-            this.canjeDeMillasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemCanjes = new System.Windows.Forms.ToolStripMenuItem();
             this.estadisticasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbFecha = new System.Windows.Forms.Label();
             this.menuStripSecciones.SuspendLayout();
@@ -82,7 +82,7 @@
             this.compraDePasajeEncomiendaToolStripMenuItem1,
             this.itemDevolucion,
             this.itemConsultaMillas,
-            this.canjeDeMillasToolStripMenuItem1,
+            this.itemCanjes,
             this.estadisticasToolStripMenuItem});
             this.seccionesToolStripMenuItem.Name = "seccionesToolStripMenuItem";
             this.seccionesToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
@@ -160,12 +160,13 @@
             this.itemConsultaMillas.Text = "Consulta de Millas";
             this.itemConsultaMillas.Click += new System.EventHandler(this.itemConsultaMillas_Click);
             // 
-            // canjeDeMillasToolStripMenuItem1
+            // itemCanjes
             // 
-            this.canjeDeMillasToolStripMenuItem1.Name = "canjeDeMillasToolStripMenuItem1";
-            this.canjeDeMillasToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
-            this.canjeDeMillasToolStripMenuItem1.Tag = "CANJE DE MILLAS";
-            this.canjeDeMillasToolStripMenuItem1.Text = "Canje de Millas";
+            this.itemCanjes.Name = "itemCanjes";
+            this.itemCanjes.Size = new System.Drawing.Size(268, 22);
+            this.itemCanjes.Tag = "CANJE DE MILLAS";
+            this.itemCanjes.Text = "Canje de Millas";
+            this.itemCanjes.Click += new System.EventHandler(this.itemCanjes_Click);
             // 
             // estadisticasToolStripMenuItem
             // 
@@ -223,7 +224,7 @@
         private System.Windows.Forms.ToolStripMenuItem compraDePasajeEncomiendaToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem itemDevolucion;
         private System.Windows.Forms.ToolStripMenuItem itemConsultaMillas;
-        private System.Windows.Forms.ToolStripMenuItem canjeDeMillasToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem itemCanjes;
         private System.Windows.Forms.ToolStripMenuItem estadisticasToolStripMenuItem;
         private System.Windows.Forms.Label lbFecha;
     }

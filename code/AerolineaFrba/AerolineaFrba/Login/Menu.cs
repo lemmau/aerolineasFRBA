@@ -136,5 +136,11 @@ namespace AerolineaFrba.Login
             DevolucionPasajeEncomienda.DevolucionPasajeEncomienda devolucion = new DevolucionPasajeEncomienda.DevolucionPasajeEncomienda();
             devolucion.Show();
         }
+
+        private void itemCanjes_Click(object sender, EventArgs e)
+        {
+            Canje_Millas.CanjeMillas canje = new Canje_Millas.CanjeMillas();
+            canje.Show();
+        }
     }
 }

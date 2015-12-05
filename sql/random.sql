@@ -1143,43 +1143,64 @@ BEGIN
 END
 GO
 ----------------
---  ESTA POR AHORA NO ESTA COMPLETA, SOLO CALCULA EL TOTAL DE MILLAS NO VENCIDAS, PERO NO DESCUENTA CANJES
 CREATE PROCEDURE [HAY_TABLA].[sp_get_millas_acumuladas]
 	@id int,
 	@fechaActual DateTime
 AS
+	DECLARE @ACUMULADAS int, @MILLAS_VIGENTES int, @CANJES_DEL_ULTIMO_ANIO int
 BEGIN
+
 	
-	SELECT sum (millas.acumuladas)
-	from
-	(
-		SELECT sum(CAST(pa.IMPORTE AS int) / 10) as 'acumuladas'
-		from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE pa on p.ID = pa.ID_CLIENTE
-								 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
-								 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
-								 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
-								 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
-		where p.ID = @id
-		and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-						join HAY_TABLA.PASAJE pa2 on itemd.ID_PASAJE = pa2.ID
-						where pa2.ID = pa.ID)
-		and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
+	SET @MILLAS_VIGENTES = (
+							SELECT sum (millas.acumuladas)
+							from
+							(
+								SELECT sum(CAST(pa.IMPORTE AS int) / 10) as 'acumuladas'
+								from HAY_TABLA.PERSONA p join HAY_TABLA.PASAJE pa on p.ID = pa.ID_CLIENTE
+														 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
+														 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+														 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
+														 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
+								where p.ID = @id
+								and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+												join HAY_TABLA.PASAJE pa2 on itemd.ID_PASAJE = pa2.ID
+												where pa2.ID = pa.ID)
+								and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
 
-		UNION ALL
+								UNION ALL
 
-		SELECT sum(CAST(e.IMPORTE AS int) / 10) as 'acumuladas'
-		from HAY_TABLA.PERSONA p join HAY_TABLA.COMPRA c on p.ID = c.ID_COMPRADOR
-								 join HAY_TABLA.ENCOMIENDA e on c.ID = e.ID_COMPRA
-								 join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
-								 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
-								 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
-								 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
-		where p.ID = @id
-		and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-						join HAY_TABLA.ENCOMIENDA e2 on itemd.ID_ENCOMIENDA = e2.ID
-						where e2.ID = e.ID)
-		and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
-	) millas
+								SELECT sum(CAST(e.IMPORTE AS int) / 10) as 'acumuladas'
+								from HAY_TABLA.PERSONA p join HAY_TABLA.COMPRA c on p.ID = c.ID_COMPRADOR
+														 join HAY_TABLA.ENCOMIENDA e on c.ID = e.ID_COMPRA
+														 join HAY_TABLA.VIAJE v on e.ID_VIAJE = v.ID
+														 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+														 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
+														 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
+								where p.ID = @id
+								and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
+												join HAY_TABLA.ENCOMIENDA e2 on itemd.ID_ENCOMIENDA = e2.ID
+												where e2.ID = e.ID)
+								and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
+							) millas
+						   )
+
+	SET @CANJES_DEL_ULTIMO_ANIO = (
+								   SELECT sum(pr.MILLASNECESARIAS * c.CANTIDAD)
+								   from HAY_TABLA.PERSONA pe join HAY_TABLA.CANJE c on pe.ID = c.ID_CLIENTE
+														     join HAY_TABLA.PRODUCTO pr on c.ID_PRODUCTO = pr.ID
+								   where pe.ID = @id
+								   and c.FECHA > DATEADD (MONTH, -12, @fechaActual)
+								  )
+
+	if (@CANJES_DEL_ULTIMO_ANIO is null)
+		begin
+			select @MILLAS_VIGENTES
+		end
+	else
+		begin
+			SET @ACUMULADAS = (@MILLAS_VIGENTES - @CANJES_DEL_ULTIMO_ANIO)
+			select @ACUMULADAS
+		end
 
 END
 GO
@@ -1480,6 +1501,79 @@ BEGIN
 							--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
 							exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, null, @idPasajeEncomienda
 						end
+				end
+		end
+
+END
+GO
+/*-------------   SP  PARA CANJES   -------------*/
+CREATE PROCEDURE [HAY_TABLA].[sp_get_canjes_posibles]
+	@acumuladas int
+AS
+BEGIN
+	
+	if (not exists (SELECT 1
+					from HAY_TABLA.PRODUCTO pr
+					where @acumuladas >= pr.MILLASNECESARIAS))
+		begin
+			RAISERROR(N' Las millas son insuficientes para cualquier producto ', 16, 1)
+			return
+		end
+	else
+		begin
+			SELECT pr.ID as 'id', pr.DESCRIPCION as 'producto', pr.MILLASNECESARIAS as 'millasNecesarias'
+			from HAY_TABLA.PRODUCTO pr
+			where @acumuladas >= pr.MILLASNECESARIAS 
+		end
+
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_confirmar_canje]
+	@idProducto int,
+	@cantidad int,
+	@dni int,
+	@acumuladas int,
+	@fechaActual datetime
+AS
+	DECLARE @idCliente int
+BEGIN
+	if (@acumuladas < (@cantidad * (SELECT pr.MILLASNECESARIAS
+									from HAY_TABLA.PRODUCTO pr
+									where @idProducto = pr.ID)))
+		begin
+			RAISERROR(N'Las millas acumuladas no son suficientes para la cantidad solicitada',16,1)
+			return
+		end
+	else
+		begin
+			if (@cantidad > (SELECT pr.CANTSTOCK
+							 from HAY_TABLA.PRODUCTO pr
+							 where @idProducto = pr.ID))
+				begin
+					RAISERROR(N'El stock del producto no es suficiente para la cantidad solicitada',16,1)
+					return
+				end
+			else
+				begin
+
+					SET @idCliente = (SELECT p.ID
+									  from HAY_TABLA.PERSONA p
+									  where @dni = p.DNI)
+
+					INSERT INTO [HAY_TABLA].CANJE
+						(ID_PRODUCTO, ID_CLIENTE, DNI, CANTIDAD, FECHA)
+					VALUES
+						(@idProducto, @idCliente, @dni, @cantidad, @fechaActual)
+
+					UPDATE 
+						[HAY_TABLA].PRODUCTO
+					SET 
+						CANTSTOCK = (CANTSTOCK - @cantidad)
+					where @idProducto = ID
+
+					--RAISERROR(N'Canje exitoso',16,1)
+					--return
 				end
 		end
 
