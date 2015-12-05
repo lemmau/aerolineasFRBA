@@ -36,11 +36,17 @@ namespace AerolineaFrba.Consulta_Millas
             fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
 
             acumuladas = Millas.GetMillasAcumuladas(id, fechaActual);
+            
             lbMillasAcumuladas.Visible = true;
             lbMillasAcumuladas.Text = acumuladas.ToString();
 
             lbNombre.Visible = true;
             lbNombre.Text = nombre;
+
+            if (acumuladas == 0)
+            {
+                MessageBox.Show("No posee millas acumuladas.");
+            }
 
             dgvMillas.Rows.Clear();
 

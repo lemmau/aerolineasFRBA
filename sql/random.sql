@@ -1194,10 +1194,18 @@ BEGIN
 
 	if (@CANJES_DEL_ULTIMO_ANIO is null)
 		begin
+			if (@MILLAS_VIGENTES is null)
+				begin
+					SET @MILLAS_VIGENTES = 0
+				end
 			select @MILLAS_VIGENTES
 		end
 	else
 		begin
+			if (@MILLAS_VIGENTES is null)
+				begin
+					SET @MILLAS_VIGENTES = 0
+				end
 			SET @ACUMULADAS = (@MILLAS_VIGENTES - @CANJES_DEL_ULTIMO_ANIO)
 			select @ACUMULADAS
 		end
@@ -1523,10 +1531,10 @@ BEGIN
 		begin
 			SELECT pr.ID as 'id', pr.DESCRIPCION as 'producto', pr.MILLASNECESARIAS as 'millasNecesarias'
 			from HAY_TABLA.PRODUCTO pr
-			where @acumuladas >= pr.MILLASNECESARIAS 
+			where @acumuladas >= pr.MILLASNECESARIAS and pr.CANTSTOCK > 0
 		end
-
 END
+
 GO
 ----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_confirmar_canje]
