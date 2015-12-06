@@ -1103,8 +1103,8 @@ BEGIN
 							 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
 							 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
 	where p.ID = @id
-	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-					join HAY_TABLA.PASAJE pa2 on itemd.ID_PASAJE = pa2.ID
+	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp
+					join HAY_TABLA.PASAJE pa2 on itemdp.ID_PASAJE = pa2.ID
 					where pa2.ID = pa.ID)
 	and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
 
@@ -1120,8 +1120,8 @@ BEGIN
 							 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
 							 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
 	where p.ID = @id
-	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-					join HAY_TABLA.ENCOMIENDA e2 on itemd.ID_ENCOMIENDA = e2.ID
+	and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde 
+					join HAY_TABLA.ENCOMIENDA e2 on itemde.ID_ENCOMIENDA = e2.ID
 					where e2.ID = e.ID)
 	and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
 
@@ -1171,8 +1171,8 @@ BEGIN
 														 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
 														 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
 								where p.ID = @id
-								and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-												join HAY_TABLA.PASAJE pa2 on itemd.ID_PASAJE = pa2.ID
+								and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp 
+												join HAY_TABLA.PASAJE pa2 on itemdp.ID_PASAJE = pa2.ID
 												where pa2.ID = pa.ID)
 								and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
 
@@ -1186,8 +1186,8 @@ BEGIN
 														 join HAY_TABLA.CIUDAD c1 on r.ID_CDADORIGEN = c1.ID
 														 join HAY_TABLA.CIUDAD c2 on r.ID_CDADDESTINO = c2.ID
 								where p.ID = @id
-								and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCION itemd 
-												join HAY_TABLA.ENCOMIENDA e2 on itemd.ID_ENCOMIENDA = e2.ID
+								and not exists (select 1 from HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde 
+												join HAY_TABLA.ENCOMIENDA e2 on itemde.ID_ENCOMIENDA = e2.ID
 												where e2.ID = e.ID)
 								and v.FECHALLEGADA > DATEADD (MONTH, -12, @fechaActual)
 							) millas
@@ -1248,7 +1248,7 @@ BEGIN
 				  @fechaActual < v.FECHASALIDA and
 				  --Chequeo que el pasaje a cancelar, no este ya cancelado
 				  not exists (SELECT *
-							  FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
+							  FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on pa2.ID = itemdp.ID_PASAJE
 							  WHERE pa2.ID = pa.ID)
 			UNION ALL
 			-- Busco encomiendas existentes para esta compra
@@ -1265,7 +1265,7 @@ BEGIN
 				  @fechaActual < v.FECHASALIDA and
 				  --Chequeo que la encomienda a cancelar, no este ya cancelada
 				  not exists (SELECT *
-							  FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCION itemd on e2.ID = itemd.ID_ENCOMIENDA
+							  FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde on e2.ID = itemde.ID_ENCOMIENDA
 							  WHERE e2.ID = e.ID)
 		end
 --Caso 2--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1289,7 +1289,7 @@ BEGIN
 					@idPasaje = pa.ID and
 					--Chequeo que el pasaje a cancelar, no este ya cancelado
 					not exists (SELECT *
-							    FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
+							    FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on pa2.ID = itemdp.ID_PASAJE
 							    WHERE pa2.ID = pa.ID)
 				end
 --Caso 3--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1312,7 +1312,7 @@ BEGIN
 							@idEncomienda = e.ID and
 							--Chequeo que la encomienda a cancelar, no este ya cancelada
 							not exists (SELECT *
-									    FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCION itemd on e2.ID = itemd.ID_ENCOMIENDA
+									    FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde on e2.ID = itemde.ID_ENCOMIENDA
 										WHERE e2.ID = e.ID)
 						end
 --Caso 4--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1334,7 +1334,7 @@ BEGIN
 									@fechaActual < v.FECHASALIDA and
 									--Chequeo que la encomienda a cancelar, no este ya cancelada
 									not exists (SELECT *
-												FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCION itemd on e2.ID = itemd.ID_ENCOMIENDA
+												FROM HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde on e2.ID = itemde.ID_ENCOMIENDA
 												WHERE e2.ID = e.ID)
 								end
 --Caso 5--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1355,72 +1355,12 @@ BEGIN
 										@fechaActual < v.FECHASALIDA and
 										--Chequeo que el pasaje a cancelar, no este ya cancelado
 										not exists (SELECT *
-													FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCION itemd on pa2.ID = itemd.ID_PASAJE
+													FROM HAY_TABLA.PASAJE pa2 join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on pa2.ID = itemdp.ID_PASAJE
 													WHERE pa2.ID = pa.ID)
 									end
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 						end
 				end
-		end
-
-END
-GO
-----------------
-CREATE PROCEDURE [HAY_TABLA].[sp_actualizacion_importes_devolucion]
-	@idCompra int,
-	@idPasaje int,
-	@idEncomienda int
-	
-AS
-	DECLARE @IMPORTE_A_DESCONTAR NUMERIC(18,2), @IMPORTE_TOTAL_COMPRA NUMERIC(18,2)
-BEGIN
-	
-	SET @IMPORTE_TOTAL_COMPRA = (select c.IMPORTETOTAL
-								 from HAY_TABLA.COMPRA c
-								 where @idCompra = c.ID)
-
-    if (@idPasaje is null)
-		begin
-			SET @IMPORTE_A_DESCONTAR = (select e.IMPORTE
-										from HAY_TABLA.ENCOMIENDA e 
-										where @idEncomienda = e.ID)
-			
-			-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
-			UPDATE 
-				[HAY_TABLA].ENCOMIENDA
-			SET 
-				IMPORTE = (-1 * @IMPORTE_A_DESCONTAR)
-			where @idEncomienda = ID
-			-- Actualizo el importe total de la compra restando el monto del item cancelado
-			UPDATE 
-				[HAY_TABLA].COMPRA
-			SET 
-				IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
-			where @idCompra = ID
-
- 		end
-	else
-		begin
-			if (@idEncomienda is null)
-				begin
-					SET @IMPORTE_A_DESCONTAR = (select p.IMPORTE
-												from HAY_TABLA.PASAJE p
-												where @idPasaje = p.ID)
-
-					-- Cuando cancelo un Item, seteo el importe del mismo en negativo en su tabla respectiva
-					UPDATE 
-						[HAY_TABLA].PASAJE
-					SET 
-						IMPORTE = (-1 * IMPORTE)
-					where @idPasaje = ID
-					-- Actualizo el importe total de la compra restando el monto del item cancelado
-					UPDATE 
-						[HAY_TABLA].COMPRA
-					SET 
-						IMPORTETOTAL = (@IMPORTE_TOTAL_COMPRA - @IMPORTE_A_DESCONTAR)
-					where @idCompra = ID
-
- 				end
 		end
 
 END
@@ -1576,21 +1516,19 @@ BEGIN
 									  where @dni = p.DNI)
 
 					INSERT INTO [HAY_TABLA].CANJE
-						(ID_PRODUCTO, ID_CLIENTE, DNI, CANTIDAD, FECHA)
+						(ID_PRODUCTO, ID_CLIENTE, CANTIDAD, FECHA)
 					VALUES
-						(@idProducto, @idCliente, @dni, @cantidad, @fechaActual)
+						(@idProducto, @idCliente, @cantidad, @fechaActual)
 
 					UPDATE 
 						[HAY_TABLA].PRODUCTO
 					SET 
 						CANTSTOCK = (CANTSTOCK - @cantidad)
 					where @idProducto = ID
-
-					--RAISERROR(N'Canje exitoso',16,1)
-					--return
 				end
 		end
 
 END
+
 GO
 ----------------
