@@ -494,17 +494,36 @@ END
 GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_eliminar_ciudad]
-	@id int
+	@id int,
+	@fechaActual datetime
 AS
 BEGIN
 	SET NOCOUNT ON;
-
-    UPDATE 
-		[HAY_TABLA].CIUDAD
-	SET 
-		STATUS = 0
-	WHERE
-		ID = @id
+	
+	if ((--La ciudad es origen de algun viaje programado
+		 exists (select distinct co.NOMBRE
+				 from HAY_TABLA.VIAJE v join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+							  	        join HAY_TABLA.CIUDAD co on co.ID = r.ID_CDADORIGEN
+				 where @id = co.ID and @fechaActual < v.FECHASALIDA)) or
+	    (--La ciudad es destino de algun viaje programado
+	     exists (select distinct co.NOMBRE
+				 from HAY_TABLA.VIAJE v join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+							  	        join HAY_TABLA.CIUDAD co on co.ID = r.ID_CDADORIGEN
+				 where @id = co.ID and @fechaActual < v.FECHASALIDA)))
+		begin
+			RAISERROR(N'No es posible eliminar la ciudad seleccionada ya que posee viajes programados',16,1)
+			return
+		end
+	else
+		begin
+			UPDATE 
+				[HAY_TABLA].CIUDAD
+			SET 
+				STATUS = 0
+			WHERE
+				ID = @id
+		end
+  
 END
 GO
 ------

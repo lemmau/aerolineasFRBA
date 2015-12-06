@@ -74,7 +74,7 @@ namespace Logica
             }
         }
 
-        public static void eliminarCiudad(int ciudadEliminar)
+        public static void eliminarCiudad(int ciudadEliminar, DateTime fechaActual)
         {
             using (var con = Data.DataAccess.GetConnection())
             {
@@ -82,6 +82,7 @@ namespace Logica
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = ciudadEliminar;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
 
                 con.Open();
                 cmd.ExecuteNonQuery();

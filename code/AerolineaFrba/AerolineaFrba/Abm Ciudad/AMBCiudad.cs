@@ -33,12 +33,10 @@ namespace AerolineaFrba.Abm_Ciudad
             try
             {
                 Ciudad.insertarCiudad(txtAltaCiudad.Text.Trim());
-                DGVCiudad.DataSource = Ciudad.cargarDGVCiudad();
-                MessageBox.Show("Ciudad agregada satisfactoriamente");
-                txtAltaCiudad.Text = string.Empty;
             }
             catch (Exception ex)
             {
+                DGVCiudad.DataSource = Ciudad.cargarDGVCiudad();
                 MessageBox.Show(ex.Message);
                 txtAltaCiudad.Text = string.Empty;
             }
@@ -46,16 +44,24 @@ namespace AerolineaFrba.Abm_Ciudad
 
         private void btnEliminarCiudad_Click(object sender, EventArgs e)
         {
+            DateTime fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+
             if (DGVCiudad.CurrentRow == null)
             {
                 MessageBox.Show("Debe seleccionar una fila");
                 return;
             }
 
-            Ciudad.eliminarCiudad(Convert.ToInt32(DGVCiudad.CurrentRow.Cells[0].Value));
-
-            DGVCiudad.DataSource = Ciudad.cargarDGVCiudad();
-            MessageBox.Show("Ciudad eliminada satisfactoriamente");
+            try
+            {
+                Ciudad.eliminarCiudad(Convert.ToInt32(DGVCiudad.CurrentRow.Cells[0].Value), fechaActual);
+                DGVCiudad.DataSource = Ciudad.cargarDGVCiudad();
+                MessageBox.Show("Ciudad eliminada satisfactoriamente");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
     }
