@@ -1429,18 +1429,23 @@ BEGIN
 	--No chequea si el Item que quiero cancelar ya existe, ya que eso lo controla el sp_select_items, y de existir NO lo muestra en el DGV de Devoluciones
 
 	if --Si no existe una devolucion para esa compra
+	   (
 	   ((not exists(SELECT * 
-		 			FROM HAY_TABLA.ITEMSDEVOLUCION itemd 
-					WHERE @idCompra = itemd.ID_COMPRA)) or
-	   --Ya existe una devolucion para esa compra, PERO fue echa en alguna operacion previa, ahora es una devolucion parcial de OTRO item de la misma compra
+		 			FROM HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp 
+					WHERE @idCompra = itemdp.ID_COMPRA)) and
+		(not exists(SELECT * 
+		 			FROM HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde
+					WHERE @idCompra = itemde.ID_COMPRA))) or
+	   --Ya existe una devolucion para esa compra, PERO fue hecha en alguna operacion previa, ahora es una devolucion parcial de OTRO item de la misma compra
+	   ((exists(SELECT * 
+		 	   FROM HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp join HAY_TABLA.DEVOLUCION d on itemdp.ID_DEVOLUCION = d.ID 
+			   WHERE @idCompra = itemdp.ID_COMPRA and @fechaActual > d.FECHA)) or 
 	   (exists(SELECT * 
-		 	   FROM HAY_TABLA.ITEMSDEVOLUCION itemd join HAY_TABLA.DEVOLUCION d on itemd.ID_DEVOLUCION = d.ID 
-			   WHERE @idCompra = itemd.ID_COMPRA and @fechaActual > d.FECHA)))
+		 	   FROM HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde join HAY_TABLA.DEVOLUCION d on itemde.ID_DEVOLUCION = d.ID 
+			   WHERE @idCompra = itemde.ID_COMPRA and @fechaActual > d.FECHA))))
 	   begin
 			INSERT INTO [HAY_TABLA].[DEVOLUCION]
 				(FECHA, MOTIVO)
-			/*OUTPUT
-				inserted.ID*/
 			VALUES
 				(@fechaActual, @motivoDevolucion)	
 
@@ -1452,27 +1457,23 @@ BEGIN
 			--Inserto nuevo registro en ItemDevolucion para otro Item de la misma Compra
 			if (@tipoItem = 'Pasaje')
 				begin
-					INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
-						(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+					INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCIONPASAJE]
+						(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE)
 					OUTPUT
 						inserted.ID
 					VALUES
-						(@idDevolucion, @idCompra, @idPasajeEncomienda, null)
-					--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
-					exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, @idPasajeEncomienda, null
+						(@idDevolucion, @idCompra, @idPasajeEncomienda)
 				end
 			else
 				begin
 					if (@tipoItem = 'Encomienda')
 						begin
-							INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
-								(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+							INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCIONENCOMIENDA]
+								(ID_DEVOLUCION, ID_COMPRA, ID_ENCOMIENDA)
 							OUTPUT
 								inserted.ID
 							VALUES
-								(@idDevolucion, @idCompra, null, @idPasajeEncomienda)
-							--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
-							exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, null, @idPasajeEncomienda
+								(@idDevolucion, @idCompra, @idPasajeEncomienda)
 						end
 				end
 	   end
@@ -1487,27 +1488,23 @@ BEGIN
 			--Inserto nuevo registro en ItemDevolucion para otro Item de la misma Compra
 			if (@tipoItem = 'Pasaje')
 				begin
-					INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
-						(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+					INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCIONPASAJE]
+						(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE)
 					OUTPUT
 						inserted.ID
 					VALUES
-						(@idDevolucion, @idCompra, @idPasajeEncomienda, null)
-					--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
-					exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, @idPasajeEncomienda, null
+						(@idDevolucion, @idCompra, @idPasajeEncomienda)
 				end
 			else
 				begin
 					if (@tipoItem = 'Encomienda')
 						begin
-							INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCION]
-								(ID_DEVOLUCION, ID_COMPRA, ID_PASAJE, ID_ENCOMIENDA)
+							INSERT INTO [HAY_TABLA].[ITEMSDEVOLUCIONENCOMIENDA]
+								(ID_DEVOLUCION, ID_COMPRA, ID_ENCOMIENDA)
 							OUTPUT
 								inserted.ID
 							VALUES
-								(@idDevolucion, @idCompra, null, @idPasajeEncomienda)
-							--Este sp actualiza importeTotal de la compra, y paso a negativo el importe del item
-							exec HAY_TABLA.sp_actualizacion_importes_devolucion @idCompra, null, @idPasajeEncomienda
+								(@idDevolucion, @idCompra, @idPasajeEncomienda)
 						end
 				end
 		end
