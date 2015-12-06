@@ -28,14 +28,14 @@ namespace Logica
 
 
 
-        public void Insertate(Int32 cantPasillo, Int32 cantVentanilla)
+        public void Insertate()
         {
-            Aeronave.Insertar(this, cantPasillo, cantVentanilla);
+            Aeronave.Insertar(this);
         }
 
-        public void Actualizate(Int32 cantPasillo, Int32 cantVentanilla)
+        public void Actualizate()
         {
-            Aeronave.Actualizar(this, cantPasillo, cantVentanilla);
+            Aeronave.Actualizar(this);
         }
 
         public static int validarIngresos(String fabricante, String modelo, String matricula, String butacasPasillo, String butacasVentanilla, String espacioKG, Int32? idTipoServicio)
@@ -67,7 +67,7 @@ namespace Logica
             return mensaje;
         }
 
-        private static void Insertar(Aeronave aeronave, Int32 cantPasillo, Int32 cantVentanilla)
+        private static void Insertar(Aeronave aeronave)
         {
             SqlConnection con = null;
             SqlTransaction trans = null;
@@ -78,7 +78,7 @@ namespace Logica
                 trans = con.BeginTransaction();
 
                 aeronave.Id = Data.Aeronave.Insertar(aeronave.fechaAlta, aeronave.fabricante, aeronave.modelo, aeronave.matricula,
-                      aeronave.espacioKG, cantPasillo, cantVentanilla, aeronave.tipoServicio.Id);
+                      aeronave.espacioKG, aeronave.cantButacasPasillo, aeronave.cantButacasVentanilla, aeronave.tipoServicio.Id);
 
                 trans.Commit();
                 con.Close();
@@ -95,7 +95,7 @@ namespace Logica
             }
         }
 
-        private static void Actualizar(Aeronave aeronave, Int32 cantPasillo, Int32 cantVentanilla)
+        private static void Actualizar(Aeronave aeronave)
         {
             SqlConnection con = null;
             SqlTransaction trans = null;
@@ -106,7 +106,7 @@ namespace Logica
                 trans = con.BeginTransaction();
 
                 Data.Aeronave.Actualizar(aeronave.fechaAlta, aeronave.Id, aeronave.fabricante, aeronave.modelo, aeronave.matricula,
-                      aeronave.espacioKG, cantPasillo, cantVentanilla, aeronave.tipoServicio.Id);
+                      aeronave.espacioKG, aeronave.cantButacasPasillo, aeronave.cantButacasVentanilla, aeronave.tipoServicio.Id);
 
                 trans.Commit();
                 con.Close();

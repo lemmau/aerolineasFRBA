@@ -86,7 +86,7 @@ namespace AerolineaFrba.Abm_Aeronave
                         aeronave.tipoServicio = new TipoServicio();
                         aeronave.tipoServicio.Id = IdTipoDeServicioSeleccionado.Value;
 
-                        aeronave.Insertate(cantPasillo, cantVentanilla);
+                        aeronave.Insertate();
 
                         MessageBox.Show("La aeronave ha sido guardada satisfactoriamente");
                         this.idInsertado = aeronave.Id;

@@ -28,8 +28,6 @@ namespace AerolineaFrba.Abm_Aeronave
             tbModelo.Text = aeronaveSeleccionada.modelo;
             tbMatricula.Text = aeronaveSeleccionada.matricula;
             tbKG.Text = aeronaveSeleccionada.espacioKG.ToString();
-            //  OJO, ESTOY MOSTRANDO EL TOTAL, NO LAS DE PASILLO
-            //tbButacasPasillo POSTA falta
             tbButacasPasillo.Text = aeronaveSeleccionada.cantButacasPasillo.ToString();
             tbButacasVentanilla.Text = aeronaveSeleccionada.cantButacasVentanilla.ToString();
             CargarTiposDeServicio();
@@ -91,10 +89,12 @@ namespace AerolineaFrba.Abm_Aeronave
                         aeronave.modelo = tbModelo.Text;
                         aeronave.matricula = tbMatricula.Text;
                         aeronave.espacioKG = Int32.Parse(tbKG.Text);
+                        aeronave.cantButacasVentanilla = cantVentanilla;
+                        aeronave.cantButacasPasillo = cantPasillo;
                         aeronave.tipoServicio = new TipoServicio();
                         aeronave.tipoServicio.Id = IdTipoDeServicioSeleccionado.Value;
 
-                        aeronave.Actualizate(cantPasillo, cantVentanilla);
+                        aeronave.Actualizate();
 
                         MessageBox.Show("La aeronave se ha modificado satisfactoriamente");
                         this.idInsertado = aeronave.Id;
