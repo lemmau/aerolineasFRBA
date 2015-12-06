@@ -43,7 +43,7 @@ namespace AerolineaFrba
             //MessageBox.Show("ejecute la sp mas pelotuda");
 
             if (ConfigurationManager.AppSettings["FechaDelSistema"] != "")
-                SharedData.Instance().fechaDelSistema = DateTime.ParseExact(ConfigurationManager.AppSettings["FechaDelSistema"], "yyyy-MM-dd", null);
+                SharedData.Instance().fechaDelSistema = DateTime.ParseExact(ConfigurationManager.AppSettings["FechaDelSistema"], "yyyy-MM-dd HH:mm:ss", null);
 
             Application.Run(new Inicial());
         }

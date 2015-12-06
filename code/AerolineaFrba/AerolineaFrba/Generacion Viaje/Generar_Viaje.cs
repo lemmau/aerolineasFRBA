@@ -34,9 +34,9 @@ namespace AerolineaFrba.Generacion_Viaje
         private void Generar_Viaje_Load(object sender, EventArgs e)
         {
             fechaSis = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
-            fechaSis = fechaSis.AddHours(00);
+         /*   fechaSis = fechaSis.AddHours(00);
             fechaSis = fechaSis.AddMinutes(00);
-            fechaSis = fechaSis.AddSeconds(00);
+            fechaSis = fechaSis.AddSeconds(00);*/
             fechaSalida1.Value = fechaSis;
             fechaEst1.Value = fechaSis;
             fechaSalida.Value = fechaSis;
@@ -132,6 +132,7 @@ namespace AerolineaFrba.Generacion_Viaje
             }
         }
 
+ 
 
         public Boolean fechaLLegadaEstimMenorFechaSalida()
         {
@@ -224,8 +225,7 @@ namespace AerolineaFrba.Generacion_Viaje
         public Boolean fechaSalidaMenorActual()
         {
 
-            //le sumo 1 para que programen viajes posteriores a una hora. Es decir, si
-            //son las 18hs no puedo programar un viaje para las 18hs
+         
             this.fecha_actual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
             this.fecha_actual = this.fecha_actual.AddHours(DateTime.Now.Hour);
             this.fecha_actual = this.fecha_actual.AddHours(1);
@@ -367,16 +367,14 @@ namespace AerolineaFrba.Generacion_Viaje
                     SqlParameter idAeronave = cmd.Parameters.Add("@id_aeronave", SqlDbType.Int);
                     SqlParameter idRuta = cmd.Parameters.Add("@id_ruta", SqlDbType.Int);
 
-                    SqlParameter HAY_ERROR = cmd.Parameters.Add("@hayErr", SqlDbType.Int);
-                    SqlParameter ERRORES = cmd.Parameters.Add("@errores", SqlDbType.VarChar, 200);
+
 
                     fechaSalida.Value = f_salida;
                 
                     fechaLlegadaEstimada.Value = f_llegada_est;
                     idAeronave.Value = this.id_aeronave;
                     idRuta.Value = this.id_ruta_selec;
-                    HAY_ERROR.Direction = ParameterDirection.Output;
-                    ERRORES.Direction = ParameterDirection.Output;
+
 
 
                     try
@@ -384,15 +382,7 @@ namespace AerolineaFrba.Generacion_Viaje
                         conn.Open();
                         cmd.ExecuteNonQuery();
 
-                        int hayError = Convert.ToInt16(cmd.Parameters["@hayErr"].Value.ToString());
-                        if (hayError == 1)
-                        {
-                            string errores = cmd.Parameters["@errores"].Value.ToString();
-                            MessageBox.Show("Error: \n" + errores, null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            conn.Close();
-                            return;
-                        }
-                        MessageBox.Show("El Viaje ha sido dado de alta", "", MessageBoxButtons.OK);
+              
                     }
                     catch (Exception error)
                     {
@@ -401,6 +391,7 @@ namespace AerolineaFrba.Generacion_Viaje
                         return;
                     }
 
+                    MessageBox.Show("Se ha guardado correctamente el viaje", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
                    this.Close();
                 }
             }
@@ -421,6 +412,19 @@ namespace AerolineaFrba.Generacion_Viaje
         private Boolean validarFechas()
         {
             string str_error = "";
+
+            if (fechaSalidaMenorActual())
+
+            {
+                this.fecha_actual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+                this.fecha_actual = this.fecha_actual.AddHours(1);
+               /* this.fecha_actual = this.fecha_actual.AddHours(DateTime.Now.Hour);
+                this.fecha_actual = this.fecha_actual.AddHours(1);
+                this.fecha_actual = this.fecha_actual.AddMinutes(DateTime.Now.Minute);
+                this.fecha_actual = this.fecha_actual.AddSeconds(DateTime.Now.Second);*/
+
+                str_error += "La fecha de Salida  debe ser mayor "+ fecha_actual.ToString()+" \n";
+            }
             if (fechaLLegadaEstimMenorFechaSalida())
             {
                 str_error += "La fecha de llegada estimada no puede ser previa a la fecha de salida\n";

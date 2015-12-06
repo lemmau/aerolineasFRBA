@@ -74,5 +74,39 @@ namespace AerolineaFrba.Listado_Estadistico
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void btListar_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Int32 anio = 0;
+
+                if (!Int32.TryParse(tbAnio.Text, out anio))
+                {
+                    MessageBox.Show("Ingrese un año valido");
+                    return;
+                }
+                dgvListado.DataSource = null;
+
+
+                Int32 semestre = ((KeyValuePair<Int32, String>)cbSemestre.SelectedItem).Key - 1;
+                DateTime desde = new DateTime(anio, 1 + semestre * 6, 1);
+                DateTime hasta;
+
+                if (semestre == 1)  // 2do semestre (el ultimo)
+                    hasta = new DateTime(anio + 1, 1, 1).AddDays(-1);
+                else
+                    hasta = new DateTime(anio, 1 + (semestre + 1) * 6, 1).AddDays(-1);
+
+                Cursor.Current = Cursors.WaitCursor;
+                dgvListado.DataSource = Logica.ListadoEstadistico.Get(NumeroListado, desde, hasta);
+                Cursor.Current = Cursors.Default;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

@@ -162,6 +162,7 @@
             this.btListar.TabIndex = 6;
             this.btListar.Text = "Listar";
             this.btListar.UseVisualStyleBackColor = true;
+            this.btListar.Click += new System.EventHandler(this.btListar_Click_1);
             // 
             // ListadoEstadistico
             // 

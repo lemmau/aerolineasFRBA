@@ -689,11 +689,10 @@ GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_viaje]
     @f_salida datetime,
-	@f_llegada_est  datetime ,
+	@f_llegada_est  datetime,
 	@id_aeronave int,
-	@id_ruta int,
-	@hayErr int OUT,
-    @errores varchar(200) OUT
+	@id_ruta int
+	
 AS
 BEGIN
 	INSERT INTO [HAY_TABLA].VIAJE
@@ -798,7 +797,7 @@ BEGIN
 	
 	IF @id_viaje is null BEGIN 
 		set @hayErr = 1
-		set @errores = 'No existe ningún Viaje  para la ciudad de origen seleccionada'
+		set @errores = 'No existe ningún Viaje sin registrar su llegada para la ciudad de origen seleccionada'
 		RETURN
 	END
     	
