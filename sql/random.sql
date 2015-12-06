@@ -36,11 +36,12 @@ inner join HAY_TABLA.RUTA r on r.ID= v.ID_RUTA
 inner join HAY_TABLA.CIUDAD ci on ci.ID=r.ID_CDADDESTINO
 where YEAR( c.FECHA ) = YEAR (@desde) and MONTH (c.FECHA)  between MONTH (@desde) and MONTH (@hasta) 
 and p.ID not in (select pa.ID from HAY_TABLA.DEVOLUCION d
-inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
+inner join HAY_TABLA.ITEMSDEVOLUCIONPASAJE i on d.ID= i.ID_DEVOLUCION
 inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
 inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
 where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta) )
 group by ci.NOMBRE order by COUNT(p.ID)  desc
+
 
 END
 
@@ -101,14 +102,13 @@ BEGIN
 		inner join HAY_TABLA.PASAJE p on p.ID_COMPRA = v.ID
 		inner join HAY_TABLA.COMPRA c on c.ID = v.ID 
 		where YEAR (c.FECHA)= YEAR(@desde) and MONTH (c.FECHA) between MONTH(@desde) and MONTH(@hasta) and
-		p.ID not in (select i.ID_PASAJE from HAY_TABLA.DEVOLUCION d inner join  HAY_TABLA.ITEMSDEVOLUCION i on d.ID = i.ID_DEVOLUCION where  
+		p.ID not in (select i.ID_PASAJE from HAY_TABLA.DEVOLUCION d inner join  HAY_TABLA.ITEMSDEVOLUCIONPASAJE i on d.ID = i.ID_DEVOLUCION where  
 		YEAR (d.FECHA) =YEAR(@desde) and MONTH(d.FECHA) between MONTH(@desde) and MONTH(@hasta))
 		 group by a.ID ,v.ID_RUTA ) T
    inner join HAY_TABLA.RUTA r on T.ruta = r.ID 
    inner join HAY_TABLA.CIUDAD ci on ci.ID = r.ID_CDADDESTINO
   group by ci.NOMBRE
   order by 2 desc	
-
 
 
  END
@@ -134,7 +134,7 @@ BEGIN
 							 join HAY_TABLA.CIUDAD ciu2 on r.ID_CDADDESTINO = ciu2.ID
 	where pa.ID not in (select i.ID_PASAJE from HAY_TABLA.DEVOLUCION d 
 
-	inner join  HAY_TABLA.ITEMSDEVOLUCION i  on d.ID = i.ID_DEVOLUCION)
+	inner join  HAY_TABLA.ITEMSDEVOLUCIONPASAJE i  on d.ID = i.ID_DEVOLUCION)
 
 	and  YEAR (c.FECHA) =YEAR (@desde) and MONTH (c.FECHA) between MONTH(@desde) and MONTH(@hasta)
 	order by 4 desc 
@@ -157,7 +157,7 @@ inner join HAY_TABLA.RUTA r on r.ID= v.ID_RUTA
 inner join HAY_TABLA.CIUDAD ci on ci.ID=r.ID_CDADDESTINO
 where YEAR( c.FECHA ) = YEAR (@desde) and MONTH (c.FECHA)  between MONTH (@desde) and MONTH (@hasta)
 and p.ID in (select pa.ID from HAY_TABLA.DEVOLUCION d
-inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
+inner join HAY_TABLA.ITEMSDEVOLUCIONPASAJE i on d.ID= i.ID_DEVOLUCION
 inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
 inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
 where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta))
@@ -172,7 +172,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_5]
 	@hasta DATETIME
 AS
 BEGIN	
-	select top 5 a.MATRICULA as 'Matricula',a.FABRICANTE as 'Fabricante' , a.MODELO as 'modelo',a.FECHAALTA as 'Fecha de ingreso de la aeronave al sistema ',
+	select top 5 a.MATRICULA as 'Matricula',a.FABRICANTE as 'Fabricante' , a.MODELO as 'Modelo',a.FECHAALTA as 'Fecha de ingreso de la aeronave al sistema ',
 	(select sum (datediff(DD,hi.FECHABAJA ,hi.FECHAREINICIO))
 	 from HAY_TABLA.AERONAVE ae
       inner join HAY_TABLA.HISTORIALBAJA_AERONAVE hi on ae.ID = hi.ID_AERONAVE
@@ -189,7 +189,6 @@ and YEAR (h.FECHABAJA) = YEAR (@desde) and MONTH(h.FECHABAJA)  between MONTH (@d
 and YEAR (h.FECHAREINICIO) = YEAR (@hasta) and MONTH(h.FECHAREINICIO) between MONTH (@desde) and MONTH (@hasta)
  group by a.ID ,a.MATRICULA,a.FABRICANTE ,a.MODELO ,a.FECHAALTA 
  order by 5 desc 
-
 
 END
 GO
