@@ -148,10 +148,12 @@
             // 
             // dgvListado
             // 
+            this.dgvListado.AllowUserToAddRows = false;
             this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListado.Location = new System.Drawing.Point(25, 183);
+            this.dgvListado.Location = new System.Drawing.Point(141, 183);
             this.dgvListado.Name = "dgvListado";
-            this.dgvListado.Size = new System.Drawing.Size(835, 216);
+            this.dgvListado.RowHeadersVisible = false;
+            this.dgvListado.Size = new System.Drawing.Size(511, 216);
             this.dgvListado.TabIndex = 5;
             // 
             // btListar
