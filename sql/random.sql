@@ -73,7 +73,18 @@ BEGIN
 			HAVING COUNT(*)
 
 END
-GO
+GO*/
+---------------------
+CREATE FUNCTION  [HAY_TABLA].[fn_cant_butacas] (@idAeronave  int)
+		RETURNS  int
+		AS 
+		BEGIN 
+		declare @cantidadButacas int
+		set @cantidadButacas = (select ae.CANTBUTACASPASILLO+ ae.CANTBUTACASVENTANILLA from HAY_TABLA.AERONAVE ae where ae.ID =@idAeronave)
+		return  @cantidadButacas
+
+		END 
+	GO	
 ---------------------
 
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
@@ -82,26 +93,26 @@ CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
 AS
 BEGIN	
 
-select  top 5 ci.NOMBRE from 
- hay_tabla.BUTACA b
-inner join HAY_TABLA.PASAJE p  on b.ID = p.ID_BUTACA
-inner join HAY_TABLA.COMPRA  c on c.ID = p.ID_COMPRA
-inner join HAY_TABLA.VIAJE v on v.ID = p.ID_VIAJE
-inner join HAY_TABLA.AERONAVE  a on v.ID_AERONAVE = a.ID
-inner join HAY_TABLA.RUTA r on r.ID = v.ID_RUTA
-inner join HAY_TABLA.CIUDAD ci on ci.ID = r.ID_CDADDESTINO
-where YEAR( c.FECHA ) = YEAR (@desde) and MONTH (c.FECHA)  between MONTH (@desde) and MONTH (@hasta) 
-and p.ID not in (select pa.ID from HAY_TABLA.DEVOLUCION d
-inner join HAY_TABLA.ITEMSDEVOLUCION i on d.ID= i.ID_DEVOLUCION
-inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
-inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
-where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta)   )
-group by ci.NOMBRE ,a.CANTBUTACASPASILLO ,a.CANTBUTACASVENTANILLA 
- order by  (a.CANTBUTACASPASILLO+ a.CANTBUTACASVENTANILLA ) - count(*) desc 
+	select TOP 5 ci.NOMBRE as 'Ciudad de Destino', sum (T.butacas) -sum(T.bvendidos) as 'Cantidad de butacas libre' , count (r.ID) as 'cantidad viajes'
+    from
+	(select HAY_TABLA.fn_cant_butacas(a.ID) as butacas ,COUNT(p.ID) as bvendidos , v.ID_RUTA as ruta  from 
+	    HAY_TABLA.VIAJE v  
+		inner join  HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+		inner join HAY_TABLA.PASAJE p on p.ID_COMPRA = v.ID
+		inner join HAY_TABLA.COMPRA c on c.ID = v.ID 
+		where YEAR (c.FECHA)= YEAR(@desde) and MONTH (c.FECHA) between MONTH(@desde) and MONTH(@hasta) and
+		p.ID not in (select i.ID_PASAJE from HAY_TABLA.DEVOLUCION d inner join  HAY_TABLA.ITEMSDEVOLUCION i on d.ID = i.ID_DEVOLUCION where  
+		YEAR (d.FECHA) =YEAR(@desde) and MONTH(d.FECHA) between MONTH(@desde) and MONTH(@hasta))
+		 group by a.ID ,v.ID_RUTA ) T
+   inner join HAY_TABLA.RUTA r on T.ruta = r.ID 
+   inner join HAY_TABLA.CIUDAD ci on ci.ID = r.ID_CDADDESTINO
+  group by ci.NOMBRE
+  order by 2 desc	
+
 
 
  END
-GO */
+GO 
 
 CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_3]
 	@desde DATETIME,
