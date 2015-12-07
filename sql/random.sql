@@ -45,6 +45,7 @@ group by ci.NOMBRE order by COUNT(p.ID)  desc
 
 END
 
+GO
 ----------
 
 
@@ -119,7 +120,8 @@ CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_3]
 	@hasta DATETIME
 AS
 BEGIN
-	SELECT TOP 5 p.NOMBRE as 'Nombre' , p.APELLIDO as 'Apellido', p.MAIL as 'E.mail', (((CAST(pa.IMPORTE AS int) +CAST(e.IMPORTE AS int)) / 10)) as 'Millas'
+	SELECT TOP 5 p.NOMBRE as 'Nombre' , p.APELLIDO as 'Apellido', p.MAIL as 'E.mail', 
+	(((CAST(pa.IMPORTE AS int) +CAST(e.IMPORTE AS int)) / 10)) as 'Millas'
 		    
 		 
 	from HAY_TABLA.PERSONA p 
@@ -820,7 +822,7 @@ BEGIN
 						from HAY_TABLA.VIAJE V join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
 						join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
 					
-						where V.FECHALLEGADA is null and  V.STATUS = 1
+						where V.FECHALLEGADA is null and  V.STATUS = 0
 						and R1.ID_CDADORIGEN = @id_ciudad_origen and upper(A.MATRICULA) = upper(@matricula))
 						
 	
@@ -832,7 +834,7 @@ BEGIN
     	
 	DECLARE @ciudadLlegada int  
 	select @ciudadLlegada = (select count (*) from HAY_TABLA.VIAJE V join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
-	 where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino and V.STATUS = 1  ) 
+	 where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino  ) 
 
 
 	 	IF @ciudadLlegada = 0 BEGIN 
