@@ -16,11 +16,13 @@ namespace AerolineaFrba.Abm_Aeronave
     {
         Aeronave _aeronave = null; 
         DateTime fechaActual;
+        Int32 idAeronaveLocal = -1;
 
         public FormEliminarAeronave(Int32 idAeronave)
         {
             InitializeComponent();
             _aeronave = Aeronave.GetById(idAeronave);
+            idAeronaveLocal = idAeronave;
 
             fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
             fechaActual.AddHours(00);
@@ -28,55 +30,91 @@ namespace AerolineaFrba.Abm_Aeronave
             fechaActual = fechaActual.AddSeconds(00);
             fechaReincorporacion.Value = fechaActual;
         }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        
+        private void rbFinVidaUtil_CheckedChanged(object sender, EventArgs e)
         {
             fechaReincorporacion.Enabled = false;
         }
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        private void rbFueraServicio_CheckedChanged(object sender, EventArgs e)
         {
             fechaReincorporacion.Enabled = true;
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-
             //  SI ES BAJA POR VIDA UTIL
             if (rbFinVidaUtil.Checked == true)
             {
-                try
+
+                //Chequea si la aeronave tiene vuelos programados
+                Int32 resultado = _aeronave.ChequeateVuelosProgramados(fechaActual, fechaReincorporacion.Value, 2);
+
+                //La aeronave tiene vuelos programados
+                if (resultado == 1)
                 {
-                    _aeronave.BajateVidaUtil(fechaActual);
-                    MessageBox.Show("La aeronave ha cumplido su vida util");
-                    Close();
+                    //MessageBox.Show("Hay vuelos programados"/*, "Aviso", MessageBoxButtons.YesNo*/);
+                    DecisionEliminar decision = new DecisionEliminar(idAeronaveLocal, fechaActual, fechaReincorporacion.Value, 2);
+                    decision.Show();
                 }
-                catch (Exception ex)
+
+                //La aeronave NO tiene vuelos programados
+                if (resultado == 2)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show("No hay vuelos programados");
+                    try
+                    {
+                        _aeronave.BajateVidaUtil(fechaActual);
+                        MessageBox.Show("La aeronave ha cumplido su vida util");
+                        Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
+            
             //  SI ES BAJA POR FUERA DE SERVICIO
             if (rbFueraServicio.Checked == true)
             {
-                try
-                {
-                    _aeronave.BajateFueraDeServicio(fechaActual, fechaReincorporacion.Value);
 
-                    MessageBox.Show("La aeronave ha quedado fuera de servicio");
-                    Close();
-                }
-                catch (Exception ex)
+                //Chequea si la aeronave tiene vuelos programados
+                Int32 resultado = _aeronave.ChequeateVuelosProgramados(fechaActual, fechaReincorporacion.Value, 1);
+
+                //La aeronave tiene vuelos programados
+                if (resultado == 3)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show("Hay vuelos programados antes de que la aeronave se reincorpore");
+                    DecisionEliminar decision = new DecisionEliminar(idAeronaveLocal, fechaActual, fechaReincorporacion.Value, 1);
+                    decision.Show();
+                }
+
+                //La aeronave NO tiene vuelos programados
+                if (resultado == 4)
+                {
+                    //MessageBox.Show("No hay vuelos programados en el periodo de fuera de servicio");
+                    try
+                    {
+                        _aeronave.BajateFueraDeServicio(fechaActual, fechaReincorporacion.Value);
+
+                        MessageBox.Show("La aeronave ha quedado fuera de servicio");
+                        Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
-
+            Close();
         }
 
         private void FormEliminarAeronave_Load(object sender, EventArgs e)
         {
 
         }
+
+
     }
 }

@@ -16,12 +16,13 @@ namespace Data
         private const String SP_GET_FABRICANTES = "[HAY_TABLA].sp_get_fabricantes";
         //traer aeronaves por filtro de busqueda
         private const String SP_GET_ALL = "[HAY_TABLA].sp_select_aeronaves";
-        //inserta una aeronave
         private const String SP_INSERT = "[HAY_TABLA].sp_insertar_aeronave";
-        //modificar una aeronave
         private const String SP_UPDATE = "[HAY_TABLA].sp_modificar_aeronave";
         private const String SP_DELETE_VIDA_UTIL = "[HAY_TABLA].sp_baja_vida_util";
         private const String SP_DELETE_FUERA_DE_SERVICIO = "[HAY_TABLA].sp_baja_fuera_de_servicio";
+        private const String SP_VUELOS_PROGRAMADOS = "[HAY_TABLA].sp_chequear_vuelos_programados";
+        private const String SP_DELETE_Y_BUSCA_PROGRAMADOS = "[HAY_TABLA].sp_baja_y_busca_vuelos_programados";
+        private const String SP_CANCELA_PROGRAMADO_Y_BUSCA_ITEMS = "[HAY_TABLA].sp_cancela_vuelo_programado_y_busca_items_a_cancelar";
 
 
         public static DataTable Get(String Matricula, Int32? IdTipoDeServicioSeleccionado, String FabricanteSeleccionado)
@@ -175,5 +176,75 @@ namespace Data
                 con.Close();
             }
         }
+
+        ///////  AGREGADO PARA CANCELAR O MODIFICAR AERONAVE Y VUELOS
+
+        public static Int32 ChequearVuelosProgramados(int id, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+            Int32 respuesta = -1;
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_VUELOS_PROGRAMADOS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
+                cmd.Parameters.Add("@fechaReincorporacion", SqlDbType.DateTime).Value = fechaReincorporacion;
+                cmd.Parameters.Add("@tipoBaja", SqlDbType.Int).Value = tipoBaja;
+
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    respuesta = reader.GetInt32(0);
+                }
+
+                con.Close();
+            }
+
+            return respuesta;
+        }
+
+        public static DataTable BajaAeronaveYBuscaVuelosProgramados(Int32 id, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+            var table = new DataTable();
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_DELETE_Y_BUSCA_PROGRAMADOS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
+                cmd.Parameters.Add("@fechaReincorporacion", SqlDbType.DateTime).Value = fechaReincorporacion;
+                cmd.Parameters.Add("@tipoBaja", SqlDbType.Int).Value = tipoBaja;
+
+                con.Open();
+                table.Load(cmd.ExecuteReader());
+                con.Close();
+            }
+            return table;
+        }
+
+        public static DataTable CancelarVueloProgramadoYBuscaItemsACancear(Int32 idVuelo)
+        {
+            var table = new DataTable();
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_CANCELA_PROGRAMADO_Y_BUSCA_ITEMS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idVuelo", SqlDbType.Int).Value = idVuelo;
+                
+                con.Open();
+                table.Load(cmd.ExecuteReader());
+                con.Close();
+            }
+            return table;
+        }
+
     }
 }

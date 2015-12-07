@@ -179,7 +179,6 @@ namespace Logica
                 aeronave.cantButacasPasillo = Int32.Parse(data.Rows[0][data.Columns["cantButacasPasillo"].Ordinal].ToString());
                 aeronave.cantButacasVentanilla = Int32.Parse(data.Rows[0][data.Columns["cantButacasVentanilla"].Ordinal].ToString());
                 aeronave.espacioKG = Int32.Parse(data.Rows[0][data.Columns["espacioKGEncomiendas"].Ordinal].ToString());
-                /* COMO SERIA ESTO????? */
                 aeronave.tipoServicio = new TipoServicio(Int32.Parse(data.Rows[0][data.Columns["S_ID"].Ordinal].ToString()), data.Rows[0][data.Columns["S_ID"].Ordinal].ToString());
             }
 
@@ -206,5 +205,26 @@ namespace Logica
             Data.Aeronave.BajaFueraDeServicio(aeronave.Id, fechaActual, fechaReincorporacion);
         }
 
+        ///////  AGREGADO PARA CANCELAR O MODIFICAR AERONAVE Y VUELOS
+
+        public Int32 ChequeateVuelosProgramados(DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+            return Aeronave.ChequearVuelosProgramados(this, fechaActual, fechaReincorporacion, tipoBaja);
+        }
+
+        private static Int32 ChequearVuelosProgramados(Aeronave aeronave, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+           return Data.Aeronave.ChequearVuelosProgramados(aeronave.Id, fechaActual, fechaReincorporacion, tipoBaja);
+        }
+
+        public static DataTable BajaAeronaveYBuscaVuelosProgramados(Int32 id, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+            return Data.Aeronave.BajaAeronaveYBuscaVuelosProgramados(id, fechaActual, fechaReincorporacion, tipoBaja);
+        }
+
+        public static DataTable CancelarVueloProgramadoYBuscaItemsACancear(Int32 idVuelo)
+        {
+            return Data.Aeronave.CancelarVueloProgramadoYBuscaItemsACancear(idVuelo);
+        }
     }
 }

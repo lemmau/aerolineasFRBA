@@ -69,6 +69,7 @@
             // rbFueraServicio
             // 
             this.rbFueraServicio.AutoSize = true;
+            this.rbFueraServicio.Checked = true;
             this.rbFueraServicio.Location = new System.Drawing.Point(12, 78);
             this.rbFueraServicio.Name = "rbFueraServicio";
             this.rbFueraServicio.Size = new System.Drawing.Size(108, 17);
@@ -76,6 +77,7 @@
             this.rbFueraServicio.TabStop = true;
             this.rbFueraServicio.Text = "Fuera de Servicio";
             this.rbFueraServicio.UseVisualStyleBackColor = true;
+            this.rbFueraServicio.CheckedChanged += new System.EventHandler(this.rbFueraServicio_CheckedChanged);
             // 
             // rbFinVidaUtil
             // 
@@ -84,9 +86,9 @@
             this.rbFinVidaUtil.Name = "rbFinVidaUtil";
             this.rbFinVidaUtil.Size = new System.Drawing.Size(81, 17);
             this.rbFinVidaUtil.TabIndex = 17;
-            this.rbFinVidaUtil.TabStop = true;
             this.rbFinVidaUtil.Text = "Fin Vida Util";
             this.rbFinVidaUtil.UseVisualStyleBackColor = true;
+            this.rbFinVidaUtil.CheckedChanged += new System.EventHandler(this.rbFinVidaUtil_CheckedChanged);
             // 
             // btnEliminar
             // 

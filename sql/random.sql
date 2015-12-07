@@ -1048,6 +1048,22 @@ BEGIN
 			return
 		end	
 
+	if (exists(select 1
+			   from HAY_TABLA.AERONAVE a join HAY_TABLA.HISTORIALBAJA_AERONAVE hb on a.ID = hb.ID_AERONAVE
+			   where @id = a.ID and hb.ID_TIPOBAJA = 2))
+		begin
+			RAISERROR(N' La aeronave ha cumplido su vida util ', 16, 1)
+			return
+		end
+
+	if (exists(select 1
+			   from HAY_TABLA.AERONAVE a join HAY_TABLA.HISTORIALBAJA_AERONAVE hb on a.ID = hb.ID_AERONAVE
+			   where @id = a.ID and hb.ID_TIPOBAJA = 1))
+		begin
+			RAISERROR(N' La aeronave se encuentra fuera de servicio ', 16, 1)
+			return
+		end
+
 	UPDATE 
 		[HAY_TABLA].AERONAVE
 	SET 
@@ -1101,6 +1117,161 @@ AS BEGIN
 		(@matricula is null AND A.ID_SERVICIO = @idTipoDeServicio AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID) or
 		-- LOS 3 CAMPOS
 		(A.MATRICULA = @matricula AND A.ID_SERVICIO = @idTipoDeServicio AND A.FABRICANTE = @fabricante AND A.ID_SERVICIO = S.ID)
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_chequear_vuelos_programados]
+	@id int,
+	@fechaActual datetime,
+	@fechaReincorporacion datetime,
+	@tipoBaja int
+AS
+BEGIN
+	--Baja por vida util
+	if (@tipoBaja = 2)
+		begin
+			if (exists(select 1
+					   from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+					   where @id = a.ID and v.FECHASALIDA >= @fechaActual))
+				begin
+					--La aeronave tiene vuelos programados
+					select 1
+				end
+			else
+				begin
+					--La aeronave NO tiene vuelos programados
+					select 2
+				end
+		end
+
+	--Baja por fuera de servicio
+	if (@tipoBaja = 1)
+		begin
+			if (exists(select 1
+					   from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+					   where @id = a.ID and @fechaActual <= v.FECHASALIDA and v.FECHASALIDA < @fechaReincorporacion))
+				begin
+					--La aeronave tiene vuelos programados antes de que la aeronave se reincorpore
+					select 3
+				end
+			else
+				begin
+					--La aeronave NO tiene vuelos programados en el periodo de fuera de servicio
+					select 4
+				end
+		end
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_baja_y_busca_vuelos_programados]
+	@id int,
+	@fechaActual datetime,
+	@fechaReincorporacion datetime,
+	@tipoBaja int
+AS
+BEGIN
+	--Baja por vida util
+	if (@tipoBaja = 2)
+		begin
+			if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+					where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 2))
+			begin
+				RAISERROR(N' La aeronave ya estaba dada de baja por Fin de Vida Util ', 16, 1)
+				return
+			end
+			
+			--Concreto la baja		
+			INSERT INTO [HAY_TABLA].HISTORIALBAJA_AERONAVE
+				(ID_AERONAVE, ID_TIPOBAJA, FECHABAJA, FECHAREINICIO)
+			VALUES
+				(@id, 2, @fechaActual, null)
+			
+			--Busco vuelos programados
+			select v.ID as 'id'
+			from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+			where @id = a.ID and v.FECHASALIDA >= @fechaActual
+		
+			--Cancelacion de vuelos programados			
+			--agarrar cada vuelo y setear status en 1
+			--Paso los que busque a la app y llamará a otro sp para cancelarlos
+		end	
+
+	--Baja por fuera de servicio
+	if (@tipoBaja = 1)
+		begin
+			if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+					where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 2))
+				begin
+					RAISERROR(N' Esta aeronave ya cumplio su Vida Util ', 16, 1)
+					return
+				end		
+			else
+				begin
+					if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+							   where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 1 AND HB.FECHAREINICIO > @fechaActual))
+						begin
+							RAISERROR(N' Esta aeronave ya se encontraba fuera de servicio ', 16, 1)
+							return
+						end		
+					else
+						begin
+							if (@fechaActual > @fechaReincorporacion)
+								begin
+									RAISERROR(N' La fecha de reincorporacion debe ser mayor a la fecha actual ', 16, 1)
+									return
+								end
+						end 
+				end
+
+			--Concreto la baja
+			INSERT INTO [HAY_TABLA].HISTORIALBAJA_AERONAVE
+				(ID_AERONAVE, ID_TIPOBAJA, FECHABAJA, FECHAREINICIO)
+			VALUES
+				(@id, 1, @fechaActual, @fechaReincorporacion)
+
+			--Busco vuelos programados
+			select v.ID as 'id'
+			from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+			where @id = a.ID and @fechaActual <= v.FECHASALIDA and v.FECHASALIDA < @fechaReincorporacion
+		
+			--Cancelacion de vuelos programados			
+			--agarrar cada vuelo y setear status en 1
+			--Paso los que busque a la app y llamará a otro sp para cancelarlos
+		end
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_cancela_vuelo_programado_y_busca_items_a_cancelar]
+	@idVuelo int
+AS
+BEGIN
+	
+	--CANCELO VIAJE
+	UPDATE 
+		[HAY_TABLA].[VIAJE]
+    SET 
+		STATUS = 1
+	WHERE 
+		@idVuelo = ID
+
+	--Busco todos los pasajes y encomiendas pertenecientes al viaje que estoy cancelando y que no estén ya cancelados previamente
+
+	select  p.ID_COMPRA as 'idCompra', 'Pasaje' as 'tipoItem', p.ID as 'idPasajeEncomienda', 'Cancelación del vuelo por motivos internos de la empresa' as 'motivoDevolucion'
+	from HAY_TABLA.VIAJE v join HAY_TABLA.PASAJE p on v.ID = p.ID_VIAJE
+	where @idVuelo = v.ID and (not exists(select 1
+										  from HAY_TABLA.VIAJE v2 join HAY_TABLA.PASAJE p2 on v.ID = p2.ID_VIAJE
+																  join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on p2.ID = itemdp.ID_PASAJE
+										  where @idVuelo = v2.ID and v.ID = v2.ID and p.ID = p2.ID))
+
+	UNION ALL
+
+	select  e.ID_COMPRA as 'idCompra', 'Encomienda' as 'tipoItem', e.ID as 'idPasajeEncomienda', 'Cancelación del vuelo por motivos internos de la empresa' as 'motivoDevolucion'
+	from HAY_TABLA.VIAJE v join HAY_TABLA.ENCOMIENDA e on v.ID = e.ID_VIAJE
+	where @idVuelo = v.ID and (not exists(select 1
+										  from HAY_TABLA.VIAJE v2 join HAY_TABLA.ENCOMIENDA e2 on v.ID = e2.ID_VIAJE
+																  join HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde on e2.ID = itemde.ID_ENCOMIENDA
+										  where @idVuelo = v2.ID and v.ID = v2.ID and e.ID = e2.ID))
+	order by 1
 END
 GO
 /*-------------   SP  PARA MILLAS   -------------*/
