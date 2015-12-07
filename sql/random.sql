@@ -89,7 +89,7 @@ CREATE FUNCTION  [HAY_TABLA].[fn_cant_butacas] (@idAeronave  int)
 	GO	
 ---------------------
 
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
+CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_2]
 	@desde DATETIME,
 	@hasta DATETIME
 AS
@@ -120,30 +120,34 @@ CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_3]
 	@hasta DATETIME
 AS
 BEGIN
-	SELECT TOP 5 p.NOMBRE as 'Nombre' , p.APELLIDO as 'Apellido', p.MAIL as 'E.mail', 
-	(((CAST(pa.IMPORTE AS int) +CAST(e.IMPORTE AS int)) / 10)) as 'Millas'
-		    
-		 
-	from HAY_TABLA.PERSONA p 
+select TOP 5 per.DNI as 'DNI' ,APELLIDO 'Apellido' , per.NOMBRE as 'Nombre', per.MAIL as 'E-mail', 
+ SUM(T.millas) -
+ isnull((SELECT SUM(R.MILLASNECESARIAS * Can.Cantidad) FROM HAY_TABLA.Canje Can JOIN HAY_TABLA.PRODUCTO R ON Can.ID_PRODUCTO = R.ID
+  WHERE Can.ID_CLIENTE = per.Id AND YEAR(Can.Fecha) = YEAR (@desde) and MONTH(Can.FECHA) between MONTH(@desde) and MONTH(@hasta) ),0) as 'millas '
 
-	join HAY_TABLA.PASAJE pa on p.ID = pa.ID_CLIENTE
 
-							 join HAY_TABLA.COMPRA c on c.ID_COMPRADOR = p.ID
-							 join HAY_TABLA.ENCOMIENDA e on e.ID_COMPRA =c.ID
-							 join HAY_TABLA.VIAJE v on pa.ID_VIAJE = v.ID
-							 join HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
-							 join HAY_TABLA.CIUDAD ciu1 on r.ID_CDADORIGEN = ciu1.ID
-							 join HAY_TABLA.CIUDAD ciu2 on r.ID_CDADDESTINO = ciu2.ID
-	where pa.ID not in (select i.ID_PASAJE from HAY_TABLA.DEVOLUCION d 
+ from (
 
-	inner join  HAY_TABLA.ITEMSDEVOLUCIONPASAJE i  on d.ID = i.ID_DEVOLUCION)
+select C.ID_COMPRADOR as 'cliente' ,SUM(CAST (pa.IMPORTE as int)/ 10) as 'millas' from HAY_TABLA.COMPRA c join HAY_TABLA.PASAJE  pa  on c.ID = pa.ID_COMPRA 
+join HAY_TABLA.VIAJE v on v.ID = pa.ID_VIAJE
+where  YEAR(v.FECHALLEGADA)= YEAR (@desde) and MONTH (@desde) between MONTH (@desde) and MONTH(@hasta)and 
+pa.ID not in (select ip.ID_PASAJE  from HAY_TABLA.ITEMSDEVOLUCIONPASAJE ip )
+group by C.ID_COMPRADOR
+UNION ALL
+select C.ID_COMPRADOR as 'cliente' ,SUM(CAST (en.IMPORTE as int)/ 10) as 'millas' from HAY_TABLA.COMPRA c join HAY_TABLA.ENCOMIENDA  en  on c.ID = en.ID_COMPRA 
+join HAY_TABLA.VIAJE v on v.ID = en.ID_VIAJE
+where  YEAR(v.FECHALLEGADA)= YEAR (@desde) and MONTH (@desde) between MONTH (@desde) and MONTH(@hasta)
+and en.ID not in (select ie.ID_ENCOMIENDA from HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA ie)
+group by C.ID_COMPRADOR ) T 
 
-	and  YEAR (c.FECHA) =YEAR (@desde) and MONTH (c.FECHA) between MONTH(@desde) and MONTH(@hasta)
-	order by 4 desc 
+join HAY_TABLA.PERSONA  per  on per.ID = T.cliente 
 
-	END 
+group by per.ID ,per.DNI , per.APELLIDO , per.NOMBRE ,per.MAIL
 
-	GO
+order by 5 desc ;
+END
+
+GO
 
 CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_4]
 	@desde DATETIME,
