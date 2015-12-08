@@ -43,79 +43,49 @@ namespace AerolineaFrba.Abm_Aeronave
             Int32 idPasajeEncomienda;
             String motivoDevolucion;
 
-            //Baja por vida util
-            if (tipoBajaLocal == 2)
+            try
             {
-                try
+                dtVuelosProgramados = Aeronave.BajaAeronaveYBuscaVuelosProgramados(idAeronaveLocal, fechaActualLocal, fechaReincorporacionLocal, tipoBajaLocal);
+
+                foreach (DataRow row in dtVuelosProgramados.Rows)
                 {
-                    dtVuelosProgramados = Aeronave.BajaAeronaveYBuscaVuelosProgramados(idAeronaveLocal, fechaActualLocal, fechaReincorporacionLocal, tipoBajaLocal);
+                    idVueloProgramado = Int32.Parse(row["id"].ToString());
+                    dtItemsACancelar = Aeronave.CancelarVueloProgramadoYBuscaItemsACancear(idVueloProgramado);
 
-                    foreach (DataRow row in dtVuelosProgramados.Rows)
+                    foreach (DataRow row2 in dtItemsACancelar.Rows)
                     {
-                        idVueloProgramado = Int32.Parse(row["id"].ToString());
-                        dtItemsACancelar = Aeronave.CancelarVueloProgramadoYBuscaItemsACancear(idVueloProgramado);
+                        idCompra = Int32.Parse(row2["idCompra"].ToString());
+                        tipoItem = row2["tipoItem"].ToString();
+                        idPasajeEncomienda = Int32.Parse(row2["idPasajeEncomienda"].ToString());
+                        motivoDevolucion = row2["motivoDevolucion"].ToString();
 
-                        foreach (DataRow row2 in dtItemsACancelar.Rows)
-                        {
-                            idCompra = Int32.Parse(row2["idCompra"].ToString());
-                            tipoItem = row2["tipoItem"].ToString();
-                            idPasajeEncomienda = Int32.Parse(row2["idPasajeEncomienda"].ToString());
-                            motivoDevolucion = row2["motivoDevolucion"].ToString();
-
-                            Logica.Devolucion.CancelarPasajeEncomienda(idCompra, tipoItem, idPasajeEncomienda, fechaActualLocal, motivoDevolucion);
-                        }
-
-                        dtItemsACancelar.Dispose();
+                        Logica.Devolucion.CancelarPasajeEncomienda(idCompra, tipoItem, idPasajeEncomienda, fechaActualLocal, motivoDevolucion);
                     }
 
-                    dtVuelosProgramados.Dispose();
+                    dtItemsACancelar.Dispose();
+                }
 
+                dtVuelosProgramados.Dispose();
+
+                //Baja por vida util
+                if (tipoBajaLocal == 2)
+                {
                     MessageBox.Show("La aeronave ha cumplido su vida util y se cancelaron los vuelos programados");
-                    Close();
                 }
-                catch (Exception ex)
+                //Baja por fuera de servicio
+                if (tipoBajaLocal == 1)
                 {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-
-            if (tipoBajaLocal == 1)
-            {
-                try
-                {
-                    dtVuelosProgramados = Aeronave.BajaAeronaveYBuscaVuelosProgramados(idAeronaveLocal, fechaActualLocal, fechaReincorporacionLocal, tipoBajaLocal);
-
-                    foreach (DataRow row in dtVuelosProgramados.Rows)
-                    {
-                        idVueloProgramado = Int32.Parse(row["id"].ToString());
-                        dtItemsACancelar = Aeronave.CancelarVueloProgramadoYBuscaItemsACancear(idVueloProgramado);
-
-                        foreach (DataRow row2 in dtItemsACancelar.Rows)
-                        {
-                            idCompra = Int32.Parse(row2["idCompra"].ToString());
-                            tipoItem = row2["tipoItem"].ToString();
-                            idPasajeEncomienda = Int32.Parse(row2["idPasajeEncomienda"].ToString());
-                            motivoDevolucion = row2["motivoDevolucion"].ToString();
-
-                            Logica.Devolucion.CancelarPasajeEncomienda(idCompra, tipoItem, idPasajeEncomienda, fechaActualLocal, motivoDevolucion);
-                        }
-
-                        dtItemsACancelar.Dispose();
-                    }
-
-                    dtVuelosProgramados.Dispose();
-
                     MessageBox.Show("La aeronave quedo fuera de servicio y se cancelaron los vuelos programados hasta su reincorporación");
-                    Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                    
+                Close();
             }
-            Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
-
+        
         private void btnReemplazarAeronave_Click(object sender, EventArgs e)
         {
 
