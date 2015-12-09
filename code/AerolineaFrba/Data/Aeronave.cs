@@ -23,7 +23,11 @@ namespace Data
         private const String SP_VUELOS_PROGRAMADOS = "[HAY_TABLA].sp_chequear_vuelos_programados";
         private const String SP_DELETE_Y_BUSCA_PROGRAMADOS = "[HAY_TABLA].sp_baja_y_busca_vuelos_programados";
         private const String SP_CANCELA_PROGRAMADO_Y_BUSCA_ITEMS = "[HAY_TABLA].sp_cancela_vuelo_programado_y_busca_items_a_cancelar";
-
+        private const String SP_BUSCA_PROGRAMADOS = "[HAY_TABLA].sp_busca_vuelos_programados";
+        private const String SP_BUSCA_POSIBLES_REEMPLAZOS = "[HAY_TABLA].sp_busca_posibles_reemplazos";
+        private const String SP_SATISFACE_VUELO = "[HAY_TABLA].sp_puede_satisfacer_vuelo";
+        private const String SP_TRANSFERIR_PROGRAMADO_Y_BUSCA_ITEMS = "[HAY_TABLA].sp_transferir_programado_y_busca_items";
+        private const String SP_TRANSFERIR_PASAJE_ENCOMIENDA = "[HAY_TABLA].sp_transferir_pasaje_encomienda";
 
         public static DataTable Get(String Matricula, Int32? IdTipoDeServicioSeleccionado, String FabricanteSeleccionado)
         {
@@ -177,7 +181,7 @@ namespace Data
             }
         }
 
-        ///////  AGREGADO PARA CANCELAR O MODIFICAR AERONAVE Y VUELOS
+        ///////  AGREGADO PARA CANCELAR AERONAVE Y VUELOS
 
         public static Int32 ChequearVuelosProgramados(int id, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
         {
@@ -246,5 +250,113 @@ namespace Data
             return table;
         }
 
+        ///////  AGREGADO PARA REEMPLAZAR AERONAVE Y VUELOS
+
+        public static DataTable BuscaVuelosProgramados(Int32 id, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+            var table = new DataTable();
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_BUSCA_PROGRAMADOS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
+                cmd.Parameters.Add("@fechaReincorporacion", SqlDbType.DateTime).Value = fechaReincorporacion;
+                cmd.Parameters.Add("@tipoBaja", SqlDbType.Int).Value = tipoBaja;
+
+                con.Open();
+                table.Load(cmd.ExecuteReader());
+                con.Close();
+            }
+            return table;
+        }
+
+        public static DataTable BuscaPosiblesReemplazos(Int32 id, /*Int32? idTipoServicio, */String modelo, String fabricante)
+        {
+            var table = new DataTable();
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_BUSCA_POSIBLES_REEMPLAZOS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idAeronaveAReemplazar", SqlDbType.Int).Value = id;
+                /*cmd.Parameters.Add("@tipoServicio", SqlDbType.Int).Value = idTipoServicio;*/
+                cmd.Parameters.Add("@modelo", SqlDbType.NVarChar).Value = modelo;
+                cmd.Parameters.Add("@fabricante", SqlDbType.NVarChar).Value = fabricante;
+
+                con.Open();
+                table.Load(cmd.ExecuteReader());
+                con.Close();
+            }
+            return table;
+        }
+
+        public static Int32 PuedeSatisfacerVuelo(Int32 idAeronaveAReemplazar, Int32 idPosibleReemplazo, Int32 idViaje)
+        {
+            Int32 respuesta = 0;
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_SATISFACE_VUELO, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idAeronaveAReemplazar", SqlDbType.Int).Value = idAeronaveAReemplazar;
+                cmd.Parameters.Add("@idPosibleReemplazo", SqlDbType.Int).Value = idPosibleReemplazo;
+                cmd.Parameters.Add("@idViaje", SqlDbType.Int).Value = idViaje;
+
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    respuesta = reader.GetInt32(0);
+                }
+
+                con.Close();
+            }
+
+            return respuesta;
+        }
+
+        public static DataTable TransferirVueloProgramadoYBuscaItemsATransferir(Int32 idAeronaveLocal, Int32 idPosibleReemplazo, Int32 idVuelo)
+        {
+            var table = new DataTable();
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_TRANSFERIR_PROGRAMADO_Y_BUSCA_ITEMS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idAeronaveAReemplazar", SqlDbType.Int).Value = idAeronaveLocal;
+                cmd.Parameters.Add("@idPosibleReemplazo", SqlDbType.Int).Value = idPosibleReemplazo;
+                cmd.Parameters.Add("@idVuelo", SqlDbType.Int).Value = idVuelo;
+
+                con.Open();
+                table.Load(cmd.ExecuteReader());
+                con.Close();
+            }
+            return table;
+        }
+
+        public static void TransferirPasajeEncomienda(Int32 idPasajeEncomienda, String tipoItem, Int32 idPosibleReemplazo)
+        {
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_TRANSFERIR_PASAJE_ENCOMIENDA, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idPasajeEncomienda", SqlDbType.Int).Value = idPasajeEncomienda;
+                cmd.Parameters.Add("@tipoItem", SqlDbType.NVarChar).Value = tipoItem;
+                cmd.Parameters.Add("@idPosibleReemplazo", SqlDbType.Int).Value = idPosibleReemplazo;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+       
     }
 }

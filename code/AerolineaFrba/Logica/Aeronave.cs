@@ -179,7 +179,7 @@ namespace Logica
                 aeronave.cantButacasPasillo = Int32.Parse(data.Rows[0][data.Columns["cantButacasPasillo"].Ordinal].ToString());
                 aeronave.cantButacasVentanilla = Int32.Parse(data.Rows[0][data.Columns["cantButacasVentanilla"].Ordinal].ToString());
                 aeronave.espacioKG = Int32.Parse(data.Rows[0][data.Columns["espacioKGEncomiendas"].Ordinal].ToString());
-                aeronave.tipoServicio = new TipoServicio(Int32.Parse(data.Rows[0][data.Columns["S_ID"].Ordinal].ToString()), data.Rows[0][data.Columns["S_ID"].Ordinal].ToString());
+                aeronave.tipoServicio = new TipoServicio(Int32.Parse(data.Rows[0][data.Columns["S_ID"].Ordinal].ToString()), data.Rows[0][data.Columns["S_NOMBRE"].Ordinal].ToString());
             }
 
             return aeronave;
@@ -226,5 +226,31 @@ namespace Logica
         {
             return Data.Aeronave.CancelarVueloProgramadoYBuscaItemsACancear(idVuelo);
         }
+
+        public static DataTable BuscaVuelosProgramados(Int32 id, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        {
+            return Data.Aeronave.BuscaVuelosProgramados(id, fechaActual, fechaReincorporacion, tipoBaja);
+        }
+
+        public static DataTable BuscaPosiblesReemplazos(Int32 id, /*Int32? idTipoServicio, */String modelo, String fabricante)
+        {
+            return Data.Aeronave.BuscaPosiblesReemplazos(id, /*idTipoServicio, */ modelo, fabricante);
+        }
+
+        public static Int32 PuedeSatisfacerVuelo(Int32 idAeronaveAReemplazar, Int32 idPosibleReemplazo, Int32 idViaje)
+        {
+            return Data.Aeronave.PuedeSatisfacerVuelo(idAeronaveAReemplazar, idPosibleReemplazo, idViaje);
+        }
+
+        public static DataTable TransferirVueloProgramadoYBuscaItemsATransferir(Int32 idAeronaveLocal, Int32 idPosibleReemplazo, Int32 idVueloProgramado)
+        {
+            return Data.Aeronave.TransferirVueloProgramadoYBuscaItemsATransferir(idAeronaveLocal, idPosibleReemplazo, idVueloProgramado);
+        }
+
+        public static void TransferirPasajeEncomienda(Int32 idPasajeEncomienda, String tipoItem, Int32 idPosibleReemplazo)
+        {
+            Data.Aeronave.TransferirPasajeEncomienda(idPasajeEncomienda, tipoItem, idPosibleReemplazo);
+        }
+        
     }
 }

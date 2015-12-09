@@ -54,7 +54,7 @@ namespace AerolineaFrba.Abm_Aeronave
                 if (resultado == 1)
                 {
                     //MessageBox.Show("Hay vuelos programados"/*, "Aviso", MessageBoxButtons.YesNo*/);
-                    DecisionEliminar decision = new DecisionEliminar(idAeronaveLocal, fechaActual, fechaReincorporacion.Value, 2);
+                    DecisionEliminar decision = new DecisionEliminar(_aeronave, fechaActual, fechaReincorporacion.Value, 2);
                     decision.Show();
                 }
 
@@ -86,7 +86,7 @@ namespace AerolineaFrba.Abm_Aeronave
                 if (resultado == 3)
                 {
                     //MessageBox.Show("Hay vuelos programados antes de que la aeronave se reincorpore");
-                    DecisionEliminar decision = new DecisionEliminar(idAeronaveLocal, fechaActual, fechaReincorporacion.Value, 1);
+                    DecisionEliminar decision = new DecisionEliminar(_aeronave, fechaActual, fechaReincorporacion.Value, 1);
                     decision.Show();
                 }
 

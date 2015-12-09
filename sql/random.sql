@@ -1276,6 +1276,294 @@ BEGIN
 	order by 1
 END
 GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_busca_vuelos_programados]
+	@id int,
+	@fechaActual datetime,
+	@fechaReincorporacion datetime,
+	@tipoBaja int
+AS
+BEGIN
+	--Baja por vida util
+	if (@tipoBaja = 2)
+		begin
+			if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+					where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 2))
+			begin
+				RAISERROR(N' La aeronave ya estaba dada de baja por Fin de Vida Util ', 16, 1)
+				return
+			end
+			
+			--Busco vuelos programados
+			select v.ID as 'id'
+			from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+			where @id = a.ID and v.FECHASALIDA >= @fechaActual
+		end	
+
+	--Baja por fuera de servicio
+	if (@tipoBaja = 1)
+		begin
+			if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+					where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 2))
+				begin
+					RAISERROR(N' Esta aeronave ya cumplio su Vida Util ', 16, 1)
+					return
+				end		
+			else
+				begin
+					if (exists(select A.ID from HAY_TABLA.AERONAVE A, HAY_TABLA.HISTORIALBAJA_AERONAVE HB      
+							   where A.ID = @id AND A.ID = HB.ID_AERONAVE AND HB.ID_TIPOBAJA = 1 AND HB.FECHAREINICIO > @fechaActual))
+						begin
+							RAISERROR(N' Esta aeronave ya se encontraba fuera de servicio ', 16, 1)
+							return
+						end		
+					else
+						begin
+							if (@fechaActual > @fechaReincorporacion)
+								begin
+									RAISERROR(N' La fecha de reincorporacion debe ser mayor a la fecha actual ', 16, 1)
+									return
+								end
+						end 
+				end
+
+			--Busco vuelos programados
+			select v.ID as 'id'
+			from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+			where @id = a.ID and @fechaActual <= v.FECHASALIDA and v.FECHASALIDA < @fechaReincorporacion
+		end
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_busca_posibles_reemplazos]
+	@idAeronaveAReemplazar int,
+	@modelo nvarchar(255),
+	@fabricante nvarchar(255)
+AS
+	DECLARE @TIPO_SERVICIO int
+BEGIN
+
+	SET @TIPO_SERVICIO = (select a.ID_SERVICIO
+						  from HAY_TABLA.AERONAVE a
+						  where @idAeronaveAReemplazar = a.ID)
+
+	--Busca las aeronaves que tienen mismo modelo, fabricante y tipo de servicio, y que NO tenga baja por fin de vida útil.
+	select a.ID
+	from HAY_TABLA.AERONAVE a
+	where a.ID_SERVICIO = @TIPO_SERVICIO and 
+		  a.MODELO = @modelo and 
+		  a.FABRICANTE = @fabricante and 
+		  a.ID <> @idAeronaveAReemplazar and 
+		  (not exists(select 1
+					  from HAY_TABLA.AERONAVE a2 join HAY_TABLA.HISTORIALBAJA_AERONAVE hb on a2.ID = hb.ID_AERONAVE
+					  where a2.ID = a.ID and hb.ID_TIPOBAJA = 2))
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_puede_satisfacer_vuelo]
+	@idAeronaveAReemplazar int,
+	@idPosibleReemplazo int,
+	@idViaje int
+AS
+	DECLARE @FECHA_SALIDA datetime, @FECHA_LLEGADA_ESTIMADA datetime, @PESO_OCUPADO_AERONAVE_BAJA int, @ESPACIO_KG_REEMPLAZO int, 
+			@BUTACAS_PASILLO_AERONAVE_BAJA int, @BUTACAS_VENTANILLA_AERONAVE_BAJA int, @BUTACAS_PASILLO_AERONAVE_REEMPLAZO int,
+			@BUTACAS_VENTANILLA_AERONAVE_REEMPLAZO int
+BEGIN
+	
+	SET @FECHA_SALIDA = (select v.FECHASALIDA
+						 from HAY_TABLA.VIAJE v
+						 where @idViaje = v.ID)
+	
+	SET @FECHA_LLEGADA_ESTIMADA = (select v.FECHALLEGADAESTIMADA
+						           from HAY_TABLA.VIAJE v
+						           where @idViaje = v.ID)
+
+	--ESPACIO QUE LLEVA OCUPADO LA AERONAVE A REEMPLAZAR
+	SET @PESO_OCUPADO_AERONAVE_BAJA = (select sum(e.PESO)
+									   from HAY_TABLA.VIAJE v join HAY_TABLA.ENCOMIENDA e on v.ID = e.ID_VIAJE
+									   where @idAeronaveAReemplazar = v.ID_AERONAVE and 
+											 @idViaje = v.ID and 
+											 (not exists(select 1
+														 from HAY_TABLA.ENCOMIENDA e2 join HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde on e2.ID = itemde.ID_ENCOMIENDA
+														 where e2.ID = e.ID)))
+
+	--ESPACIO TOTAL QUE POSEE LA AERONAVE REEMPLAZO
+	SET @ESPACIO_KG_REEMPLAZO = (select a.ESPACIOKGENCOMIENDAS
+								 from HAY_TABLA.AERONAVE a
+								 where @idPosibleReemplazo = a.ID)
+	
+	--CANTIDAD DE BUTACAS TIPO PASILLO OCUPADAS POR LA AERONAVE QUE SE DARA DE BAJA
+	SET @BUTACAS_PASILLO_AERONAVE_BAJA = (select count(*)
+										  from HAY_TABLA.VIAJE v join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+															     join HAY_TABLA.PASAJE p on v.ID = p.ID_VIAJE
+															     join HAY_TABLA.BUTACA b on p.ID_BUTACA = b.ID
+										  where @idAeronaveAReemplazar = a.ID and 
+											    @idViaje = v.ID and
+											    b.TIPO = 'Pasillo' and
+											    (not exists(select 1
+														    from HAY_TABLA.PASAJE p2 join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on p2.ID = itemdp.ID_PASAJE
+														    where p2.ID = p.ID)))
+
+	--CANTIDAD DE BUTACAS TIPO VENTANILLA OCUPADAS POR LA AERONAVE QUE SE DARA DE BAJA
+	SET @BUTACAS_VENTANILLA_AERONAVE_BAJA = (select count(*)
+											 from HAY_TABLA.VIAJE v join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+															        join HAY_TABLA.PASAJE p on v.ID = p.ID_VIAJE
+															        join HAY_TABLA.BUTACA b on p.ID_BUTACA = b.ID
+										     where @idAeronaveAReemplazar = a.ID and 
+											       @idViaje = v.ID and
+											       b.TIPO = 'Ventanilla' and
+											       (not exists(select 1
+														       from HAY_TABLA.PASAJE p2 join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on p2.ID = itemdp.ID_PASAJE
+														       where p2.ID = p.ID)))
+
+	--CANTIDAD TOTAL DE BUTACAS TIPO PASILLO QUE DISPONE LA NAVE QUE SERA REEMPLAZO
+	SET @BUTACAS_PASILLO_AERONAVE_REEMPLAZO = (select a.CANTBUTACASPASILLO
+											   from HAY_TABLA.AERONAVE a
+											   where @idPosibleReemplazo = a.ID)
+
+	--CANTIDAD TOTAL DE BUTACAS TIPO VENTANILLA QUE DISPONE LA NAVE QUE SERA REEMPLAZO
+	SET @BUTACAS_VENTANILLA_AERONAVE_REEMPLAZO = (select a.CANTBUTACASVENTANILLA
+											      from HAY_TABLA.AERONAVE a
+											      where @idPosibleReemplazo = a.ID)
+	
+	--SI LA AERONAVE REEMPLAZO TIENE VUELOS
+	if (exists (select 1
+				from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+				where @idPosibleReemplazo = a.ID))
+		begin
+			--SI NO EXISTE NINGUN CASO NEGATIVO, YA SEA POR FECHAS O POR ESPACIO O CANTIDAD DE BUTACAS SUFICIENTES
+			if (not exists(select 1
+						   from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+						   where @idPosibleReemplazo = a.ID and
+							     --Si alguno de los viajes que tiene la aeronave posible reemplazo tiene una fecha de salida que se interpone con el viaje a reemplazar
+							     ((v.FECHASALIDA > @FECHA_SALIDA and v.FECHASALIDA < @FECHA_LLEGADA_ESTIMADA) or
+							     --O si alguno de los viajes tiene que tiene la aeronave posible reemplazo tiene una fecha de llegada que se interpone con el viaje a reemplazar
+							     (v.FECHALLEGADAESTIMADA > @FECHA_SALIDA and v.FECHALLEGADAESTIMADA < @FECHA_LLEGADA_ESTIMADA) or
+							     --No hay suficiente espacio en la aeronave reemplazo para cubrir el peso ocupado por la aeronave que se dara de baja
+							     (@PESO_OCUPADO_AERONAVE_BAJA > @ESPACIO_KG_REEMPLAZO) or
+							     --CHEQUEO SI LA AERONAVE REEMPLAZO NO TIENE CANTIDAD Y TIPO DE BUTACAS SUFICIENTES PARA REEMPLAZAR A LA AERONAVE QUE SE DARA DE BAJA
+							     --No alcanza la cantidad de butacas tipo pasillo para cubrir las ocupadas de la aeronave que se dara de baja
+							     (@BUTACAS_PASILLO_AERONAVE_BAJA > @BUTACAS_PASILLO_AERONAVE_REEMPLAZO) or 
+							     --No alcanza la cantidad de butacas tipo ventanilla para cubrir las ocupadas de la aeronave que se dara de baja
+							     (@BUTACAS_VENTANILLA_AERONAVE_BAJA > @BUTACAS_VENTANILLA_AERONAVE_REEMPLAZO))))
+					begin
+					--Puede cumplir ok
+					select 1
+				end
+			else
+				begin
+					--No cumple por algun motivo
+					select -1
+				end
+		end
+	--SI LA AERONAVE REEMPLAZO NO TIENE VUELOS
+	else
+		begin
+			--SI NO EXISTE NINGUN CASO NEGATIVO, YA SEA POR FECHAS O POR ESPACIO O CANTIDAD DE BUTACAS SUFICIENTES
+			if (not exists(select 1
+						   from HAY_TABLA.AERONAVE a
+						   where @idPosibleReemplazo = a.ID and
+							     --No hay suficiente espacio en la aeronave reemplazo para cubrir el peso ocupado por la aeronave que se dara de baja
+							     ((@PESO_OCUPADO_AERONAVE_BAJA > @ESPACIO_KG_REEMPLAZO) or
+							     --CHEQUEO SI LA AERONAVE REEMPLAZO NO TIENE CANTIDAD Y TIPO DE BUTACAS SUFICIENTES PARA REEMPLAZAR A LA AERONAVE QUE SE DARA DE BAJA
+							     --No alcanza la cantidad de butacas tipo pasillo para cubrir las ocupadas de la aeronave que se dara de baja
+							     (@BUTACAS_PASILLO_AERONAVE_BAJA > @BUTACAS_PASILLO_AERONAVE_REEMPLAZO) or 
+							     --No alcanza la cantidad de butacas tipo ventanilla para cubrir las ocupadas de la aeronave que se dara de baja
+							     (@BUTACAS_VENTANILLA_AERONAVE_BAJA > @BUTACAS_VENTANILLA_AERONAVE_REEMPLAZO))))
+				begin
+					--Puede cumplir ok
+					select 1
+				end
+			else
+				begin
+					--No cumple por algun motivo
+					select -1
+				end
+		end
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_transferir_programado_y_busca_items]
+	@idAeronaveAReemplazar int,
+	@idPosibleReemplazo int,
+	@idVuelo int
+AS
+BEGIN
+		
+	--TRANSFERIR VIAJE
+	UPDATE 
+		[HAY_TABLA].[VIAJE]
+    SET 
+		ID_AERONAVE = @idPosibleReemplazo
+	WHERE 
+		@idVuelo = ID
+
+	--Busco todos los pasajes y encomiendas pertenecientes al viaje que estoy transfiriendo y que no estén ya cancelados previamente
+
+	select p.ID as 'idPasajeEncomienda', 'Pasaje' as 'tipoItem'
+	from HAY_TABLA.VIAJE v join HAY_TABLA.PASAJE p on v.ID = p.ID_VIAJE
+	where @idVuelo = v.ID and (not exists(select 1
+										  from HAY_TABLA.VIAJE v2 join HAY_TABLA.PASAJE p2 on v.ID = p2.ID_VIAJE
+																  join HAY_TABLA.ITEMSDEVOLUCIONPASAJE itemdp on p2.ID = itemdp.ID_PASAJE
+										  where @idVuelo = v2.ID and v.ID = v2.ID and p.ID = p2.ID))
+
+	UNION ALL
+
+	select e.ID as 'idPasajeEncomienda', 'Encomienda' as 'tipoItem'
+	from HAY_TABLA.VIAJE v join HAY_TABLA.ENCOMIENDA e on v.ID = e.ID_VIAJE
+	where @idVuelo = v.ID and (not exists(select 1
+										  from HAY_TABLA.VIAJE v2 join HAY_TABLA.ENCOMIENDA e2 on v.ID = e2.ID_VIAJE
+																  join HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA itemde on e2.ID = itemde.ID_ENCOMIENDA
+										  where @idVuelo = v2.ID and v.ID = v2.ID and e.ID = e2.ID))
+	order by 1
+
+END
+GO
+----------------
+CREATE PROCEDURE [HAY_TABLA].[sp_transferir_pasaje_encomienda]
+	@idPasajeEncomienda int,
+	@tipoItem nvarchar(255),
+	@idPosibleReemplazo int
+AS
+	DECLARE @NUMERO_BUTACA_ANTERIOR int, @TIPO_BUTACA_ANTERIOR nvarchar(255), @PISO_ANTERIOR int, @ID_BUTACA_NUEVO int
+BEGIN
+	
+	if (@tipoItem = 'Pasaje')
+		begin
+			
+			SET @NUMERO_BUTACA_ANTERIOR = (select b.NUMERO
+										   from HAY_TABLA.BUTACA b join HAY_TABLA.PASAJE p on b.ID = p.ID_BUTACA
+								           where @idPasajeEncomienda = p.ID)
+	
+			SET @TIPO_BUTACA_ANTERIOR = (select b.TIPO
+										 from HAY_TABLA.BUTACA b join HAY_TABLA.PASAJE p on b.ID = p.ID_BUTACA
+										 where @idPasajeEncomienda = p.ID)
+
+			SET @PISO_ANTERIOR = (select b.PISO
+								  from HAY_TABLA.BUTACA b join HAY_TABLA.PASAJE p on b.ID = p.ID_BUTACA
+								  where @idPasajeEncomienda = p.ID)				
+
+			SET @ID_BUTACA_NUEVO = (select b.ID
+									from HAY_TABLA.BUTACA b
+									where b.ID_AERONAVE = @idPosibleReemplazo and
+										  b.NUMERO = @NUMERO_BUTACA_ANTERIOR and
+										  --b.TIPO = @TIPO_BUTACA_ANTERIOR and
+										  b.PISO = @PISO_ANTERIOR)
+						
+			UPDATE 
+				[HAY_TABLA].[PASAJE]
+			SET 
+				ID_BUTACA = @ID_BUTACA_NUEVO
+			WHERE 
+				ID = @idPasajeEncomienda
+
+		end
+	
+	--SI ES ENCOMIENDA NO CAMBIAMOS NADA, YA QUE LA ENCOMIENDA ESTA ASIGNADA A UN VIAJE, Y YA ASIGNAMOS LA NUEVA AERONAVE AL VIAJE
+END
+GO
+----------------
+
 /*-------------   SP  PARA MILLAS   -------------*/
 CREATE PROCEDURE [HAY_TABLA].[sp_listado_millas]
 	@id int,

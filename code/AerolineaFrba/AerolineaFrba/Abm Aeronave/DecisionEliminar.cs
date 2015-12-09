@@ -18,11 +18,14 @@ namespace AerolineaFrba.Abm_Aeronave
         DateTime fechaActualLocal;
         DateTime fechaReincorporacionLocal;
         Int32 tipoBajaLocal;
+        Aeronave aeronaveAReemplazar;
+        Int32 idPosibleReemplazo;
 
-        public DecisionEliminar(Int32 idAeronave, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
+        public DecisionEliminar(Aeronave aeronave, DateTime fechaActual, DateTime fechaReincorporacion, Int32 tipoBaja)
         {
             InitializeComponent();
-            idAeronaveLocal = idAeronave;
+            aeronaveAReemplazar = aeronave;
+            idAeronaveLocal = aeronaveAReemplazar.Id;
             fechaActualLocal = fechaActual;
             fechaReincorporacionLocal = fechaReincorporacion;
             tipoBajaLocal = tipoBaja;
@@ -88,6 +91,87 @@ namespace AerolineaFrba.Abm_Aeronave
         
         private void btnReemplazarAeronave_Click(object sender, EventArgs e)
         {
+            DataTable dtVuelosProgramados;
+            DataTable dtPosiblesReemplazos;
+            DataTable dtItemsATransferir;
+            Int32 idVueloProgramado;
+            Int32 idViaje;
+            String tipoItem;
+            Int32 control = 1;
+            Int32 idPasajeEncomienda;
+
+            try
+            {
+                dtPosiblesReemplazos = Aeronave.BuscaPosiblesReemplazos(aeronaveAReemplazar.Id, /*aeronaveAReemplazar.tipoServicio.Id, */aeronaveAReemplazar.modelo, aeronaveAReemplazar.fabricante);
+
+                foreach (DataRow row in dtPosiblesReemplazos.Rows)
+                {
+                    control = 1;
+                    idPosibleReemplazo = Int32.Parse(row["id"].ToString());
+                    dtVuelosProgramados = Aeronave.BuscaVuelosProgramados(idAeronaveLocal, fechaActualLocal, fechaReincorporacionLocal, tipoBajaLocal);
+
+                    foreach (DataRow row2 in dtVuelosProgramados.Rows)
+                    {
+                        idViaje = Int32.Parse(row2["id"].ToString());
+                        control = Aeronave.PuedeSatisfacerVuelo(idAeronaveLocal, idPosibleReemplazo, idViaje);
+                        
+                        //Si la aeronave no pudo cumplir con algun vuelo programado 
+                        if (control == -1)
+                        {
+                            break;
+                        }
+                    }
+                    
+                    dtVuelosProgramados.Dispose();
+                    //La aeronave puede cumplir con todos los vuelos programados
+                    if (control == 1)
+                    {
+                        break;
+                    }
+                }
+
+                dtPosiblesReemplazos.Dispose();
+                //Ninguna aeronave pudo cumplir con todos los vuelos programados
+                if (control == -1)
+                {
+                    MessageBox.Show("No hay ninguna aeronave disponible para el reemplazo. Cancele los vuelos programados o bien ingrese una nueva aeronave");
+                }
+                //Hay una aeronave que cumple, generamos todos los tramites para el reemplazo
+                else
+                {
+
+                    dtVuelosProgramados = Aeronave.BajaAeronaveYBuscaVuelosProgramados(idAeronaveLocal, fechaActualLocal, fechaReincorporacionLocal, tipoBajaLocal);
+
+                    foreach (DataRow row in dtVuelosProgramados.Rows)
+                    {
+                        idVueloProgramado = Int32.Parse(row["id"].ToString());
+                        
+                        dtItemsATransferir = Aeronave.TransferirVueloProgramadoYBuscaItemsATransferir(idAeronaveLocal, idPosibleReemplazo, idVueloProgramado);
+
+                        foreach (DataRow row2 in dtItemsATransferir.Rows)
+                        {
+                            idPasajeEncomienda = Int32.Parse(row2["idPasajeEncomienda"].ToString());
+                            tipoItem = row2["tipoItem"].ToString();
+
+                            Logica.Aeronave.TransferirPasajeEncomienda(idPasajeEncomienda, tipoItem, idPosibleReemplazo);
+                        }
+
+                        dtItemsATransferir.Dispose();
+                    }
+
+                    dtVuelosProgramados.Dispose();                  
+                    
+                    MessageBox.Show("La aeronave se dio de baja y sus vuelos programados se reasignaron a otra aeronave");
+                }
+                
+                //Pasarle todos los viajes de idAeronaveLocal a idPosibleReemplazo
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
 
         }
 
