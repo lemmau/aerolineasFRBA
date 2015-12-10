@@ -39,6 +39,13 @@
             this.cbTipoServicio1 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.aeronaves = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.matricula = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fabricante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idServicioA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipoServicio1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
@@ -49,18 +56,15 @@
             this.codigo_ruta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ciudad_origen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ciudad_destino = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idServicioRuta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipo_servicio_ruta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.selec1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.fechaSalida1 = new System.Windows.Forms.DateTimePicker();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.matricula = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fabricante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipoServicio1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aeronaves)).BeginInit();
             this.panel2.SuspendLayout();
@@ -70,7 +74,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 32);
+            this.label2.Location = new System.Drawing.Point(26, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 1;
@@ -112,8 +116,9 @@
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.cbTipoServicio1);
             this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.aeronaves);
-            this.panel1.Location = new System.Drawing.Point(26, 385);
+            this.panel1.Location = new System.Drawing.Point(32, 345);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(623, 243);
             this.panel1.TabIndex = 10;
@@ -135,6 +140,7 @@
             this.cbTipoServicio1.Name = "cbTipoServicio1";
             this.cbTipoServicio1.Size = new System.Drawing.Size(121, 21);
             this.cbTipoServicio1.TabIndex = 5;
+            this.cbTipoServicio1.SelectedIndexChanged += new System.EventHandler(this.cbTipoServicio1_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -154,6 +160,7 @@
             this.modelo,
             this.matricula,
             this.fabricante,
+            this.idServicioA,
             this.tipoServicio1,
             this.selec});
             this.aeronaves.Location = new System.Drawing.Point(13, 40);
@@ -162,6 +169,50 @@
             this.aeronaves.Size = new System.Drawing.Size(603, 191);
             this.aeronaves.TabIndex = 1;
             this.aeronaves.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.aeronaves_CellContentClick);
+            // 
+            // id
+            // 
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // modelo
+            // 
+            this.modelo.HeaderText = "Modelo";
+            this.modelo.Name = "modelo";
+            this.modelo.Width = 110;
+            // 
+            // matricula
+            // 
+            this.matricula.HeaderText = "Matricula";
+            this.matricula.Name = "matricula";
+            this.matricula.Width = 110;
+            // 
+            // fabricante
+            // 
+            this.fabricante.HeaderText = "Fabricante";
+            this.fabricante.Name = "fabricante";
+            this.fabricante.ReadOnly = true;
+            this.fabricante.Width = 110;
+            // 
+            // idServicioA
+            // 
+            this.idServicioA.HeaderText = "Column1";
+            this.idServicioA.Name = "idServicioA";
+            this.idServicioA.Visible = false;
+            // 
+            // tipoServicio1
+            // 
+            this.tipoServicio1.HeaderText = "Tipo de Servicio";
+            this.tipoServicio1.Name = "tipoServicio1";
+            this.tipoServicio1.Width = 130;
+            // 
+            // selec
+            // 
+            this.selec.HeaderText = "Seleccionar";
+            this.selec.Image = ((System.Drawing.Image)(resources.GetObject("selec.Image")));
+            this.selec.Name = "selec";
+            this.selec.Width = 130;
             // 
             // label5
             // 
@@ -180,9 +231,9 @@
             this.panel2.Controls.Add(this.cbTipoServicio);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.rutas);
-            this.panel2.Location = new System.Drawing.Point(29, 131);
+            this.panel2.Location = new System.Drawing.Point(29, 101);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(620, 224);
+            this.panel2.Size = new System.Drawing.Size(620, 197);
             this.panel2.TabIndex = 11;
             // 
             // button3
@@ -202,6 +253,7 @@
             this.cbTipoServicio.Name = "cbTipoServicio";
             this.cbTipoServicio.Size = new System.Drawing.Size(121, 21);
             this.cbTipoServicio.TabIndex = 3;
+            this.cbTipoServicio.SelectedIndexChanged += new System.EventHandler(this.cbTipoServicio_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -221,13 +273,14 @@
             this.codigo_ruta,
             this.ciudad_origen,
             this.ciudad_destino,
+            this.idServicioRuta,
             this.tipo_servicio_ruta,
             this.selec1});
             this.rutas.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.rutas.Location = new System.Drawing.Point(3, 43);
             this.rutas.Name = "rutas";
             this.rutas.RowHeadersVisible = false;
-            this.rutas.Size = new System.Drawing.Size(610, 163);
+            this.rutas.Size = new System.Drawing.Size(610, 148);
             this.rutas.TabIndex = 1;
             this.rutas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.rutas_CellContentClick);
             // 
@@ -255,6 +308,13 @@
             this.ciudad_destino.Name = "ciudad_destino";
             this.ciudad_destino.Width = 200;
             // 
+            // idServicioRuta
+            // 
+            this.idServicioRuta.HeaderText = "Column1";
+            this.idServicioRuta.Name = "idServicioRuta";
+            this.idServicioRuta.ReadOnly = true;
+            this.idServicioRuta.Visible = false;
+            // 
             // tipo_servicio_ruta
             // 
             this.tipo_servicio_ruta.HeaderText = "Tipo Servicio";
@@ -269,7 +329,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(200, 634);
+            this.button1.Location = new System.Drawing.Point(253, 646);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(86, 44);
             this.button1.TabIndex = 12;
@@ -279,7 +339,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(394, 634);
+            this.button2.Location = new System.Drawing.Point(471, 646);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(77, 44);
             this.button2.TabIndex = 13;
@@ -291,7 +351,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(33, 385);
+            this.label1.Location = new System.Drawing.Point(9, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 20);
             this.label1.TabIndex = 20;
@@ -304,52 +364,33 @@
             this.fechaSalida1.Size = new System.Drawing.Size(200, 20);
             this.fechaSalida1.TabIndex = 21;
             // 
-            // id
+            // label3
             // 
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.Visible = false;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(34, 315);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(110, 13);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "Usted a seleccionado";
             // 
-            // modelo
+            // label8
             // 
-            this.modelo.HeaderText = "Modelo";
-            this.modelo.Name = "modelo";
-            this.modelo.Width = 110;
-            // 
-            // matricula
-            // 
-            this.matricula.HeaderText = "Matricula";
-            this.matricula.Name = "matricula";
-            this.matricula.Width = 110;
-            // 
-            // fabricante
-            // 
-            this.fabricante.HeaderText = "Fabricante";
-            this.fabricante.Name = "fabricante";
-            this.fabricante.ReadOnly = true;
-            this.fabricante.Width = 110;
-            // 
-            // tipoServicio1
-            // 
-            this.tipoServicio1.HeaderText = "Tipo de Servicio";
-            this.tipoServicio1.Name = "tipoServicio1";
-            this.tipoServicio1.Width = 130;
-            // 
-            // selec
-            // 
-            this.selec.HeaderText = "Seleccionar";
-            this.selec.Image = ((System.Drawing.Image)(resources.GetObject("selec.Image")));
-            this.selec.Name = "selec";
-            this.selec.Width = 130;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(36, 604);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(110, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Usted a seleccionado";
             // 
             // Generar_Viaje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(711, 704);
+            this.ClientSize = new System.Drawing.Size(711, 733);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.fechaSalida1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
@@ -396,17 +437,21 @@
         private System.Windows.Forms.ComboBox cbTipoServicio1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker fechaSalida1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id_ruta;
-        private System.Windows.Forms.DataGridViewTextBoxColumn codigo_ruta;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ciudad_origen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ciudad_destino;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipo_servicio_ruta;
-        private System.Windows.Forms.DataGridViewImageColumn selec1;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn modelo;
         private System.Windows.Forms.DataGridViewTextBoxColumn matricula;
         private System.Windows.Forms.DataGridViewTextBoxColumn fabricante;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idServicioA;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipoServicio1;
         private System.Windows.Forms.DataGridViewImageColumn selec;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_ruta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codigo_ruta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ciudad_origen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ciudad_destino;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idServicioRuta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tipo_servicio_ruta;
+        private System.Windows.Forms.DataGridViewImageColumn selec1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label8;
     }
 }
