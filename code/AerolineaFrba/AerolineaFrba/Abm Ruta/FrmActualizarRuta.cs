@@ -135,7 +135,7 @@ namespace AerolineaFrba.Abm_Ruta
             if (String.Equals(cbCiudadDestino.Text, cbCiudadOrigen.Text, StringComparison.OrdinalIgnoreCase))
             {
                 valido = false;
-                MessageBox.Show("Ciudad Origen = Ciudad Destino\n ¿loo que?\n ¿Dónde la viste champion?");
+                MessageBox.Show("No es posible dar de alta una ruta con idéntica Ciudad de Origen y Destino.\n");
             }
 
             if (String.IsNullOrEmpty(cbTipoDeServicio.Text))

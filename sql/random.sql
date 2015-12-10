@@ -606,7 +606,7 @@ BEGIN
 		INNER JOIN [HAY_TABLA].SERVICIOS_RUTA SR ON R.ID=SR.ID_RUTA
 		INNER JOIN [HAY_TABLA].SERVICIO S ON S.ID=SR.ID_SERVICIO
 	WHERE
-		((@codRuta is null) or (R.CODIGO LIKE '%' + @codRuta + '%')) AND
+		((@codRuta is null) or (R.CODIGO LIKE '%' + @codRuta + '%') AND
 		((@idCiudadOrigen is null)  or (R.ID_CDADORIGEN = @idCiudadOrigen)) AND
 		((@idCiudadDestino is null) or (R.ID_CDADDESTINO = @idCiudadDestino)) AND
 		((@idTipoDeServicio is null) or (SR.ID_SERVICIO = @idTipoDeServicio))
@@ -654,6 +654,12 @@ AS
 BEGIN
 	DECLARE @codRuta int, @ultimoID int
 
+	if (@precioBasePasaje <= 0 OR @precioBaseKG <= 0) 
+	begin
+		RAISERROR(N'Los precios Base deben ser positivos', 16, 1)
+		return	
+	end
+
 	if (exists(	SELECT 1 from [HAY_TABLA].RUTA R, [HAY_TABLA].SERVICIOS_RUTA SR
 				where R.ID_CDADORIGEN=@idCiudadOrigen AND R.ID_CDADDESTINO=@idCiudadDestino 
 				AND R.ID=SR.ID_RUTA AND SR.ID_SERVICIO=@idTipoServicio)
@@ -693,6 +699,12 @@ CREATE PROCEDURE [HAY_TABLA].[sp_modificacion_ruta]
 AS
 BEGIN
 	SET NOCOUNT ON;
+
+	if (@precioBasePasaje <= 0 OR @precioBaseKG <= 0) 
+	begin
+		RAISERROR(N'Los precios Base deben ser positivos', 16, 1)
+		return	
+	end
 	
 		if (exists(select 1 from [HAY_TABLA].RUTA R, [HAY_TABLA].SERVICIOS_RUTA SR
 					where R.ID_CDADORIGEN=@idCiudadOrigen AND R.ID_CDADDESTINO=@idCiudadDestino 
