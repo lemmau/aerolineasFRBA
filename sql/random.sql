@@ -1066,6 +1066,14 @@ BEGIN
 			return
 		end
 
+	if (exists(select 1
+			   from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
+			   where @id = a.ID and v.STATUS = 0 and v.FECHASALIDA > @fechaAlta))
+		begin
+			RAISERROR(N' No es posible modificar la aeronave ya que la misma cuenta con vuelos programados ', 16, 1)
+			return
+		end
+
 	UPDATE 
 		[HAY_TABLA].AERONAVE
 	SET 
