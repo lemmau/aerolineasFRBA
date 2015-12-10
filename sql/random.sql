@@ -2137,3 +2137,82 @@ end
 go
 
 
+
+create procedure [HAY_TABLA].[sp_alta_pasaje] 
+@dniCliente int ,
+@idCompra int , 
+@idViaje int , 
+@importe int , 
+@idButaca int
+
+as 
+
+
+begin 
+
+declare @idPasajero int
+set @idPasajero= (select per.ID  from HAY_TABLA.PERSONA per where per.DNI = @dniCliente)
+
+insert into HAY_TABLA.PASAJE  (ID_CLIENTE , ID_COMPRA , ID_VIAJE , IMPORTE , ID_BUTACA)
+values (@idPasajero , @idCompra , @idViaje , @importe , @idButaca)
+
+
+end 
+go
+
+
+
+CREATE FUNCTION  [HAY_TABLA].[fn_butacas_libre] (@idAeronave  int , @idViaje int)
+		RETURNS  int
+		AS 
+		BEGIN 
+		declare @cantidadButacasOcupadas int
+		declare @cantidadButacasTotal int 
+		declare @cantidadButacasLibre int
+		
+
+
+		set @cantidadButacasOcupadas = (select count(pa.ID_BUTACA)
+		 from HAY_TABLA.VIAJE v  inner join HAY_TABLA.PASAJE pa  		on v.ID = pa.ID_VIAJE 
+		 inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+		 where
+		pa.ID_VIAJE= @idViaje  and a.ID = @idAeronave);
+		set @cantidadButacasTotal = (select a.CANTBUTACASPASILLO+ a.CANTBUTACASVENTANILLA from HAY_TABLA.AERONAVE a
+		                             where a.ID = @idAeronave)
+		set @cantidadButacasLibre = @cantidadButacasTotal -	@cantidadButacasOcupadas						 
+		return  @cantidadButacasLibre
+
+
+		 
+
+
+		END 
+  
+  GO
+
+  CREATE FUNCTION  [HAY_TABLA].[fn_kg_encomienda_libre] (@idAeronave  int , @idViaje int)
+		RETURNS  int
+		AS 
+		BEGIN 
+		declare @cantidadKgOcupadas int
+		declare @cantidadKgTotal int 
+		declare @cantidadKgLibre int
+		
+
+
+		set @cantidadKgOcupadas = (		select SUM(en.PESO)
+		 from HAY_TABLA.VIAJE v  inner join HAY_TABLA.ENCOMIENDA  en		on v.ID = en.ID_VIAJE 
+		 inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+		 where
+		en.ID_VIAJE= @idViaje and a.ID = @idAeronave)
+		set @cantidadKgTotal = (select  a.ESPACIOKGENCOMIENDAS  from HAY_TABLA.AERONAVE a
+		where a.ID = @idAeronave)
+		set @cantidadKgLibre = @cantidadKgTotal -	 @cantidadKgOcupadas					 
+		return  @cantidadKgLibre
+
+		 
+
+
+		END 
+
+GO
