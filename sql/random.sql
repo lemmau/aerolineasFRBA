@@ -2031,3 +2031,109 @@ END
 
 GO
 ----------------
+
+CREATE procedure [HAY_TABLA].[sp_get_buscar_viaje]
+@f_salida Datetime, 
+@idCiudadOrigen int ,
+@idCiudadDestino int 
+
+As
+
+begin 
+
+select v.ID , a.MATRICULA as 'Matricula' ,  s.NOMBRE  as 'Tipo de servicio' , a.ID , HAY_TABLA.fn_butacas_libre(a.ID, v.ID) as 'Butacas Libre', HAY_TABLA.fn_Kg_encomienda_libre(a.ID,v.ID) as 'Kg Encomienda libre'
+from  HAY_TABLA.VIAJE v 
+inner join  HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
+where YEAR (v.FECHASALIDA) = YEAR ( @f_salida) and MONTH(V.FECHASALIDA) = MONTH(@f_salida) and DAY(V.FECHASALIDA)= DAY(@f_salida) and v.STATUS= 0 and 
+ r.ID_CDADORIGEN = @idCiudadOrigen and 
+ r.ID_CDADDESTINO = @idCiudadDestino 
+
+end 
+
+GO
+
+
+
+CREATE procedure [HAY_TABLA].[sp_butacas_libre_viaje]
+@idviaje int ,
+@idAeronave int
+AS 
+BEGIN
+
+declare @importe decimal
+
+set @importe = (
+select ru.PRECIOBASEPASAJE+(ru.PRECIOBASEPASAJE * ser.PORCENTAJEADICIONAL) from HAY_TABLA.VIAJE vi inner join HAY_TABLA.RUTA ru  on vi.ID_RUTA = ru.ID
+inner join  HAY_TABLA.AERONAVE ae  on ae.ID = vi.ID_AERONAVE 
+inner join HAY_TABLA.SERVICIO ser on ser.ID = ae.ID_SERVICIO
+where vi.ID = @idviaje and ae.ID = @idAeronave)
+
+select b.NUMERO , b.TIPO  , @importe from  HAY_TABLA.BUTACA b
+ 
+where  b.ID_AERONAVE = @idAeronave 
+
+and b.ID not in (  select p.ID_BUTACA from 
+  HAY_TABLA.VIAJE v 
+inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+inner join   HAY_TABLA.PASAJE p on p.ID_VIAJE= v.ID 
+where v.ID =@idviaje  and a.ID = @idAeronave  )   
+ 
+
+
+
+
+END 
+GO
+
+
+
+create procedure [HAY_TABLA].[sp_persona_dni] 
+@dni int
+as 
+
+begin 
+select p.NOMBRE, p.APELLIDO ,p.DIRECCION,p.TELEFONO , p.MAIL , p.FECHANACIMIENTO  from HAY_TABLA.PERSONA p where p.DNI= @dni
+end 
+
+go
+
+
+
+
+
+create procedure  [HAY_TABLA].[sp_alta_compra] 
+@dniComprador int ,
+@idTarjeta  int ,
+@idformaPago int , 
+@fecha datetime , 
+@cantCuota int 
+
+
+as 
+
+begin 
+
+declare @idComprador int
+set @idComprador  = (select pe.ID from HAY_TABLA.PERSONA pe where pe.DNI = @dniComprador)
+
+if @idformaPago = 1 
+
+BEGIN 
+
+insert into HAY_TABLA.COMPRA (ID_COMPRADOR , ID_TARJETA, ID_FORMADEPAGO , FECHA ,CANTCUOTAS)
+values (@idComprador , null , 1 , @fecha , 0)
+
+
+select co.ID from HAY_TABLA.COMPRA co where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
+ 
+END 
+
+
+
+end 
+
+go
+
+

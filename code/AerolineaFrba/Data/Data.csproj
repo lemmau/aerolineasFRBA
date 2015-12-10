@@ -43,6 +43,7 @@
     <Compile Include="Aeronave.cs" />
     <Compile Include="Canje.cs" />
     <Compile Include="Ciudad.cs" />
+    <Compile Include="Viaje.cs" />
     <Compile Include="Devolucion.cs" />
     <Compile Include="ListadoEstadistico.cs" />
     <Compile Include="Millas.cs" />

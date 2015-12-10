@@ -143,6 +143,7 @@
             this.compraDePasajeEncomiendaToolStripMenuItem1.Size = new System.Drawing.Size(268, 22);
             this.compraDePasajeEncomiendaToolStripMenuItem1.Tag = "COMPRA DE PASAJE/ENCOMIENDA";
             this.compraDePasajeEncomiendaToolStripMenuItem1.Text = "Compra de Pasaje/Encomienda";
+            this.compraDePasajeEncomiendaToolStripMenuItem1.Click += new System.EventHandler(this.compraDePasajeEncomiendaToolStripMenuItem1_Click);
             // 
             // itemDevolucion
             // 

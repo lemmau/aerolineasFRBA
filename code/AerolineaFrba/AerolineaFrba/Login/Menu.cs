@@ -142,5 +142,11 @@ namespace AerolineaFrba.Login
             Canje_Millas.CanjeMillas canje = new Canje_Millas.CanjeMillas();
             canje.Show();
         }
+
+        private void compraDePasajeEncomiendaToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Compra.Compra compra = new Compra.Compra();
+            compra.Show();
+        }
     }
 }

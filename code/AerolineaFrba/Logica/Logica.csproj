@@ -48,6 +48,7 @@
     <Compile Include="FuncionalidadesDeRol.cs" />
     <Compile Include="ListadoEstadistico.cs" />
     <Compile Include="Millas.cs" />
+    <Compile Include="Pasaje.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="Ruta.cs" />
     <Compile Include="TipoServicio.cs" />
