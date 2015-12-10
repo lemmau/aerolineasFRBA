@@ -35,14 +35,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnConsultar = new System.Windows.Forms.Button();
             this.dgvCanjes = new System.Windows.Forms.DataGridView();
+            this.idDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productoDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.millasNecesariasDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lbNombre = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.nudCantidad = new System.Windows.Forms.NumericUpDown();
             this.btnConfirmar = new System.Windows.Forms.Button();
-            this.idDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productoDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.millasNecesariasDGV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCanjes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
@@ -124,6 +124,27 @@
             this.dgvCanjes.Size = new System.Drawing.Size(363, 230);
             this.dgvCanjes.TabIndex = 18;
             // 
+            // idDGV
+            // 
+            this.idDGV.HeaderText = "Id";
+            this.idDGV.Name = "idDGV";
+            this.idDGV.ReadOnly = true;
+            this.idDGV.Visible = false;
+            // 
+            // productoDGV
+            // 
+            this.productoDGV.HeaderText = "Producto";
+            this.productoDGV.Name = "productoDGV";
+            this.productoDGV.ReadOnly = true;
+            this.productoDGV.Width = 200;
+            // 
+            // millasNecesariasDGV
+            // 
+            this.millasNecesariasDGV.HeaderText = "Millas Necesarias";
+            this.millasNecesariasDGV.Name = "millasNecesariasDGV";
+            this.millasNecesariasDGV.ReadOnly = true;
+            this.millasNecesariasDGV.Width = 120;
+            // 
             // lbNombre
             // 
             this.lbNombre.AutoSize = true;
@@ -185,27 +206,6 @@
             this.btnConfirmar.UseVisualStyleBackColor = true;
             this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
             // 
-            // idDGV
-            // 
-            this.idDGV.HeaderText = "Id";
-            this.idDGV.Name = "idDGV";
-            this.idDGV.ReadOnly = true;
-            this.idDGV.Visible = false;
-            // 
-            // productoDGV
-            // 
-            this.productoDGV.HeaderText = "Producto";
-            this.productoDGV.Name = "productoDGV";
-            this.productoDGV.ReadOnly = true;
-            this.productoDGV.Width = 200;
-            // 
-            // millasNecesariasDGV
-            // 
-            this.millasNecesariasDGV.HeaderText = "Millas Necesarias";
-            this.millasNecesariasDGV.Name = "millasNecesariasDGV";
-            this.millasNecesariasDGV.ReadOnly = true;
-            this.millasNecesariasDGV.Width = 120;
-            // 
             // CanjeMillas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -219,6 +219,7 @@
             this.Controls.Add(this.dgvCanjes);
             this.Controls.Add(this.groupBox1);
             this.Name = "CanjeMillas";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Canje de Millas";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

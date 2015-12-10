@@ -239,7 +239,7 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // Form1
+            // DevolucionPasajeEncomienda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -252,7 +252,8 @@
             this.Controls.Add(this.dgvDevolucion);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnBuscar);
-            this.Name = "Form1";
+            this.Name = "DevolucionPasajeEncomienda";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Devolución Pasaje/Encomienda";
             ((System.ComponentModel.ISupportInitialize)(this.dgvDevolucion)).EndInit();
             this.groupBox1.ResumeLayout(false);

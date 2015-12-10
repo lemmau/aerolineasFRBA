@@ -606,7 +606,7 @@ BEGIN
 		INNER JOIN [HAY_TABLA].SERVICIOS_RUTA SR ON R.ID=SR.ID_RUTA
 		INNER JOIN [HAY_TABLA].SERVICIO S ON S.ID=SR.ID_SERVICIO
 	WHERE
-		((@codRuta is null) or (R.CODIGO LIKE '%' + @codRuta + '%') AND
+		((@codRuta is null) or (R.CODIGO LIKE '%' + @codRuta + '%')) AND
 		((@idCiudadOrigen is null)  or (R.ID_CDADORIGEN = @idCiudadOrigen)) AND
 		((@idCiudadDestino is null) or (R.ID_CDADDESTINO = @idCiudadDestino)) AND
 		((@idTipoDeServicio is null) or (SR.ID_SERVICIO = @idTipoDeServicio))

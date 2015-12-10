@@ -56,17 +56,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.pasAcomprar = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.importePa = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.DataPasaje = new System.Windows.Forms.DataGridView();
-            this.dniP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.butacaP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.importeP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.f_nac = new System.Windows.Forms.DateTimePicker();
@@ -81,8 +71,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tdni = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.tdni = new System.Windows.Forms.TextBox();
+            this.pasAcomprar = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.importePa = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.DataPasaje = new System.Windows.Forms.DataGridView();
+            this.dniP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.butacaP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.importeP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button5 = new System.Windows.Forms.Button();
             this.butacasLibres = new System.Windows.Forms.DataGridView();
             this.numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -90,6 +91,21 @@
             this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.button9 = new System.Windows.Forms.Button();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel8 = new System.Windows.Forms.Panel();
             this.registrarC = new System.Windows.Forms.Button();
@@ -114,37 +130,21 @@
             this.label31 = new System.Windows.Forms.Label();
             this.total = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.button9 = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label28 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label33 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viajes)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.butacasLibres)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel8.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -400,104 +400,18 @@
             this.tabPage2.Text = "Pasaje";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // pasAcomprar
+            // groupBox2
             // 
-            this.pasAcomprar.Location = new System.Drawing.Point(201, 19);
-            this.pasAcomprar.Name = "pasAcomprar";
-            this.pasAcomprar.ReadOnly = true;
-            this.pasAcomprar.Size = new System.Drawing.Size(39, 20);
-            this.pasAcomprar.TabIndex = 13;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(28, 19);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(166, 13);
-            this.label16.TabIndex = 12;
-            this.label16.Text = "Cantidad  de pasajes a Comprar : ";
-            // 
-            // importePa
-            // 
-            this.importePa.Location = new System.Drawing.Point(539, 445);
-            this.importePa.Name = "importePa";
-            this.importePa.ReadOnly = true;
-            this.importePa.Size = new System.Drawing.Size(146, 20);
-            this.importePa.TabIndex = 11;
-            this.importePa.TextChanged += new System.EventHandler(this.importePa_TextChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(465, 448);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 13);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "Importe Total :";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(465, 494);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "Pagar";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Visible = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // DataPasaje
-            // 
-            this.DataPasaje.AllowUserToAddRows = false;
-            this.DataPasaje.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataPasaje.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dniP,
-            this.butacaP,
-            this.importeP});
-            this.DataPasaje.Location = new System.Drawing.Point(16, 448);
-            this.DataPasaje.Name = "DataPasaje";
-            this.DataPasaje.Size = new System.Drawing.Size(357, 159);
-            this.DataPasaje.TabIndex = 3;
-            this.DataPasaje.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataPasaje_CellContentClick);
-            // 
-            // dniP
-            // 
-            this.dniP.HeaderText = "DNI Pasajero";
-            this.dniP.Name = "dniP";
-            this.dniP.ReadOnly = true;
-            // 
-            // butacaP
-            // 
-            this.butacaP.HeaderText = " Nº Butaca";
-            this.butacaP.Name = "butacaP";
-            this.butacaP.ReadOnly = true;
-            // 
-            // importeP
-            // 
-            this.importeP.HeaderText = "Importe";
-            this.importeP.Name = "importeP";
-            this.importeP.ReadOnly = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(16, 378);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "Agregar";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(264, 30);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Buscar";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.groupBox2.Controls.Add(this.panel3);
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.tdni);
+            this.groupBox2.Location = new System.Drawing.Point(431, 53);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(437, 317);
+            this.groupBox2.TabIndex = 14;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Datos Personales";
             // 
             // panel3
             // 
@@ -626,12 +540,15 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Nombre :";
             // 
-            // tdni
+            // button3
             // 
-            this.tdni.Location = new System.Drawing.Point(129, 34);
-            this.tdni.Name = "tdni";
-            this.tdni.Size = new System.Drawing.Size(100, 20);
-            this.tdni.TabIndex = 1;
+            this.button3.Location = new System.Drawing.Point(264, 30);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "Buscar";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label1
             // 
@@ -641,6 +558,102 @@
             this.label1.Size = new System.Drawing.Size(92, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Nº de Documento";
+            // 
+            // tdni
+            // 
+            this.tdni.Location = new System.Drawing.Point(129, 34);
+            this.tdni.Name = "tdni";
+            this.tdni.Size = new System.Drawing.Size(100, 20);
+            this.tdni.TabIndex = 1;
+            // 
+            // pasAcomprar
+            // 
+            this.pasAcomprar.Location = new System.Drawing.Point(201, 19);
+            this.pasAcomprar.Name = "pasAcomprar";
+            this.pasAcomprar.ReadOnly = true;
+            this.pasAcomprar.Size = new System.Drawing.Size(39, 20);
+            this.pasAcomprar.TabIndex = 13;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(28, 19);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(166, 13);
+            this.label16.TabIndex = 12;
+            this.label16.Text = "Cantidad  de pasajes a Comprar : ";
+            // 
+            // importePa
+            // 
+            this.importePa.Location = new System.Drawing.Point(539, 445);
+            this.importePa.Name = "importePa";
+            this.importePa.ReadOnly = true;
+            this.importePa.Size = new System.Drawing.Size(146, 20);
+            this.importePa.TabIndex = 11;
+            this.importePa.TextChanged += new System.EventHandler(this.importePa_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(465, 448);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(75, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Importe Total :";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(465, 494);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 4;
+            this.button6.Text = "Pagar";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // DataPasaje
+            // 
+            this.DataPasaje.AllowUserToAddRows = false;
+            this.DataPasaje.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataPasaje.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dniP,
+            this.butacaP,
+            this.importeP});
+            this.DataPasaje.Location = new System.Drawing.Point(16, 448);
+            this.DataPasaje.Name = "DataPasaje";
+            this.DataPasaje.Size = new System.Drawing.Size(357, 159);
+            this.DataPasaje.TabIndex = 3;
+            this.DataPasaje.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataPasaje_CellContentClick);
+            // 
+            // dniP
+            // 
+            this.dniP.HeaderText = "DNI Pasajero";
+            this.dniP.Name = "dniP";
+            this.dniP.ReadOnly = true;
+            // 
+            // butacaP
+            // 
+            this.butacaP.HeaderText = " Nº Butaca";
+            this.butacaP.Name = "butacaP";
+            this.butacaP.ReadOnly = true;
+            // 
+            // importeP
+            // 
+            this.importeP.HeaderText = "Importe";
+            this.importeP.Name = "importeP";
+            this.importeP.ReadOnly = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(16, 378);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 2;
+            this.button5.Text = "Agregar";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // butacasLibres
             // 
@@ -714,6 +727,147 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Pago";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label33);
+            this.groupBox3.Controls.Add(this.comboBox4);
+            this.groupBox3.Controls.Add(this.button9);
+            this.groupBox3.Controls.Add(this.comboBox3);
+            this.groupBox3.Controls.Add(this.label27);
+            this.groupBox3.Controls.Add(this.label29);
+            this.groupBox3.Controls.Add(this.label24);
+            this.groupBox3.Controls.Add(this.comboBox2);
+            this.groupBox3.Controls.Add(this.label25);
+            this.groupBox3.Controls.Add(this.label28);
+            this.groupBox3.Controls.Add(this.label26);
+            this.groupBox3.Controls.Add(this.comboBox1);
+            this.groupBox3.Controls.Add(this.textBox9);
+            this.groupBox3.Controls.Add(this.textBox10);
+            this.groupBox3.Location = new System.Drawing.Point(19, 407);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(743, 174);
+            this.groupBox3.TabIndex = 18;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Datos de la Tarjeta";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(341, 35);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(79, 13);
+            this.label33.TabIndex = 18;
+            this.label33.Text = "Tipo de Tarjeta";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(450, 34);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(112, 21);
+            this.comboBox4.TabIndex = 19;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(597, 127);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 17;
+            this.button9.Text = "Pagar";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(316, 87);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(69, 21);
+            this.comboBox3.TabIndex = 16;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(6, 35);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(70, 13);
+            this.label27.TabIndex = 9;
+            this.label27.Text = "Nº de Tarjeta";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(275, 91);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(35, 13);
+            this.label29.TabIndex = 15;
+            this.label29.Text = "Cuota";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(6, 90);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(27, 13);
+            this.label24.TabIndex = 6;
+            this.label24.Text = "Mes";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(163, 87);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(69, 21);
+            this.comboBox2.TabIndex = 14;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(6, 62);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(113, 13);
+            this.label25.TabIndex = 7;
+            this.label25.Text = "Fecha de Vencimiento";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(123, 90);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(26, 13);
+            this.label28.TabIndex = 13;
+            this.label28.Text = "Año";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(418, 90);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(43, 13);
+            this.label26.TabIndex = 8;
+            this.label26.Text = "Codigo:";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(46, 87);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(52, 21);
+            this.comboBox1.TabIndex = 12;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(104, 35);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(192, 20);
+            this.textBox9.TabIndex = 10;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(485, 88);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(99, 20);
+            this.textBox10.TabIndex = 11;
             // 
             // groupBox1
             // 
@@ -934,107 +1088,6 @@
             this.label30.TabIndex = 6;
             this.label30.Text = "Importe Total";
             // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(597, 127);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 17;
-            this.button9.Text = "Pagar";
-            this.button9.UseVisualStyleBackColor = true;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(316, 87);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(69, 21);
-            this.comboBox3.TabIndex = 16;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(275, 91);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(35, 13);
-            this.label29.TabIndex = 15;
-            this.label29.Text = "Cuota";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(163, 87);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(69, 21);
-            this.comboBox2.TabIndex = 14;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(123, 90);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(26, 13);
-            this.label28.TabIndex = 13;
-            this.label28.Text = "Año";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(46, 87);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(52, 21);
-            this.comboBox1.TabIndex = 12;
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(485, 88);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(99, 20);
-            this.textBox10.TabIndex = 11;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(104, 35);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(192, 20);
-            this.textBox9.TabIndex = 10;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(6, 35);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(70, 13);
-            this.label27.TabIndex = 9;
-            this.label27.Text = "Nº de Tarjeta";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(418, 90);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(43, 13);
-            this.label26.TabIndex = 8;
-            this.label26.Text = "Codigo:";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(6, 62);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(113, 13);
-            this.label25.TabIndex = 7;
-            this.label25.Text = "Fecha de Vencimiento";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(6, 90);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(27, 13);
-            this.label24.TabIndex = 6;
-            this.label24.Text = "Mes";
-            // 
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(528, 360);
@@ -1054,59 +1107,6 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.panel3);
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.tdni);
-            this.groupBox2.Location = new System.Drawing.Point(431, 53);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(437, 317);
-            this.groupBox2.TabIndex = 14;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Datos Personales";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label33);
-            this.groupBox3.Controls.Add(this.comboBox4);
-            this.groupBox3.Controls.Add(this.button9);
-            this.groupBox3.Controls.Add(this.comboBox3);
-            this.groupBox3.Controls.Add(this.label27);
-            this.groupBox3.Controls.Add(this.label29);
-            this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Controls.Add(this.comboBox2);
-            this.groupBox3.Controls.Add(this.label25);
-            this.groupBox3.Controls.Add(this.label28);
-            this.groupBox3.Controls.Add(this.label26);
-            this.groupBox3.Controls.Add(this.comboBox1);
-            this.groupBox3.Controls.Add(this.textBox9);
-            this.groupBox3.Controls.Add(this.textBox10);
-            this.groupBox3.Location = new System.Drawing.Point(19, 407);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(743, 174);
-            this.groupBox3.TabIndex = 18;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Datos de la Tarjeta";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(341, 35);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(79, 13);
-            this.label33.TabIndex = 18;
-            this.label33.Text = "Tipo de Tarjeta";
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(450, 34);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(112, 21);
-            this.comboBox4.TabIndex = 19;
-            // 
             // Compra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1114,7 +1114,8 @@
             this.ClientSize = new System.Drawing.Size(1040, 741);
             this.Controls.Add(this.tabControl1);
             this.Name = "Compra";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Compra de Pasajes/Encomiendas";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -1123,20 +1124,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.viajes)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.butacasLibres)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
