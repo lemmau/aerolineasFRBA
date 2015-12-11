@@ -228,7 +228,7 @@ namespace AerolineaFrba.Generacion_Viaje
            
 
 
-            this.fechaSis = this.fechaSis.AddHours(1);
+            this.fechaSis = this.fechaSis.AddMinutes(15);
 
 
 
@@ -248,12 +248,12 @@ namespace AerolineaFrba.Generacion_Viaje
 
             if (v_f_salida < this.fechaSis)
             {
-                this.fechaSis = this.fechaSis.AddHours(-1);
+                this.fechaSis = this.fechaSis.AddMinutes(-15);
                 return true;
             }
             else
             {
-                this.fechaSis = this.fechaSis.AddHours(-1);
+                this.fechaSis = this.fechaSis.AddMinutes(-15);
                 return false;
             }
         }
@@ -325,14 +325,15 @@ namespace AerolineaFrba.Generacion_Viaje
         {
             if (!e.RowIndex.Equals(-1))
             {
+
                 this.id_aeronave = Convert.ToInt32(aeronaves.Rows[e.RowIndex].Cells["id"].Value.ToString());
                 this.matricula_seleccionada = aeronaves.Rows[e.RowIndex].Cells["matricula"].Value.ToString();
-
+                string tipoServicio = aeronaves.Rows[e.RowIndex].Cells["tipoServicio1"].Value.ToString();
 
                 this.id_tipo_ser_aer = Convert.ToInt32(aeronaves.Rows[e.RowIndex].Cells["idServicioA"].Value.ToString());
-                MessageBox.Show("Usted a seleccionado la Aeronave con la matricula " + this.matricula_seleccionada, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Usted seleccionado la Aeronave con la matricula " + this.matricula_seleccionada, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                label8.Text = "Usted a seleccionado la Aeronave con la matricula " + this.matricula_seleccionada;
+                label8.Text = "Usted seleccionado la Aeronave con la matricula " + this.matricula_seleccionada + "     Tipo de servicio: " + tipoServicio;
                 
             }
         }
@@ -345,10 +346,11 @@ namespace AerolineaFrba.Generacion_Viaje
                 this.id_tipo_ser_ruta = Convert.ToInt32(rutas.Rows[e.RowIndex].Cells["idServicioRuta"].Value.ToString());
                 this.ciudadOrigen_seleccionada =rutas.Rows[e.RowIndex].Cells["ciudad_origen"].Value.ToString();
                 this.ciudadDestino_seleccionada = rutas.Rows[e.RowIndex].Cells["ciudad_destino"].Value.ToString();
+                string tipoServicioSeleccionado =  rutas.Rows[e.RowIndex].Cells["tipo_servicio_ruta"].Value.ToString();
                 MessageBox.Show("Usted selecciono la ruta con ciudad de origen :" + this.ciudadOrigen_seleccionada  +" ciudad destino: "+ this.ciudadDestino_seleccionada , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
-                label3.Text = "Usted selecciono la ruta con ciudad de origen :" + this.ciudadOrigen_seleccionada + " ciudad destino: " + this.ciudadDestino_seleccionada;
+                label3.Text = "Usted selecciono la ruta con ciudad de oigen:" + this.ciudadOrigen_seleccionada + "  ciudad destino: " + this.ciudadDestino_seleccionada + "   Tipo de servicio: " + tipoServicioSeleccionado;
             }
         }
 
@@ -430,7 +432,7 @@ namespace AerolineaFrba.Generacion_Viaje
             {
 
                 
-                str_error += "La fecha de salida no puede ser previa a la actual y en caso de ser la misma, debe tener una hora de diferencia\n";
+                str_error += "La fecha de salida no puede ser previa a la actual o en caso de ser la misma, debe tener 15 minutos de diferencia\n";
             }
             if (fechaLLegadaEstimMenorFechaSalida())
             {
@@ -585,7 +587,10 @@ namespace AerolineaFrba.Generacion_Viaje
                 {
                     if (id_tipo_ser_aer != id_tipo_ser_ruta)
                     {
-                        str_error += "El tipo de servicio de la Ruta y Aeronave seleccionada deben ser iguales\n";
+                        str_error += "El tipo de servicio de la Ruta y Aeronave seleccionada deben ser iguales \n";
+                        str_error += label3.Text+"\n";
+                        str_error += label8.Text + "\n";
+
                     }
                 }
                 if (!str_error.Equals(""))
@@ -604,22 +609,11 @@ namespace AerolineaFrba.Generacion_Viaje
 
         private void cbTipoServicio1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (validarCombo1Vacio() && validarFechas())
-            {
-
-                this.id_tipo_ser_aer = ((ComboboxItem)cbTipoServicio1.SelectedItem).Value;
-                cargarAeronave();
-            }
+            //debera seleccionar el boton buscar
         }
 
         private void cbTipoServicio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (validarComboVacio() && validarFechas())
-            {
-
-                this.id_tipo_ser_ruta = ((ComboboxItem)cbTipoServicio.SelectedItem).Value;
-                cargarRutas();
-            }
+        {// debera seleccionar el boton buscar
         }
 
     }

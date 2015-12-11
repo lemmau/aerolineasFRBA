@@ -38,6 +38,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.cbTipoServicio1 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.aeronaves = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,7 +62,6 @@
             this.selec1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.fechaSalida1 = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -150,6 +150,16 @@
             this.label6.Size = new System.Drawing.Size(84, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Tipo de Servicio";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(9, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(77, 20);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Aeronave";
             // 
             // aeronaves
             // 
@@ -347,16 +357,6 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 20);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "Aeronave";
-            // 
             // fechaSalida1
             // 
             this.fechaSalida1.Location = new System.Drawing.Point(171, 26);
@@ -367,6 +367,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Blue;
             this.label3.Location = new System.Drawing.Point(34, 315);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 13);
@@ -376,6 +377,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.Blue;
             this.label8.Location = new System.Drawing.Point(36, 604);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(110, 13);
