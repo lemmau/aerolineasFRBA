@@ -829,41 +829,40 @@ AS
 	SET @errores = 'Se ha registrado la llegada de la Aeronave'	
 BEGIN
 
-	DECLARE @id_viaje int 
+	DECLARE @id_viaje int,
+			@ciudadLlegada int
+
 	select @id_viaje = (select V.ID 
-						from HAY_TABLA.VIAJE V join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
+						from HAY_TABLA.VIAJE V 
+						join HAY_TABLA.AERONAVE A on V.ID_AERONAVE = A.ID
 						join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
-					
-						where V.FECHALLEGADA is null and  V.STATUS = 0
-						and R1.ID_CDADORIGEN = @id_ciudad_origen and upper(A.MATRICULA) = upper(@matricula))
-						
+						where V.FECHALLEGADA is null 
+						and V.STATUS = 1 	-- viajes activos (no cancelados)
+						and R1.ID_CDADORIGEN = @id_ciudad_origen 
+						and upper(A.MATRICULA) = upper(@matricula))
 	
-	IF @id_viaje is null BEGIN 
+	IF @id_viaje is null 
+	BEGIN 
 		set @hayErr = 1
-		set @errores = 'No existe ningún Viaje sin registrar su llegada para la ciudad de origen seleccionada'
+		set @errores = 'No existe ningún Viaje sin registrar su llegada para la ciudades indicadas'
 		RETURN
 	END
     	
-	DECLARE @ciudadLlegada int  
-	select @ciudadLlegada = (select count (*) from HAY_TABLA.VIAJE V join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
-	 where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino  ) 
+	select @ciudadLlegada = (select count (*) 
+							from HAY_TABLA.VIAJE V join HAY_TABLA.RUTA R1 on R1.ID = V.ID_RUTA
+							where V.ID = @id_viaje and R1.ID_CDADDESTINO = @id_ciudad_destino  ) 
 
-
-	 	IF @ciudadLlegada = 0 BEGIN 
+	IF @ciudadLlegada = 0 
+	 BEGIN 
 		set @hayErr = 2
 		set @errores = 'Se registrara el viaje con una ciudad de destino diferente al promagramado'
-		
 	END
 
-	DECLARE @id_aeronave int
-	select @id_aeronave = (select V.ID_AERONAVE from HAY_TABLA.VIAJE V where V.ID = @id_viaje)		
-
-	UPDATE [HAY_TABLA].VIAJE
-	SET FECHALLEGADA = @f_llegada 
-	WHERE ID = @id_viaje
+	UPDATE 	[HAY_TABLA].VIAJE
+	SET 	FECHALLEGADA = @f_llegada
+	WHERE 	ID = @id_viaje
 END
 GO
-
 /*-------------   SP  PARA AERONAVES   -------------*/
 
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_fuera_de_servicio]
@@ -1080,7 +1079,7 @@ BEGIN
 
 	if (exists(select 1
 			   from HAY_TABLA.AERONAVE a join HAY_TABLA.VIAJE v on a.ID = v.ID_AERONAVE
-			   where @id = a.ID and v.STATUS = 0 and v.FECHASALIDA > @fechaAlta))
+			   where @id = a.ID and v.STATUS = 1 and v.FECHASALIDA > @fechaAlta))
 		begin
 			RAISERROR(N' No es posible modificar la aeronave ya que la misma cuenta con vuelos programados ', 16, 1)
 			return
@@ -1214,7 +1213,7 @@ BEGIN
 			where @id = a.ID and v.FECHASALIDA >= @fechaActual
 		
 			--Cancelacion de vuelos programados			
-			--agarrar cada vuelo y setear status en 1
+			--agarrar cada vuelo y setear status en 0 (cancelado)
 			--Paso los que busque a la app y llamará a otro sp para cancelarlos
 		end	
 
@@ -1257,7 +1256,7 @@ BEGIN
 			where @id = a.ID and @fechaActual <= v.FECHASALIDA and v.FECHASALIDA < @fechaReincorporacion
 		
 			--Cancelacion de vuelos programados			
-			--agarrar cada vuelo y setear status en 1
+			--agarrar cada vuelo y setear status en 0 (cancelado)
 			--Paso los que busque a la app y llamará a otro sp para cancelarlos
 		end
 END
@@ -1272,7 +1271,7 @@ BEGIN
 	UPDATE 
 		[HAY_TABLA].[VIAJE]
     SET 
-		STATUS = 1
+		STATUS = 0
 	WHERE 
 		@idVuelo = ID
 
@@ -2039,188 +2038,157 @@ END
 
 GO
 ----------------
-
-CREATE procedure [HAY_TABLA].[sp_get_buscar_viaje]
-@f_salida Datetime, 
-@idCiudadOrigen int ,
-@idCiudadDestino int 
-
-As
-
-begin 
-
-select v.ID , a.MATRICULA as 'Matricula' ,  s.NOMBRE  as 'Tipo de servicio' , a.ID , HAY_TABLA.fn_butacas_libre(a.ID, v.ID) as 'Butacas Libre', HAY_TABLA.fn_Kg_encomienda_libre(a.ID,v.ID) as 'Kg Encomienda libre'
-from  HAY_TABLA.VIAJE v 
-inner join  HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
-inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
-inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
-where YEAR (v.FECHASALIDA) = YEAR ( @f_salida) and MONTH(V.FECHASALIDA) = MONTH(@f_salida) and DAY(V.FECHASALIDA)= DAY(@f_salida) and v.STATUS= 0 and 
- r.ID_CDADORIGEN = @idCiudadOrigen and 
- r.ID_CDADDESTINO = @idCiudadDestino 
-
-end 
-
-GO
-
-
-
-CREATE procedure [HAY_TABLA].[sp_butacas_libre_viaje]
-@idviaje int ,
-@idAeronave int
-AS 
-BEGIN
-
-declare @importe decimal
-
-set @importe = (
-select ru.PRECIOBASEPASAJE+(ru.PRECIOBASEPASAJE * ser.PORCENTAJEADICIONAL) from HAY_TABLA.VIAJE vi inner join HAY_TABLA.RUTA ru  on vi.ID_RUTA = ru.ID
-inner join  HAY_TABLA.AERONAVE ae  on ae.ID = vi.ID_AERONAVE 
-inner join HAY_TABLA.SERVICIO ser on ser.ID = ae.ID_SERVICIO
-where vi.ID = @idviaje and ae.ID = @idAeronave)
-
-select b.NUMERO , b.TIPO  , @importe from  HAY_TABLA.BUTACA b
- 
-where  b.ID_AERONAVE = @idAeronave 
-
-and b.ID not in (  select p.ID_BUTACA from 
-  HAY_TABLA.VIAJE v 
-inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
-inner join   HAY_TABLA.PASAJE p on p.ID_VIAJE= v.ID 
-where v.ID =@idviaje  and a.ID = @idAeronave  )   
- 
-
-
-
-
-END 
-GO
-
-
-
-create procedure [HAY_TABLA].[sp_persona_dni] 
-@dni int
-as 
-
-begin 
-select p.NOMBRE, p.APELLIDO ,p.DIRECCION,p.TELEFONO , p.MAIL , p.FECHANACIMIENTO  from HAY_TABLA.PERSONA p where p.DNI= @dni
-end 
-
-go
-
-
-
-
-
-create procedure  [HAY_TABLA].[sp_alta_compra] 
-@dniComprador int ,
-@idTarjeta  int ,
-@idformaPago int , 
-@fecha datetime , 
-@cantCuota int 
-
-
-as 
-
-begin 
-
-declare @idComprador int
-set @idComprador  = (select pe.ID from HAY_TABLA.PERSONA pe where pe.DNI = @dniComprador)
-
-if @idformaPago = 1 
-
+CREATE FUNCTION  [HAY_TABLA].fn_butacas_libre (@idAeronave  int , @idViaje int)
+	RETURNS  int
+AS
 BEGIN 
+	DECLARE @cantidadButacasOcupadas int,
+			@cantidadButacasTotal int,
+			@cantidadButacasLibre int
+		
+	SET @cantidadButacasOcupadas = (select count(pa.ID_BUTACA)
+		 							from 	
+		 									HAY_TABLA.VIAJE v 
+		 									inner join HAY_TABLA.PASAJE pa  		on v.ID = pa.ID_VIAJE
+		 									inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+									 where 
+									 		pa.ID_VIAJE= @idViaje  and a.ID = @idAeronave);
+	SET @cantidadButacasTotal = (select a.CANTBUTACASPASILLO+ a.CANTBUTACASVENTANILLA 
+								from 
+									HAY_TABLA.AERONAVE a
+								where a.ID = @idAeronave)
+	SET @cantidadButacasLibre = @cantidadButacasTotal -	@cantidadButacasOcupadas
 
-insert into HAY_TABLA.COMPRA (ID_COMPRADOR , ID_TARJETA, ID_FORMADEPAGO , FECHA ,CANTCUOTAS)
-values (@idComprador , null , 1 , @fecha , 0)
-
-
-select co.ID from HAY_TABLA.COMPRA co where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
- 
+	RETURN @cantidadButacasLibre
 END 
-
-
-
-end 
-
-go
-
-
-
-create procedure [HAY_TABLA].[sp_alta_pasaje] 
-@dniCliente int ,
-@idCompra int , 
-@idViaje int , 
-@importe int , 
-@idButaca int
-
-as 
-
-
-begin 
-
-declare @idPasajero int
-set @idPasajero= (select per.ID  from HAY_TABLA.PERSONA per where per.DNI = @dniCliente)
-
-insert into HAY_TABLA.PASAJE  (ID_CLIENTE , ID_COMPRA , ID_VIAJE , IMPORTE , ID_BUTACA)
-values (@idPasajero , @idCompra , @idViaje , @importe , @idButaca)
-
-
-end 
-go
-
-
-
-CREATE FUNCTION  [HAY_TABLA].[fn_butacas_libre] (@idAeronave  int , @idViaje int)
-		RETURNS  int
-		AS 
-		BEGIN 
-		declare @cantidadButacasOcupadas int
-		declare @cantidadButacasTotal int 
-		declare @cantidadButacasLibre int
+GO
+------
+CREATE FUNCTION  [HAY_TABLA].fn_kg_encomienda_libre (@idAeronave  int , @idViaje int)
+	RETURNS  int
+AS
+BEGIN 
+	DECLARE @cantidadKgOcupadas int,
+			@cantidadKgTotal int,
+			@cantidadKgLibre int
 		
-
-
-		set @cantidadButacasOcupadas = (select count(pa.ID_BUTACA)
-		 from HAY_TABLA.VIAJE v  inner join HAY_TABLA.PASAJE pa  		on v.ID = pa.ID_VIAJE 
-		 inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
-		 where
-		pa.ID_VIAJE= @idViaje  and a.ID = @idAeronave);
-		set @cantidadButacasTotal = (select a.CANTBUTACASPASILLO+ a.CANTBUTACASVENTANILLA from HAY_TABLA.AERONAVE a
-		                             where a.ID = @idAeronave)
-		set @cantidadButacasLibre = @cantidadButacasTotal -	@cantidadButacasOcupadas						 
-		return  @cantidadButacasLibre
-
-
-		 
-
-
-		END 
-  
-  GO
-
-  CREATE FUNCTION  [HAY_TABLA].[fn_kg_encomienda_libre] (@idAeronave  int , @idViaje int)
-		RETURNS  int
-		AS 
-		BEGIN 
-		declare @cantidadKgOcupadas int
-		declare @cantidadKgTotal int 
-		declare @cantidadKgLibre int
-		
-
-
-		set @cantidadKgOcupadas = (		select SUM(en.PESO)
+	SET @cantidadKgOcupadas = (		select SUM(en.PESO)
 		 from HAY_TABLA.VIAJE v  inner join HAY_TABLA.ENCOMIENDA  en		on v.ID = en.ID_VIAJE 
 		 inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
 		 where
 		en.ID_VIAJE= @idViaje and a.ID = @idAeronave)
-		set @cantidadKgTotal = (select  a.ESPACIOKGENCOMIENDAS  from HAY_TABLA.AERONAVE a
-		where a.ID = @idAeronave)
-		set @cantidadKgLibre = @cantidadKgTotal -	 @cantidadKgOcupadas					 
+	SET @cantidadKgTotal = (select  a.ESPACIOKGENCOMIENDAS  from HAY_TABLA.AERONAVE a
+			where a.ID = @idAeronave)
+	SET @cantidadKgLibre = @cantidadKgTotal -	 @cantidadKgOcupadas					 
 		return  @cantidadKgLibre
-
-		 
-
-
-		END 
-
+END 
 GO
+------
+CREATE PROCEDURE [HAY_TABLA].sp_get_buscar_viaje
+	@f_salida 			Datetime, 
+	@idCiudadOrigen 	int,
+	@idCiudadDestino 	int 
+AS
+BEGIN
+	select 	v.ID, a.MATRICULA as 'Matricula', s.NOMBRE  as 'Tipo de servicio',
+			a.ID, [HAY_TABLA].fn_butacas_libre(a.ID, v.ID) as 'Butacas Libre',
+			[HAY_TABLA].fn_Kg_encomienda_libre(a.ID,v.ID) as 'Kg Encomienda libre'
+	from  
+			HAY_TABLA.VIAJE v
+			inner join  HAY_TABLA.RUTA r on v.ID_RUTA = r.ID
+			inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+			inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
+	where 	v.STATUS= 1 -- viajes activos
+			and YEAR(v.FECHASALIDA) = YEAR(@f_salida) 
+			and MONTH(V.FECHASALIDA) = MONTH(@f_salida) 
+			and DAY(V.FECHASALIDA)= DAY(@f_salida)
+			and r.ID_CDADORIGEN = @idCiudadOrigen 
+			and r.ID_CDADDESTINO = @idCiudadDestino 
+END 
+GO
+------
+CREATE PROCEDURE [HAY_TABLA].sp_butacas_libre_viaje
+	@idviaje int ,
+	@idAeronave int
+AS 
+BEGIN
+	declare @importe decimal
+
+	set @importe = (
+	select ru.PRECIOBASEPASAJE+(ru.PRECIOBASEPASAJE * ser.PORCENTAJEADICIONAL) from HAY_TABLA.VIAJE vi inner join HAY_TABLA.RUTA ru  on vi.ID_RUTA = ru.ID
+	inner join  HAY_TABLA.AERONAVE ae  on ae.ID = vi.ID_AERONAVE 
+	inner join HAY_TABLA.SERVICIO ser on ser.ID = ae.ID_SERVICIO
+	where vi.ID = @idviaje and ae.ID = @idAeronave)
+
+	select b.NUMERO , b.TIPO  , @importe from  HAY_TABLA.BUTACA b
+	 
+	where  b.ID_AERONAVE = @idAeronave 
+
+	and b.ID not in (  select p.ID_BUTACA from 
+	  HAY_TABLA.VIAJE v 
+	inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+	inner join   HAY_TABLA.PASAJE p on p.ID_VIAJE= v.ID 
+	where v.ID =@idviaje  and a.ID = @idAeronave  )
+
+END 
+GO
+------
+CREATE PROCEDURE [HAY_TABLA].sp_persona_dni
+	@dni int
+AS
+BEGIN
+	select p.NOMBRE, p.APELLIDO ,p.DIRECCION,p.TELEFONO , p.MAIL , p.FECHANACIMIENTO 
+	from HAY_TABLA.PERSONA p 
+	where p.DNI= @dni
+END
+GO
+------
+CREATE PROCEDURE  [HAY_TABLA].sp_alta_compra
+	@dniComprador int ,
+	@idTarjeta  int ,
+	@idformaPago int , 
+	@fecha datetime , 
+	@cantCuota int 
+AS
+BEGIN 
+
+	declare @idComprador int
+	set @idComprador  = (select pe.ID from HAY_TABLA.PERSONA pe where pe.DNI = @dniComprador)
+
+	if @idformaPago = 1 
+
+	BEGIN 
+
+		insert into HAY_TABLA.COMPRA 
+		(ID_COMPRADOR , ID_TARJETA, ID_FORMADEPAGO , FECHA ,CANTCUOTAS)
+		values 
+		(@idComprador , null , 1 , @fecha , 0)
+
+
+		select co.ID 
+		from HAY_TABLA.COMPRA co 
+		where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
+	 
+	END 
+END
+GO
+------
+CREATE PROCEDURE [HAY_TABLA].sp_alta_pasaje
+	@dniCliente int ,
+	@idCompra int , 
+	@idViaje int , 
+	@importe int , 
+	@idButaca int
+
+AS
+BEGIN 
+	DECLARE @idPasajero int
+
+	SET @idPasajero= (select per.ID  from HAY_TABLA.PERSONA per where per.DNI = @dniCliente)
+
+	insert into HAY_TABLA.PASAJE  
+	(ID_CLIENTE , ID_COMPRA , ID_VIAJE , IMPORTE , ID_BUTACA)
+	values 
+	(@idPasajero , @idCompra , @idViaje , @importe , @idButaca)
+END
+GO
+------
