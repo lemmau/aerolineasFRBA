@@ -194,9 +194,17 @@ namespace AerolineaFrba.Compra
 
         private void button3_Click(object sender, EventArgs e)
         {
+            Int32 numeroEntero;
+
             if (String.IsNullOrEmpty(tdni.Text))
             {
                 MessageBox.Show("El campo 'Nro de Documento' se encuentra vacio.");
+                return;
+            }
+            else if (!String.IsNullOrEmpty(tdni.Text)
+                && !Int32.TryParse(tdni.Text, out numeroEntero))
+            {
+                MessageBox.Show("El número de DNI debe ser numérico y sin puntos.");
                 return;
             }
 
@@ -272,9 +280,15 @@ namespace AerolineaFrba.Compra
             this.panel3.Visible = false;
             this.button4.Visible = false;
         }
-        private void button5_Click(object sender, EventArgs e)
 
+        private void button5_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(tdni.Text))
+            {
+                MessageBox.Show("Complete el campo 'Nro de Documento' para asociar al pasajero.");
+                return;
+            }
+
             int cantidadPasajeSel = int.Parse(cantPasaje.Text);
             string doc = tdni.Text;
             Pasaje pasaje1 = new Pasaje();
@@ -332,12 +346,18 @@ namespace AerolineaFrba.Compra
 
         private void button10_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(tdniComprador.Text))
+            {
+                MessageBox.Show("El campo 'Nro de Documento' se encuentra vacio.");
+                return;
+            }
+
             int tdniC = Int32.Parse(tdniComprador.Text);
             panel8.Visible = true;
 
             using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_persona_dni", con);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_persona_dni", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 if (!String.IsNullOrEmpty(f_salida.ToString()))

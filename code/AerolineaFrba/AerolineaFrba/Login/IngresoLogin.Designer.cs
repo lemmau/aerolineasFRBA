@@ -101,6 +101,8 @@
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnIngresar);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "IngresoLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ingreso";

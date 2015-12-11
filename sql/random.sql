@@ -2038,7 +2038,7 @@ END
 
 GO
 ----------------
-CREATE FUNCTION  [HAY_TABLA].fn_butacas_libre (@idAeronave  int , @idViaje int)
+CREATE FUNCTION [HAY_TABLA].fn_butacas_libre (@idAeronave  int , @idViaje int)
 	RETURNS  int
 AS
 BEGIN 
@@ -2047,15 +2047,12 @@ BEGIN
 			@cantidadButacasLibre int
 		
 	SET @cantidadButacasOcupadas = (select count(pa.ID_BUTACA)
-		 							from 	
-		 									HAY_TABLA.VIAJE v 
-		 									inner join HAY_TABLA.PASAJE pa  		on v.ID = pa.ID_VIAJE
-		 									inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
-									 where 
-									 		pa.ID_VIAJE= @idViaje  and a.ID = @idAeronave);
-	SET @cantidadButacasTotal = (select a.CANTBUTACASPASILLO+ a.CANTBUTACASVENTANILLA 
-								from 
-									HAY_TABLA.AERONAVE a
+		 							from HAY_TABLA.VIAJE v 
+		 							inner join HAY_TABLA.PASAJE pa on v.ID = pa.ID_VIAJE
+		 							inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+									where pa.ID_VIAJE= @idViaje  and a.ID = @idAeronave);
+	SET @cantidadButacasTotal = (select a.CANTBUTACASPASILLO + a.CANTBUTACASVENTANILLA 
+								from HAY_TABLA.AERONAVE a
 								where a.ID = @idAeronave)
 	SET @cantidadButacasLibre = @cantidadButacasTotal -	@cantidadButacasOcupadas
 
@@ -2063,7 +2060,7 @@ BEGIN
 END 
 GO
 ------
-CREATE FUNCTION  [HAY_TABLA].fn_kg_encomienda_libre (@idAeronave  int , @idViaje int)
+CREATE FUNCTION [HAY_TABLA].fn_kg_encomienda_libre (@idAeronave  int , @idViaje int)
 	RETURNS  int
 AS
 BEGIN 
@@ -2071,19 +2068,21 @@ BEGIN
 			@cantidadKgTotal int,
 			@cantidadKgLibre int
 		
-	SET @cantidadKgOcupadas = (		select SUM(en.PESO)
-		 from HAY_TABLA.VIAJE v  inner join HAY_TABLA.ENCOMIENDA  en		on v.ID = en.ID_VIAJE 
-		 inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
-		 where
-		en.ID_VIAJE= @idViaje and a.ID = @idAeronave)
-	SET @cantidadKgTotal = (select  a.ESPACIOKGENCOMIENDAS  from HAY_TABLA.AERONAVE a
-			where a.ID = @idAeronave)
-	SET @cantidadKgLibre = @cantidadKgTotal -	 @cantidadKgOcupadas					 
-		return  @cantidadKgLibre
+	SET @cantidadKgOcupadas = (	SELECT SUM(PESO) FROM HAY_TABLA.ENCOMIENDA	WHERE ID_VIAJE = @idViaje)
+
+	IF (@cantidadKgOcupadas IS NULL)
+	BEGIN
+		SET @cantidadKgOcupadas = 0
+	END 
+
+	SET @cantidadKgTotal = (select ESPACIOKGENCOMIENDAS from HAY_TABLA.AERONAVE where ID = @idAeronave)
+	SET @cantidadKgLibre = @cantidadKgTotal - @cantidadKgOcupadas
+		
+	RETURN @cantidadKgLibre
 END 
 GO
 ------
-CREATE PROCEDURE [HAY_TABLA].sp_get_buscar_viaje
+CREATE PROCEDURE [HAY_TABLA].[sp_get_buscar_viaje]
 	@f_salida 			Datetime,
 	@idCiudadOrigen 	int = null,
 	@idCiudadDestino 	int = null
@@ -2099,6 +2098,7 @@ BEGIN
 			inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
 	where 	
 			v.STATUS= 1 -- viajes activos
+			and v.FECHALLEGADA IS NULL -- aun no arribaron, claro
 			and YEAR(v.FECHASALIDA) = YEAR(@f_salida) 
 			and MONTH(V.FECHASALIDA) = MONTH(@f_salida) 
 			and DAY(V.FECHASALIDA)= DAY(@f_salida)
@@ -2107,7 +2107,7 @@ BEGIN
 END 
 GO
 ------
-CREATE PROCEDURE [HAY_TABLA].sp_butacas_libres_viaje
+CREATE PROCEDURE [HAY_TABLA].[sp_butacas_libres_viaje]
 	@idviaje int ,
 	@idAeronave int
 AS 
@@ -2133,8 +2133,8 @@ BEGIN
 END 
 GO
 ------
-CREATE PROCEDURE [HAY_TABLA].sp_persona_dni
-	@dni int,
+CREATE PROCEDURE [HAY_TABLA].[sp_persona_dni]
+	@dni int
 AS
 BEGIN
 	select NOMBRE, APELLIDO, DIRECCION, TELEFONO, MAIL , FECHANACIMIENTO 
@@ -2143,7 +2143,7 @@ BEGIN
 END
 GO
 ------
-CREATE PROCEDURE  [HAY_TABLA].sp_alta_compra
+CREATE PROCEDURE  [HAY_TABLA].[sp_alta_compra]
 	@dniComprador int ,
 	@idTarjeta  int ,
 	@idformaPago int , 
@@ -2173,7 +2173,7 @@ BEGIN
 END
 GO
 ------
-CREATE PROCEDURE [HAY_TABLA].sp_alta_pasaje
+CREATE PROCEDURE [HAY_TABLA].[sp_alta_pasaje]
 	@dniCliente int ,
 	@idCompra int , 
 	@idViaje int , 
