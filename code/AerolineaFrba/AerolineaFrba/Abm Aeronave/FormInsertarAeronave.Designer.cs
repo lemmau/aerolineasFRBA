@@ -226,7 +226,7 @@
             this.Controls.Add(this.gbCamposDeRuta);
             this.Name = "FormInsertarAeronave";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormInsertarAeronave";
+            this.Text = "Alta de Aeronave";
             this.Load += new System.EventHandler(this.FormInsertarAeronave_Load);
             this.gbCamposDeRuta.ResumeLayout(false);
             this.gbCamposDeRuta.PerformLayout();

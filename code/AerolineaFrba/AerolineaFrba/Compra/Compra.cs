@@ -16,33 +16,32 @@ namespace AerolineaFrba.Compra
 
 
     {
-
         Int32 idViaje = 0;
         Int32 idAeronave = 0;
         decimal importeSelec = 0;
         decimal importeTotal = 0;
         int formaPago = 1;
         Int32 idCompra = 0;
+        Int32 idButaca = 0;
 
         DateTime f_act = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
-        Int32 idButaca = 0;
+        
         Persona persona = new Persona();
         Pasaje pasaje = new Pasaje ();
         List<Pasaje> pasajes = new List<Pasaje>();
-       DataTable   table = new DataTable();
+        DataTable   table = new DataTable();
 
  
         public Compra()
         {
             InitializeComponent();
-
+            f_salida.Value = f_act;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             CargarCiudad();
         }
-
 
         public class Persona
         {
@@ -62,8 +61,6 @@ namespace AerolineaFrba.Compra
 
         }
 
-
-
         public class Pasaje
         {
             public int id { get; set; }
@@ -77,9 +74,7 @@ namespace AerolineaFrba.Compra
             {
                 return "PASAJE";
             }
-
         }
-
 
         private Int32? idCiudadOrigenSelec
         {
@@ -115,16 +110,11 @@ namespace AerolineaFrba.Compra
             ciudadDestino.ValueMember = "Key";
             ciudadDestino.Items.Clear();
             foreach (var tipo in Logica.Ciudad.Get())
-                ciudadDestino.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));
-        
+                ciudadDestino.Items.Add(new KeyValuePair<Int32, String>(tipo.Id, tipo.Nombre));       
         }
 
-
-
-
         private void viajesBuscar(DateTime f_salida, Int32? idCiudadOrigen, Int32? idCiudadDestino)
-        {
-            
+        {   
             using (var con = DataAccess.GetConnection())
             {
                 var cmd = new SqlCommand("HAY_TABLA.sp_get_buscar_viaje", con);
@@ -150,23 +140,16 @@ namespace AerolineaFrba.Compra
                     viajes.Rows[i].Cells["id_a"].Value = DR[3].ToString();
                     viajes.Rows[i].Cells["butacas"].Value = DR[4].ToString();
                     viajes.Rows[i].Cells["kg"].Value = DR[5].ToString();
-                    i++;
-                   
+                    i++; 
                 }
                 DR.Close();
             }
-
-         
         }
 
-       
-
-     
         private void button2_Click(object sender, EventArgs e)
         {
             DateTime salida = f_salida.Value;
             viajesBuscar(salida, idCiudadOrigenSelec, idCiudadDestinoSelec);
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -176,21 +159,15 @@ namespace AerolineaFrba.Compra
 
             if (!cantPasaje.Text.Trim().Equals(""))
             {
-
                 llenarButacasLibre(this.idViaje, this.idAeronave);
-
-               }
-             
-
-
+            }
         }
 
         private void llenarButacasLibre(int idViaje, int idAeronave)
         {
-
             using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_butacas_libre_viaje", con);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_butacas_libres_viaje", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 if (this.idViaje!= 0)
@@ -210,28 +187,25 @@ namespace AerolineaFrba.Compra
                     butacasLibres.Rows[i].Cells["importe"].Value = DR[2].ToString();
                    
                     i++;
-
                 }
                 DR.Close();
             }
-
-
-
-
-
-
         }
-
-
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int dni = Int32.Parse( tdni.Text);
+            if (String.IsNullOrEmpty(tdni.Text))
+            {
+                MessageBox.Show("El campo 'Nro de Documento' se encuentra vacio.");
+                return;
+            }
+
+            int dni = Int32.Parse(tdni.Text);
             panel3.Visible = true;
 
             using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_persona_dni", con);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_persona_dni", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 if (!String.IsNullOrEmpty(f_salida.ToString()))
@@ -251,7 +225,6 @@ namespace AerolineaFrba.Compra
                        ttel.Text = reader.GetString(3);
                        temail.Text = reader.GetString(4);
                        f_nac.Value = reader.GetDateTime(5);
-
                    }
                }
                else
@@ -263,13 +236,10 @@ namespace AerolineaFrba.Compra
                    ttel.Text = "";
                    temail.Text = "";
                    f_nac.Value = this.f_act;
-
                }
-
-        reader.Close();
-         }
-            
+            reader.Close();
             }
+        }
 
         private void viajes_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
@@ -288,10 +258,7 @@ namespace AerolineaFrba.Compra
             this.importeSelec = Convert.ToDecimal(butacasLibres.Rows[e.RowIndex].Cells["importe"].Value.ToString());
 
             MessageBox.Show("Usted a seleccionado la butaca número: " + this.idButaca  , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
         }
-
 
         private void limpiarDatos()
         {
@@ -304,14 +271,10 @@ namespace AerolineaFrba.Compra
 
             this.panel3.Visible = false;
             this.button4.Visible = false;
-
         }
         private void button5_Click(object sender, EventArgs e)
 
         {
-
-
-
             int cantidadPasajeSel = int.Parse(cantPasaje.Text);
             string doc = tdni.Text;
             Pasaje pasaje1 = new Pasaje();
@@ -326,14 +289,11 @@ namespace AerolineaFrba.Compra
             {
                 button6.Visible = true;
                 panel3.Visible = false;
-
             }
 
             this.importeTotal = 0;
            for ( int i = 0; i < pasajes.Count; i++)
            {
-              
-
                DataPasaje.Rows.Add();
 
                DataPasaje.Rows[i].Cells["dniP"].Value = pasajes.ElementAt(i).dni;
@@ -341,16 +301,12 @@ namespace AerolineaFrba.Compra
                DataPasaje.Rows[i].Cells["importeP"].Value = pasajes.ElementAt(i).importe;
 
                this.importeTotal = this.importeTotal + pasajes.ElementAt(i).importe;
-
-
            }
 
            this.importePa.Text = importeTotal.ToString();
 
            tdni.Text = "";
            this.panel3.Visible = false;
-
-
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -360,14 +316,10 @@ namespace AerolineaFrba.Compra
             total.Text = importeTotalFactura(pasajesI, encomiendaI);
             tabControl1.SelectedTab = tabPage4;
             llenarTipoTarjeta();
-
-
         }
 
         private void llenarTipoTarjeta()
         {
-           
-
         }
 
         private string importeTotalFactura(TextBox pasajesI, TextBox encomiendaI)
@@ -376,14 +328,10 @@ namespace AerolineaFrba.Compra
             decimal i2 = decimal.Parse(encomiendaI.Text);
             decimal iTotal = i1 + i2;
             return iTotal.ToString();
-
-
         }
-
 
         private void button10_Click(object sender, EventArgs e)
         {
-
             int tdniC = Int32.Parse(tdniComprador.Text);
             panel8.Visible = true;
 
@@ -409,7 +357,6 @@ namespace AerolineaFrba.Compra
                         ttelCo.Text = reader.GetString(3);
                         temailC.Text = reader.GetString(4);
                         f_nacC.Value = reader.GetDateTime(5);
-
                     }
                 }
                 else
@@ -421,17 +368,11 @@ namespace AerolineaFrba.Compra
                     ttelCo.Text = "";
                     temailC.Text = "";
                     f_nacC.Value = this.f_act;
-
                 }
 
                 reader.Close();
             }
         }
-
-
-
-
-
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -440,20 +381,11 @@ namespace AerolineaFrba.Compra
             guardarPasajes();
 
             MessageBox.Show(" Se realizo la compra exitosamente : " + this.idCompra.ToString(),  null, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
-
         }
-
-
 
         private void guardarCompra()
         {
-
             int dniComprador = int.Parse(tdniComprador.Text);
-          
-
-
 
             using (var con = DataAccess.GetConnection())
             {
@@ -468,35 +400,25 @@ namespace AerolineaFrba.Compra
                     cmd.Parameters.Add("@cantCuota", SqlDbType.Int).Value = 0;
                  
                  con.Open();
-
-
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        this.idCompra = reader.GetInt32(0);
-                       
+                        this.idCompra = reader.GetInt32(0);    
                     }
                 }
-
                 reader.Close();
             }
-
         }
 
-
         private void guardarPasajes()
-        {
-
-            
+        {          
             for (int i = 0; i < pasajes.Count; i++)
             {
-
                 using (var con = DataAccess.GetConnection())
                 {
-
                     try
                     {
                         var cmd = new SqlCommand("HAY_TABLA.sp_alta_pasaje", con);
@@ -518,29 +440,26 @@ namespace AerolineaFrba.Compra
                         return;
                     }
                     con.Close();
-
                 }
-
-
-
-
             }
-
         }
 
         private void label8_Click(object sender, EventArgs e)
         {
-
         }
 
         private void DataPasaje_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void importePa_TextChanged(object sender, EventArgs e)
         {
+        }
 
+        private void btLimpiar_Click(object sender, EventArgs e)
+        {
+            ciudadOrigen.SelectedIndex = -1;
+            ciudadDestino.SelectedIndex = -1;
         }
 
 

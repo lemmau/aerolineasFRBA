@@ -217,6 +217,8 @@
             this.Controls.Add(this.lbFecha);
             this.Controls.Add(this.menuStripSecciones);
             this.MainMenuStrip = this.menuStripSecciones;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu";

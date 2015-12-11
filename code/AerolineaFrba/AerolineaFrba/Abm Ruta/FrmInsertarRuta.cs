@@ -16,10 +16,10 @@ namespace AerolineaFrba.Abm_Ruta
         public FrmInsertarRuta()
         {
             InitializeComponent();
-            this.idInsertado = 0;
+            this.codRutaInsertado = 0;
         }
 
-        public int idInsertado;
+        public Int32 codRutaInsertado;
 
         private Int32? IdCiudadOrigenSeleccionada
         {
@@ -156,8 +156,8 @@ namespace AerolineaFrba.Abm_Ruta
 
                 ruta.Insertate();
 
-                MessageBox.Show("La ruta ha sido guardada satisfactoriamente");
-                this.idInsertado = ruta.Id;
+                this.codRutaInsertado = ruta.codRuta;
+                MessageBox.Show("La ruta ha sido guardada satisfactoriamente. \n\t[CODIGO]: " + this.codRutaInsertado);
                 DialogResult = DialogResult.OK;
                 Close();
             }

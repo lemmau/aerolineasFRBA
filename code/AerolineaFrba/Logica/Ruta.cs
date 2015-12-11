@@ -54,7 +54,7 @@ namespace Logica
                 con.Open();
                 trans = con.BeginTransaction();
 
-                ruta.Id = Data.Ruta.Insertar(ruta.ciudadOrigen.Id, ruta.ciudadDestino.Id, 
+                ruta.codRuta = Data.Ruta.Insertar(ruta.ciudadOrigen.Id, ruta.ciudadDestino.Id, 
                       ruta.tipoServicio.Id, ruta.precioBasePasaje, ruta.precioBaseKG);
 
                 trans.Commit();

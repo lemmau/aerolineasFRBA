@@ -154,17 +154,6 @@ namespace AerolineaFrba.Abm_Ruta
             Boolean valido = true;
             decimal numeroDecimal;
 
-            if (!String.IsNullOrEmpty(tbCodRuta.Text) 
-                && !Decimal.TryParse(tbCodRuta.Text, out numeroDecimal))
-            {
-                valido = false;
-                MessageBox.Show("El campo 'Cod Ruta' debe contener un numero valido.");
-            }
-            else if (tbCodRuta.Text.Length < 4)
-            {
-                valido = false;
-                MessageBox.Show("El campo 'Cod Ruta' debe contener al menos 4 digitos.");
-            }
 
             if (String.IsNullOrEmpty(tbCodRuta.Text)
                 && String.IsNullOrEmpty(cbCiudadOrigen.Text)
@@ -173,6 +162,19 @@ namespace AerolineaFrba.Abm_Ruta
             {
                 valido = false;
                 MessageBox.Show("Indique parametro de búsqueda alguno.");
+            }
+            
+            if (!String.IsNullOrEmpty(tbCodRuta.Text) 
+                        && !Decimal.TryParse(tbCodRuta.Text, out numeroDecimal))
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Cod Ruta' debe contener un numero valido.");
+            }
+            else if (!String.IsNullOrEmpty(tbCodRuta.Text)  
+                        && tbCodRuta.Text.Length < 4)
+            {
+                valido = false;
+                MessageBox.Show("El campo 'Cod Ruta' debe contener al menos 4 digitos.");
             }
 
             return valido;

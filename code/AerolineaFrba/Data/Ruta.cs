@@ -120,7 +120,7 @@ namespace Data
         public static int Insertar(Int32 idCiudadOrigen, Int32 idCiudadDestino,
             Int32 idTipoServicio, Decimal precioBasePasaje, Decimal precioBaseKG)
         {
-            int id_insertado = -1;
+            int codRuta_insertado = -1;
             using (var con = DataAccess.GetConnection())
             {
                 var cmd = new SqlCommand(SP_INSERT, con);
@@ -133,11 +133,11 @@ namespace Data
                 cmd.Parameters.Add("@precioBaseKG", SqlDbType.Decimal).Value = precioBaseKG;
 
                 con.Open();
-                id_insertado = (int)cmd.ExecuteScalar();
+                codRuta_insertado = (int)cmd.ExecuteScalar();
                 con.Close();
             }
 
-            return id_insertado;
+            return codRuta_insertado;
         }
 
         public static void Actualizar(int id, Int32 idCiudadOrigen, Int32 idCiudadDestino,
