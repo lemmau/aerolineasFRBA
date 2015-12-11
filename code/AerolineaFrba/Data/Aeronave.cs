@@ -107,7 +107,7 @@ namespace Data
         }
 
         public static void Actualizar(DateTime fechaAlta, Int32 id, String fabricante, String modelo, String matricula,
-            Int32 espacioKG, Int32 cantPasillo, Int32 cantVentanilla, Int32 idTipoServicio)
+            Int32 espacioKG, Int32 cantPasillo, Int32 cantVentanilla, Int32 idTipoServicio, String matriculaAnterior)
         {
              using (var con = DataAccess.GetConnection())
             {
@@ -123,6 +123,7 @@ namespace Data
                 cmd.Parameters.Add("@idTipoServicio", SqlDbType.Int).Value = idTipoServicio;
                 cmd.Parameters.Add("@cantButacasPasillo", SqlDbType.Int).Value = cantPasillo;
                 cmd.Parameters.Add("@cantButacasVentanilla", SqlDbType.Int).Value = cantVentanilla;
+                cmd.Parameters.Add("@matriculaAnterior", SqlDbType.NVarChar).Value = matriculaAnterior;
 
                 con.Open();
                 cmd.ExecuteNonQuery();

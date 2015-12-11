@@ -33,9 +33,9 @@ namespace Logica
             Aeronave.Insertar(this);
         }
 
-        public void Actualizate()
+        public void Actualizate(String matriculaAnterior)
         {
-            Aeronave.Actualizar(this);
+            Aeronave.Actualizar(this, matriculaAnterior);
         }
 
         public static int validarIngresos(String fabricante, String modelo, String matricula, String butacasPasillo, String butacasVentanilla, String espacioKG, Int32? idTipoServicio)
@@ -95,7 +95,7 @@ namespace Logica
             }
         }
 
-        private static void Actualizar(Aeronave aeronave)
+        private static void Actualizar(Aeronave aeronave, String matriculaAnterior)
         {
             SqlConnection con = null;
             SqlTransaction trans = null;
@@ -106,7 +106,7 @@ namespace Logica
                 trans = con.BeginTransaction();
 
                 Data.Aeronave.Actualizar(aeronave.fechaAlta, aeronave.Id, aeronave.fabricante, aeronave.modelo, aeronave.matricula,
-                      aeronave.espacioKG, aeronave.cantButacasPasillo, aeronave.cantButacasVentanilla, aeronave.tipoServicio.Id);
+                      aeronave.espacioKG, aeronave.cantButacasPasillo, aeronave.cantButacasVentanilla, aeronave.tipoServicio.Id, matriculaAnterior);
 
                 trans.Commit();
                 con.Close();

@@ -1039,7 +1039,8 @@ CREATE PROCEDURE [HAY_TABLA].[sp_modificar_aeronave]
 	@espacioKg int,
 	@cantButacasPasillo int,
 	@cantButacasVentanilla int,
-	@idTipoServicio int
+	@idTipoServicio int,
+	@matriculaAnterior nvarchar(255)
 AS
 BEGIN
 
@@ -1055,7 +1056,7 @@ BEGIN
 			return	
 		end
 
-	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like '%' + @matricula))
+	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like '%' + @matricula and @matriculaAnterior <> @matricula))
 		begin
 			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
 			return
@@ -1099,7 +1100,6 @@ BEGIN
 	WHERE
 		ID = @id
 END
-
 GO
 ----------------
 CREATE PROCEDURE [HAY_TABLA].[sp_select_aeronaves]

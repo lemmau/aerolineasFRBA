@@ -94,7 +94,7 @@ namespace AerolineaFrba.Abm_Aeronave
                         aeronave.tipoServicio = new TipoServicio();
                         aeronave.tipoServicio.Id = IdTipoDeServicioSeleccionado.Value;
 
-                        aeronave.Actualizate();
+                        aeronave.Actualizate(aeronaveActualizada.matricula);
 
                         MessageBox.Show("La aeronave se ha modificado satisfactoriamente");
                         this.idInsertado = aeronave.Id;
