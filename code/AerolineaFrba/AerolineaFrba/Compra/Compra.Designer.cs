@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Compra));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btLimpiar = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.cantE = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.cantPasaje = new System.Windows.Forms.TextBox();
+            this.cantPa = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.viajes = new System.Windows.Forms.DataGridView();
             this.id_viaje = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,7 +55,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPasaje = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
@@ -78,7 +78,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.importePa = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
+            this.bcontinuarPasaje = new System.Windows.Forms.Button();
             this.DataPasaje = new System.Windows.Forms.DataGridView();
             this.dniP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.butacaP = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -89,23 +89,23 @@
             this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.selec = new System.Windows.Forms.DataGridViewImageColumn();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.TabEncomienda = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label33 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.ctipoTarjeta = new System.Windows.Forms.ComboBox();
             this.button9 = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.tcuota = new System.Windows.Forms.ComboBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.tanio = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.tmes = new System.Windows.Forms.ComboBox();
+            this.tnumero = new System.Windows.Forms.TextBox();
+            this.tcodigo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel8 = new System.Windows.Forms.Panel();
             this.registrarC = new System.Windows.Forms.Button();
@@ -132,32 +132,56 @@
             this.label30 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.tabControl1.SuspendLayout();
+            this.label18 = new System.Windows.Forms.Label();
+            this.cantEncomiendaSelec = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.EcantKg = new System.Windows.Forms.TextBox();
+            this.Eimporte = new System.Windows.Forms.TextBox();
+            this.kgAenviar = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.dataEncomienda = new System.Windows.Forms.DataGridView();
+            this.importeEncomienda = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.pagarPasaje = new System.Windows.Forms.Button();
+            this.kgE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.importeE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label39 = new System.Windows.Forms.Label();
+            this.butacaSelect = new System.Windows.Forms.TextBox();
+            this.dniSele = new System.Windows.Forms.TextBox();
+            this.label40 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viajes)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tabPasaje.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.butacasLibres)).BeginInit();
+            this.TabEncomienda.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataEncomienda)).BeginInit();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // TabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(898, 649);
-            this.tabControl1.TabIndex = 7;
+            this.TabControl.Controls.Add(this.tabPage1);
+            this.TabControl.Controls.Add(this.tabPasaje);
+            this.TabControl.Controls.Add(this.TabEncomienda);
+            this.TabControl.Controls.Add(this.tabPage4);
+            this.TabControl.Location = new System.Drawing.Point(12, 12);
+            this.TabControl.Name = "TabControl";
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.Size = new System.Drawing.Size(898, 649);
+            this.TabControl.TabIndex = 7;
             // 
             // tabPage1
             // 
@@ -184,10 +208,10 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.btLimpiar);
-            this.panel2.Controls.Add(this.textBox3);
+            this.panel2.Controls.Add(this.cantE);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.cantPasaje);
+            this.panel2.Controls.Add(this.cantPa);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.viajes);
             this.panel2.Controls.Add(this.button2);
@@ -213,12 +237,13 @@
             this.btLimpiar.UseVisualStyleBackColor = true;
             this.btLimpiar.Click += new System.EventHandler(this.btLimpiar_Click);
             // 
-            // textBox3
+            // cantE
             // 
-            this.textBox3.Location = new System.Drawing.Point(754, 298);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(25, 20);
-            this.textBox3.TabIndex = 16;
+            this.cantE.Location = new System.Drawing.Point(754, 298);
+            this.cantE.Name = "cantE";
+            this.cantE.Size = new System.Drawing.Size(25, 20);
+            this.cantE.TabIndex = 16;
+            this.cantE.Text = "0";
             // 
             // label9
             // 
@@ -237,12 +262,13 @@
             this.label10.Size = new System.Drawing.Size(0, 13);
             this.label10.TabIndex = 14;
             // 
-            // cantPasaje
+            // cantPa
             // 
-            this.cantPasaje.Location = new System.Drawing.Point(754, 263);
-            this.cantPasaje.Name = "cantPasaje";
-            this.cantPasaje.Size = new System.Drawing.Size(25, 20);
-            this.cantPasaje.TabIndex = 13;
+            this.cantPa.Location = new System.Drawing.Point(754, 263);
+            this.cantPa.Name = "cantPa";
+            this.cantPa.Size = new System.Drawing.Size(25, 20);
+            this.cantPa.TabIndex = 13;
+            this.cantPa.Text = "0";
             // 
             // label11
             // 
@@ -384,24 +410,30 @@
             this.label15.TabIndex = 5;
             this.label15.Text = "Fecha de Salida";
             // 
-            // tabPage2
+            // tabPasaje
             // 
-            this.tabPage2.Controls.Add(this.groupBox2);
-            this.tabPage2.Controls.Add(this.pasAcomprar);
-            this.tabPage2.Controls.Add(this.label16);
-            this.tabPage2.Controls.Add(this.importePa);
-            this.tabPage2.Controls.Add(this.label8);
-            this.tabPage2.Controls.Add(this.button6);
-            this.tabPage2.Controls.Add(this.DataPasaje);
-            this.tabPage2.Controls.Add(this.button5);
-            this.tabPage2.Controls.Add(this.butacasLibres);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(890, 623);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Pasaje";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPasaje.Controls.Add(this.button6);
+            this.tabPasaje.Controls.Add(this.dniSele);
+            this.tabPasaje.Controls.Add(this.label40);
+            this.tabPasaje.Controls.Add(this.butacaSelect);
+            this.tabPasaje.Controls.Add(this.label39);
+            this.tabPasaje.Controls.Add(this.pagarPasaje);
+            this.tabPasaje.Controls.Add(this.groupBox2);
+            this.tabPasaje.Controls.Add(this.pasAcomprar);
+            this.tabPasaje.Controls.Add(this.label16);
+            this.tabPasaje.Controls.Add(this.importePa);
+            this.tabPasaje.Controls.Add(this.label8);
+            this.tabPasaje.Controls.Add(this.bcontinuarPasaje);
+            this.tabPasaje.Controls.Add(this.DataPasaje);
+            this.tabPasaje.Controls.Add(this.button5);
+            this.tabPasaje.Controls.Add(this.butacasLibres);
+            this.tabPasaje.Location = new System.Drawing.Point(4, 22);
+            this.tabPasaje.Name = "tabPasaje";
+            this.tabPasaje.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPasaje.Size = new System.Drawing.Size(890, 623);
+            this.tabPasaje.TabIndex = 1;
+            this.tabPasaje.Text = "Pasaje";
+            this.tabPasaje.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -446,6 +478,7 @@
             this.button4.Text = "Registrar";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Visible = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // f_nac
             // 
@@ -605,16 +638,16 @@
             this.label8.Text = "Importe Total :";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
-            // button6
+            // bcontinuarPasaje
             // 
-            this.button6.Location = new System.Drawing.Point(695, 536);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(97, 47);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "Siguiente ->";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Visible = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.bcontinuarPasaje.Location = new System.Drawing.Point(704, 499);
+            this.bcontinuarPasaje.Name = "bcontinuarPasaje";
+            this.bcontinuarPasaje.Size = new System.Drawing.Size(97, 47);
+            this.bcontinuarPasaje.TabIndex = 4;
+            this.bcontinuarPasaje.Text = "Siguiente ->";
+            this.bcontinuarPasaje.UseVisualStyleBackColor = true;
+            this.bcontinuarPasaje.Visible = false;
+            this.bcontinuarPasaje.Click += new System.EventHandler(this.bcontinuarPasaje_Click);
             // 
             // DataPasaje
             // 
@@ -626,7 +659,8 @@
             this.importeP});
             this.DataPasaje.Location = new System.Drawing.Point(6, 427);
             this.DataPasaje.Name = "DataPasaje";
-            this.DataPasaje.Size = new System.Drawing.Size(392, 159);
+            this.DataPasaje.RowHeadersVisible = false;
+            this.DataPasaje.Size = new System.Drawing.Size(316, 159);
             this.DataPasaje.TabIndex = 3;
             this.DataPasaje.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataPasaje_CellContentClick);
             // 
@@ -650,7 +684,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(309, 379);
+            this.button5.Location = new System.Drawing.Point(389, 388);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 2;
@@ -701,15 +735,28 @@
             this.selec.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.selec.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // tabPage3
+            // TabEncomienda
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(890, 623);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Encomienda";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.TabEncomienda.Controls.Add(this.button11);
+            this.TabEncomienda.Controls.Add(this.button12);
+            this.TabEncomienda.Controls.Add(this.importeEncomienda);
+            this.TabEncomienda.Controls.Add(this.label38);
+            this.TabEncomienda.Controls.Add(this.dataEncomienda);
+            this.TabEncomienda.Controls.Add(this.kgAenviar);
+            this.TabEncomienda.Controls.Add(this.label37);
+            this.TabEncomienda.Controls.Add(this.Eimporte);
+            this.TabEncomienda.Controls.Add(this.EcantKg);
+            this.TabEncomienda.Controls.Add(this.label34);
+            this.TabEncomienda.Controls.Add(this.label19);
+            this.TabEncomienda.Controls.Add(this.cantEncomiendaSelec);
+            this.TabEncomienda.Controls.Add(this.label18);
+            this.TabEncomienda.Location = new System.Drawing.Point(4, 22);
+            this.TabEncomienda.Name = "TabEncomienda";
+            this.TabEncomienda.Padding = new System.Windows.Forms.Padding(3);
+            this.TabEncomienda.Size = new System.Drawing.Size(890, 623);
+            this.TabEncomienda.TabIndex = 2;
+            this.TabEncomienda.Text = "Encomienda";
+            this.TabEncomienda.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
@@ -734,25 +781,26 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label33);
-            this.groupBox3.Controls.Add(this.comboBox4);
+            this.groupBox3.Controls.Add(this.ctipoTarjeta);
             this.groupBox3.Controls.Add(this.button9);
-            this.groupBox3.Controls.Add(this.comboBox3);
+            this.groupBox3.Controls.Add(this.tcuota);
             this.groupBox3.Controls.Add(this.label27);
             this.groupBox3.Controls.Add(this.label29);
             this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Controls.Add(this.comboBox2);
+            this.groupBox3.Controls.Add(this.tanio);
             this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.label28);
             this.groupBox3.Controls.Add(this.label26);
-            this.groupBox3.Controls.Add(this.comboBox1);
-            this.groupBox3.Controls.Add(this.textBox9);
-            this.groupBox3.Controls.Add(this.textBox10);
+            this.groupBox3.Controls.Add(this.tmes);
+            this.groupBox3.Controls.Add(this.tnumero);
+            this.groupBox3.Controls.Add(this.tcodigo);
             this.groupBox3.Location = new System.Drawing.Point(19, 407);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(743, 174);
             this.groupBox3.TabIndex = 18;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Datos de la Tarjeta";
+            this.groupBox3.Visible = false;
             // 
             // label33
             // 
@@ -763,13 +811,13 @@
             this.label33.TabIndex = 18;
             this.label33.Text = "Tipo de Tarjeta";
             // 
-            // comboBox4
+            // ctipoTarjeta
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(450, 34);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(112, 21);
-            this.comboBox4.TabIndex = 19;
+            this.ctipoTarjeta.FormattingEnabled = true;
+            this.ctipoTarjeta.Location = new System.Drawing.Point(450, 34);
+            this.ctipoTarjeta.Name = "ctipoTarjeta";
+            this.ctipoTarjeta.Size = new System.Drawing.Size(112, 21);
+            this.ctipoTarjeta.TabIndex = 19;
             // 
             // button9
             // 
@@ -779,14 +827,21 @@
             this.button9.TabIndex = 17;
             this.button9.Text = "Pagar";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
-            // comboBox3
+            // tcuota
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(316, 87);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(69, 21);
-            this.comboBox3.TabIndex = 16;
+            this.tcuota.FormattingEnabled = true;
+            this.tcuota.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "6",
+            "12"});
+            this.tcuota.Location = new System.Drawing.Point(316, 87);
+            this.tcuota.Name = "tcuota";
+            this.tcuota.Size = new System.Drawing.Size(69, 21);
+            this.tcuota.TabIndex = 16;
             // 
             // label27
             // 
@@ -815,13 +870,30 @@
             this.label24.TabIndex = 6;
             this.label24.Text = "Mes";
             // 
-            // comboBox2
+            // tanio
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(163, 87);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(69, 21);
-            this.comboBox2.TabIndex = 14;
+            this.tanio.FormattingEnabled = true;
+            this.tanio.Items.AddRange(new object[] {
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+            "2019",
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025",
+            "2026",
+            "2027",
+            "2028",
+            "2029",
+            "2030"});
+            this.tanio.Location = new System.Drawing.Point(163, 87);
+            this.tanio.Name = "tanio";
+            this.tanio.Size = new System.Drawing.Size(69, 21);
+            this.tanio.TabIndex = 14;
             // 
             // label25
             // 
@@ -850,37 +922,51 @@
             this.label26.TabIndex = 8;
             this.label26.Text = "Codigo:";
             // 
-            // comboBox1
+            // tmes
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(46, 87);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(52, 21);
-            this.comboBox1.TabIndex = 12;
+            this.tmes.FormattingEnabled = true;
+            this.tmes.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"});
+            this.tmes.Location = new System.Drawing.Point(46, 87);
+            this.tmes.Name = "tmes";
+            this.tmes.Size = new System.Drawing.Size(52, 21);
+            this.tmes.TabIndex = 12;
             // 
-            // textBox9
+            // tnumero
             // 
-            this.textBox9.Location = new System.Drawing.Point(104, 35);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(192, 20);
-            this.textBox9.TabIndex = 10;
+            this.tnumero.Location = new System.Drawing.Point(104, 35);
+            this.tnumero.Name = "tnumero";
+            this.tnumero.Size = new System.Drawing.Size(192, 20);
+            this.tnumero.TabIndex = 10;
             // 
-            // textBox10
+            // tcodigo
             // 
-            this.textBox10.Location = new System.Drawing.Point(485, 88);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(99, 20);
-            this.textBox10.TabIndex = 11;
+            this.tcodigo.Location = new System.Drawing.Point(485, 88);
+            this.tcodigo.Name = "tcodigo";
+            this.tcodigo.Size = new System.Drawing.Size(99, 20);
+            this.tcodigo.TabIndex = 11;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button13);
             this.groupBox1.Controls.Add(this.panel8);
             this.groupBox1.Controls.Add(this.label23);
             this.groupBox1.Controls.Add(this.tdniComprador);
             this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Location = new System.Drawing.Point(19, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(743, 248);
+            this.groupBox1.Size = new System.Drawing.Size(743, 260);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Comprador";
@@ -902,7 +988,7 @@
             this.panel8.Controls.Add(this.label22);
             this.panel8.Location = new System.Drawing.Point(34, 67);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(686, 163);
+            this.panel8.Size = new System.Drawing.Size(686, 154);
             this.panel8.TabIndex = 14;
             this.panel8.Visible = false;
             // 
@@ -914,6 +1000,7 @@
             this.registrarC.TabIndex = 15;
             this.registrarC.Text = "Registrar Comprador";
             this.registrarC.UseVisualStyleBackColor = true;
+            this.registrarC.Click += new System.EventHandler(this.registrarC_Click);
             // 
             // label36
             // 
@@ -1099,6 +1186,7 @@
             this.button8.TabIndex = 4;
             this.button8.Text = "Tarjeta";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button7
             // 
@@ -1110,29 +1198,229 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(26, 21);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(166, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Cantidad de encomienda a enviar";
+            // 
+            // cantEncomiendaSelec
+            // 
+            this.cantEncomiendaSelec.Location = new System.Drawing.Point(225, 21);
+            this.cantEncomiendaSelec.Name = "cantEncomiendaSelec";
+            this.cantEncomiendaSelec.ReadOnly = true;
+            this.cantEncomiendaSelec.Size = new System.Drawing.Size(27, 20);
+            this.cantEncomiendaSelec.TabIndex = 1;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(318, 93);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(81, 13);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "Importe por KG ";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(26, 93);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(130, 13);
+            this.label34.TabIndex = 3;
+            this.label34.Text = "Cantidad de Kg disponible";
+            // 
+            // EcantKg
+            // 
+            this.EcantKg.Location = new System.Drawing.Point(162, 90);
+            this.EcantKg.Name = "EcantKg";
+            this.EcantKg.ReadOnly = true;
+            this.EcantKg.Size = new System.Drawing.Size(100, 20);
+            this.EcantKg.TabIndex = 4;
+            this.EcantKg.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // Eimporte
+            // 
+            this.Eimporte.Location = new System.Drawing.Point(421, 90);
+            this.Eimporte.Name = "Eimporte";
+            this.Eimporte.ReadOnly = true;
+            this.Eimporte.Size = new System.Drawing.Size(100, 20);
+            this.Eimporte.TabIndex = 5;
+            // 
+            // kgAenviar
+            // 
+            this.kgAenviar.Location = new System.Drawing.Point(162, 149);
+            this.kgAenviar.Name = "kgAenviar";
+            this.kgAenviar.Size = new System.Drawing.Size(100, 20);
+            this.kgAenviar.TabIndex = 7;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(26, 152);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(122, 13);
+            this.label37.TabIndex = 6;
+            this.label37.Text = "Cantidad de Kg a Enviar";
+            // 
+            // dataEncomienda
+            // 
+            this.dataEncomienda.AllowUserToAddRows = false;
+            this.dataEncomienda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataEncomienda.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.kgE,
+            this.importeE});
+            this.dataEncomienda.Location = new System.Drawing.Point(22, 221);
+            this.dataEncomienda.Name = "dataEncomienda";
+            this.dataEncomienda.RowHeadersVisible = false;
+            this.dataEncomienda.ShowRowErrors = false;
+            this.dataEncomienda.Size = new System.Drawing.Size(203, 150);
+            this.dataEncomienda.TabIndex = 8;
+            // 
+            // importeEncomienda
+            // 
+            this.importeEncomienda.Location = new System.Drawing.Point(421, 301);
+            this.importeEncomienda.Name = "importeEncomienda";
+            this.importeEncomienda.ReadOnly = true;
+            this.importeEncomienda.Size = new System.Drawing.Size(100, 20);
+            this.importeEncomienda.TabIndex = 10;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(327, 304);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(78, 13);
+            this.label38.TabIndex = 9;
+            this.label38.Text = "Importe Total  :";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(570, 390);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(97, 47);
+            this.button12.TabIndex = 11;
+            this.button12.Text = "Siguiente ->";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Visible = false;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(402, 161);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 12;
+            this.button11.Text = "Agregar";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // pagarPasaje
+            // 
+            this.pagarPasaje.Location = new System.Drawing.Point(704, 566);
+            this.pagarPasaje.Name = "pagarPasaje";
+            this.pagarPasaje.Size = new System.Drawing.Size(97, 47);
+            this.pagarPasaje.TabIndex = 15;
+            this.pagarPasaje.Text = "Pagar ->";
+            this.pagarPasaje.UseVisualStyleBackColor = true;
+            this.pagarPasaje.Visible = false;
+            this.pagarPasaje.Click += new System.EventHandler(this.pagarPasaje_Click);
+            // 
+            // kgE
+            // 
+            this.kgE.HeaderText = "KG";
+            this.kgE.Name = "kgE";
+            this.kgE.ReadOnly = true;
+            // 
+            // importeE
+            // 
+            this.importeE.HeaderText = "Costo";
+            this.importeE.Name = "importeE";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.ForeColor = System.Drawing.Color.Blue;
+            this.label39.Location = new System.Drawing.Point(0, 375);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(107, 13);
+            this.label39.TabIndex = 16;
+            this.label39.Text = "Butaca seleccionada";
+            // 
+            // butacaSelect
+            // 
+            this.butacaSelect.Location = new System.Drawing.Point(151, 372);
+            this.butacaSelect.Name = "butacaSelect";
+            this.butacaSelect.ReadOnly = true;
+            this.butacaSelect.Size = new System.Drawing.Size(43, 20);
+            this.butacaSelect.TabIndex = 17;
+            // 
+            // dniSele
+            // 
+            this.dniSele.Location = new System.Drawing.Point(174, 398);
+            this.dniSele.Name = "dniSele";
+            this.dniSele.ReadOnly = true;
+            this.dniSele.Size = new System.Drawing.Size(116, 20);
+            this.dniSele.TabIndex = 19;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.ForeColor = System.Drawing.Color.Blue;
+            this.label40.Location = new System.Drawing.Point(3, 398);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(136, 13);
+            this.label40.TabIndex = 18;
+            this.label40.Text = "DNI Pasajero seleccionado";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(483, 388);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 20;
+            this.button6.Text = "Cancelar";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(326, 231);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(75, 23);
+            this.button13.TabIndex = 16;
+            this.button13.Text = "Cancelar";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
             // Compra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(915, 667);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TabControl);
             this.Name = "Compra";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Compra de Pasajes/Encomiendas";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabControl1.ResumeLayout(false);
+            this.TabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viajes)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tabPasaje.ResumeLayout(false);
+            this.tabPasaje.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.butacasLibres)).EndInit();
+            this.TabEncomienda.ResumeLayout(false);
+            this.TabEncomienda.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1141,20 +1429,21 @@
             this.groupBox1.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataEncomienda)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox cantE;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox cantPasaje;
+        private System.Windows.Forms.TextBox cantPa;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.DataGridView viajes;
         private System.Windows.Forms.Button button2;
@@ -1165,7 +1454,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPasaje;
         private System.Windows.Forms.DataGridView DataPasaje;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button3;
@@ -1185,7 +1474,7 @@
         private System.Windows.Forms.TextBox tdni;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView butacasLibres;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage TabEncomienda;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.DataGridViewTextBoxColumn id_viaje;
@@ -1199,7 +1488,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn tipo;
         private System.Windows.Forms.DataGridViewTextBoxColumn importe;
         private System.Windows.Forms.DataGridViewImageColumn selec;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button bcontinuarPasaje;
         private System.Windows.Forms.DataGridViewTextBoxColumn dniP;
         private System.Windows.Forms.DataGridViewTextBoxColumn butacaP;
         private System.Windows.Forms.DataGridViewTextBoxColumn importeP;
@@ -1226,13 +1515,13 @@
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox total;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox tcuota;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox tanio;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.ComboBox tmes;
+        private System.Windows.Forms.TextBox tcodigo;
+        private System.Windows.Forms.TextBox tnumero;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label25;
@@ -1248,8 +1537,30 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox ctipoTarjeta;
         private System.Windows.Forms.Button btLimpiar;
+        private System.Windows.Forms.TextBox cantEncomiendaSelec;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox EcantKg;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox kgAenviar;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox Eimporte;
+        private System.Windows.Forms.TextBox importeEncomienda;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.DataGridView dataEncomienda;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button pagarPasaje;
+        private System.Windows.Forms.DataGridViewTextBoxColumn kgE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn importeE;
+        private System.Windows.Forms.TextBox dniSele;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.TextBox butacaSelect;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button13;
 
     }
 }

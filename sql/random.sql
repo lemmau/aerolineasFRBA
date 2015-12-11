@@ -2170,6 +2170,22 @@ BEGIN
 		where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
 	 
 	END 
+
+	if @idformaPago = 2
+
+	BEGIN 
+
+		insert into HAY_TABLA.COMPRA 
+		(ID_COMPRADOR , ID_TARJETA, ID_FORMADEPAGO , FECHA ,CANTCUOTAS)
+		values 
+		(@idComprador , @idTarjeta , 2 , @fecha , @cantCuota)
+
+
+		select co.ID 
+		from HAY_TABLA.COMPRA co 
+		where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
+	 
+	END 
 END
 GO
 ------
@@ -2193,3 +2209,117 @@ BEGIN
 END
 GO
 ------
+create procedure [HAY_TABLA].[sp_kg_libre_viaje]
+@idviaje int ,
+@idAeronave int
+AS 
+BEGIN
+declare @kgAeronave int
+declare @precioKG decimal 
+
+set @kgAeronave = (select ae.ESPACIOKGENCOMIENDAS from HAY_TABLA.AERONAVE ae where ae.ID = @idAeronave)
+
+set @precioKG =( select ru.PRECIOBASEPASAJE from HAY_TABLA.VIAJE vi inner join HAY_TABLA.AERONAVE a  on vi.ID_AERONAVE = a.ID 
+inner join HAY_TABLA.RUTA ru on vi.ID_RUTA = ru.ID
+where  a.ID = @idAeronave and vi.ID = @idviaje)
+
+select isnull (@kgAeronave - sum(PESO) ,0) , @precioKG from 
+ HAY_TABLA.ENCOMIENDA e 
+
+where e.ID_VIAJE = @idviaje
+
+
+END 
+
+GO 
+--------
+create procedure [HAY_TABLA].[sp_tipo_tarjeta] 
+
+as 
+
+begin 
+
+select ID , NOMBRE from HAY_TABLA.TIPOTARJETA ;
+end 
+go
+-----
+
+create procedure [HAY_TABLA].[sp_alta_encomienda] 
+@idCompra int , 
+@idViaje int , 
+@importe decimal , 
+@peso int
+
+as 
+
+
+begin 
+
+
+
+insert into HAY_TABLA.ENCOMIENDA (ID_COMPRA ,  ID_VIAJE , IMPORTE , PESO)
+values (@idCompra ,  @idViaje , @importe , @peso)
+
+
+end 
+
+go
+
+----
+create procedure [HAY_TABLA].[sp_alta_tarjeta] 
+@idTipoTarjeta int , 
+@dniComprador int ,
+@numero int , 
+@clave int , 
+@fechaV datetime 
+
+as 
+
+begin 
+
+declare @idTarjeta int 
+declare @idComprador int 
+
+set @idComprador = (select ID from PERSONA where DNI = @dniComprador);
+
+set @idTarjeta  = isnull((select ta.ID from HAY_TABLA.TARJETA ta where ta.ID_COMPRADOR = @idComprador 
+and ta.ID_TIPOTARJETA = @idTarjeta and ta.NUMERO = @numero ) ,0)
+if (@idTarjeta = 0)
+begin 
+insert into HAY_TABLA.TARJETA (ID_TIPOTARJETA , ID_COMPRADOR  , NUMERO , CLAVE , FECHAVTO)
+values (@idTipoTarjeta , @idComprador , @numero  , @clave , @fechaV)
+
+select ta.ID from HAY_TABLA.TARJETA ta where ta.ID_COMPRADOR = @idComprador 
+and ta.ID_TIPOTARJETA = @idTipoTarjeta and ta.NUMERO = @numero
+end 
+else 
+begin
+update HAY_TABLA.TARJETA set CLAVE = @clave where ID_COMPRADOR = @idComprador and NUMERO = @numero
+update HAY_TABLA.TARJETA set FECHAVTO =@fechaV   where ID_COMPRADOR = @idComprador and NUMERO = @numero
+select ta.ID from HAY_TABLA.TARJETA ta where ta.ID_COMPRADOR = @idComprador 
+and ta.ID_TIPOTARJETA = @idTarjeta and ta.NUMERO = @numero
+end 
+
+
+end 
+
+go 
+-------------
+create procedure [HAY_TABLA].[sp_alta_persona] 
+@dni int , 
+@nombre varchar(255),
+@apellido varchar(255),
+@direccion varchar(255),
+@telefono varchar(255),
+@email varchar(255),
+@fechaNac datetime 
+
+as 
+
+begin 
+
+insert into HAY_TABLA.PERSONA (DNI,NOMBRE , APELLIDO , DIRECCION , TELEFONO , MAIL , FECHANACIMIENTO)
+values (@dni , @nombre ,@apellido , @direccion , @telefono , @email , @fechaNac)
+
+end 
+go
