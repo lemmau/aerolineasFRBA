@@ -331,7 +331,7 @@ namespace AerolineaFrba.Generacion_Viaje
                 string tipoServicio = aeronaves.Rows[e.RowIndex].Cells["tipoServicio1"].Value.ToString();
 
                 this.id_tipo_ser_aer = Convert.ToInt32(aeronaves.Rows[e.RowIndex].Cells["idServicioA"].Value.ToString());
-                MessageBox.Show("Usted seleccionado la Aeronave con la matricula " + this.matricula_seleccionada, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Usted seleccionado la Aeronave con la matricula\n" + this.matricula_seleccionada, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 label8.Text = "Usted seleccionado la Aeronave con la matricula " + this.matricula_seleccionada + "     Tipo de servicio: " + tipoServicio;
                 
@@ -347,7 +347,7 @@ namespace AerolineaFrba.Generacion_Viaje
                 this.ciudadOrigen_seleccionada =rutas.Rows[e.RowIndex].Cells["ciudad_origen"].Value.ToString();
                 this.ciudadDestino_seleccionada = rutas.Rows[e.RowIndex].Cells["ciudad_destino"].Value.ToString();
                 string tipoServicioSeleccionado =  rutas.Rows[e.RowIndex].Cells["tipo_servicio_ruta"].Value.ToString();
-                MessageBox.Show("Usted selecciono la ruta con ciudad de origen :" + this.ciudadOrigen_seleccionada  +" ciudad destino: "+ this.ciudadDestino_seleccionada , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Usted selecciono la ruta con ciudad de origen: " + this.ciudadOrigen_seleccionada  +"\nciudad destino: "+ this.ciudadDestino_seleccionada , "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
                 label3.Text = "Usted selecciono la ruta con ciudad de oigen:" + this.ciudadOrigen_seleccionada + "  ciudad destino: " + this.ciudadDestino_seleccionada + "   Tipo de servicio: " + tipoServicioSeleccionado;
