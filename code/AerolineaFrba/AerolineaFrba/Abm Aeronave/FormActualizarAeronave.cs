@@ -14,27 +14,8 @@ namespace AerolineaFrba.Abm_Aeronave
 {
     public partial class FormActualizarAeronave : Form
     {
-        private Aeronave aeronaveActualizada = null;
-
-        public FormActualizarAeronave(Aeronave aeronaveSeleccionada)
-        {
-            InitializeComponent();
-            this.idInsertado = 0;
-
-            aeronaveActualizada = aeronaveSeleccionada;
-
-            lbFechaActual.Text = ConfigurationManager.AppSettings["FechaDelSistema"];
-            tbFabricante.Text = aeronaveSeleccionada.fabricante;
-            tbModelo.Text = aeronaveSeleccionada.modelo;
-            tbMatricula.Text = aeronaveSeleccionada.matricula;
-            tbKG.Text = aeronaveSeleccionada.espacioKG.ToString();
-            tbButacasPasillo.Text = aeronaveSeleccionada.cantButacasPasillo.ToString();
-            tbButacasVentanilla.Text = aeronaveSeleccionada.cantButacasVentanilla.ToString();
-            CargarTiposDeServicio();
-            cbTipoDeServicio.SelectedValue = aeronaveSeleccionada.tipoServicio;//aca, quiero que se muestre por defecto en el menu, la opcion que traigo elegida del dgv, pero no sale
-        }
-
         public int idInsertado;
+        private Aeronave aeronaveActualizada = null;
 
         private Int32? IdTipoDeServicioSeleccionado
         {
@@ -109,6 +90,33 @@ namespace AerolineaFrba.Abm_Aeronave
             }
         }
 
+
+        public FormActualizarAeronave(Aeronave aeronaveSeleccionada)
+        {
+            InitializeComponent();
+            this.idInsertado = 0;
+
+            aeronaveActualizada = aeronaveSeleccionada;
+
+            lbFechaActual.Text = ConfigurationManager.AppSettings["FechaDelSistema"];
+            tbFabricante.Text = aeronaveSeleccionada.fabricante;
+            tbModelo.Text = aeronaveSeleccionada.modelo;
+            tbMatricula.Text = aeronaveSeleccionada.matricula;
+            tbKG.Text = aeronaveSeleccionada.espacioKG.ToString();
+            tbButacasPasillo.Text = aeronaveSeleccionada.cantButacasPasillo.ToString();
+            tbButacasVentanilla.Text = aeronaveSeleccionada.cantButacasVentanilla.ToString();
+            CargarTiposDeServicio();
+
+            foreach (KeyValuePair<Int32, String> item in cbTipoDeServicio.Items)
+            {
+                if (item.Key == aeronaveSeleccionada.tipoServicio.Id)
+                {
+                    cbTipoDeServicio.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
         private void FormActualizarAeronave_Load(object sender, EventArgs e)
         {
 
@@ -117,30 +125,3 @@ namespace AerolineaFrba.Abm_Aeronave
 
     }
 }
-
-/*
-Int32 cantPasillo = 0;
-                Int32 cantVentanilla = 0;
-
-                cantPasillo = Int32.Parse(tbButacasPasillo.Text);
-                cantVentanilla = Int32.Parse(tbButacasVentanilla.Text);
-
-                var aeronave = new Aeronave();
-
-                aeronave.fechaAlta = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
-                aeronave.Id = aeronaveActualizada.Id;
-                aeronave.fabricante = tbFabricante.Text;
-                aeronave.modelo = tbModelo.Text;
-                aeronave.matricula = tbMatricula.Text;
-                aeronave.espacioKG = Int32.Parse(tbKG.Text);
-                aeronave.cantButacas = cantPasillo + cantVentanilla;
-                aeronave.tipoServicio = new TipoServicio();
-                aeronave.tipoServicio.Id = IdTipoDeServicioSeleccionado.Value;
-
-                aeronave.Actualizate(cantPasillo, cantVentanilla);
-
-                MessageBox.Show("La aeronave se ha modificado satisfactoriamente");
-                this.idInsertado = aeronave.Id;
-                DialogResult = DialogResult.OK;
-                Close();
-*/
