@@ -45,6 +45,8 @@
             this.itemCanjes = new System.Windows.Forms.ToolStripMenuItem();
             this.estadisticasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbFecha = new System.Windows.Forms.Label();
+            this.lbHoraDelSistema = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStripSecciones.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -182,12 +184,28 @@
             this.lbFecha.AutoSize = true;
             this.lbFecha.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.lbFecha.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lbFecha.Location = new System.Drawing.Point(90, 6);
+            this.lbFecha.Location = new System.Drawing.Point(113, 6);
             this.lbFecha.Name = "lbFecha";
             this.lbFecha.Size = new System.Drawing.Size(97, 13);
             this.lbFecha.TabIndex = 3;
             this.lbFecha.Text = "Fecha del Sistema:";
             this.lbFecha.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // lbHoraDelSistema
+            // 
+            this.lbHoraDelSistema.AccessibleRole = System.Windows.Forms.AccessibleRole.Window;
+            this.lbHoraDelSistema.AutoSize = true;
+            this.lbHoraDelSistema.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.lbHoraDelSistema.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lbHoraDelSistema.Location = new System.Drawing.Point(272, 6);
+            this.lbHoraDelSistema.Name = "lbHoraDelSistema";
+            this.lbHoraDelSistema.Size = new System.Drawing.Size(0, 13);
+            this.lbHoraDelSistema.TabIndex = 4;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Menu
             // 
@@ -195,6 +213,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1037, 362);
+            this.Controls.Add(this.lbHoraDelSistema);
             this.Controls.Add(this.lbFecha);
             this.Controls.Add(this.menuStripSecciones);
             this.MainMenuStrip = this.menuStripSecciones;
@@ -228,5 +247,7 @@
         private System.Windows.Forms.ToolStripMenuItem itemCanjes;
         private System.Windows.Forms.ToolStripMenuItem estadisticasToolStripMenuItem;
         private System.Windows.Forms.Label lbFecha;
+        private System.Windows.Forms.Label lbHoraDelSistema;
+        private System.Windows.Forms.Timer timer1;
     }
 }

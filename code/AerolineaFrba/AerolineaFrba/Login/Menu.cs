@@ -32,7 +32,7 @@ namespace AerolineaFrba.Login
                 menuStripSecciones.Refresh();
             }
 
-            lbFecha.Text = lbFecha.Text + " " + SharedData.Instance().fechaDelSistema.ToShortDateString();
+            lbFecha.Text = lbFecha.Text + " " + SharedData.Instance().fechaDelSistema.ToShortDateString() + DateTime.Now.ToString(); ;
         }
 
         public Menu()
@@ -147,6 +147,11 @@ namespace AerolineaFrba.Login
         {
             Compra.Compra compra = new Compra.Compra();
             compra.Show();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lbHoraDelSistema.Text = " (" + DateTime.Now.ToString("HH:mm:ss") + ")";
         }
     }
 }
