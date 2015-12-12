@@ -2161,7 +2161,7 @@ BEGIN
 			inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
 	where 	
 			v.STATUS= 1 -- viajes activos
-			and v.FECHASALIDA > @fechaActual 
+			and DATEADD(HH,-3, @f_salida) >= @fechaActual -- la venta puede hacerse hasta 3 hs antes de que parta la aeronave (fechasalida)
 			and YEAR(v.FECHASALIDA) = YEAR(@f_salida) 
 			and MONTH(V.FECHASALIDA) = MONTH(@f_salida) 
 			and DAY(V.FECHASALIDA)= DAY(@f_salida)
