@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logica;
+using System.Configuration;
 
 namespace AerolineaFrba.Abm_Aeronave
 {
     public partial class ListadoAeronaves : Form
     {
+        DateTime fechaActual = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+
         public ListadoAeronaves()
         {
             InitializeComponent();
@@ -63,7 +66,7 @@ namespace AerolineaFrba.Abm_Aeronave
             dgvAeronaves.Rows.Clear();
 
             //como el textbox filtro tiene un maximo de 255 no valido rango.
-            foreach (Aeronave aeronave in Aeronave.Get(Matricula.Trim(), IdTipoDeServicioSeleccionado, FabricanteSeleccionado))
+            foreach (Aeronave aeronave in Aeronave.Get(Matricula.Trim(), IdTipoDeServicioSeleccionado, FabricanteSeleccionado, fechaActual))
                 //MessageBox.Show("fecha" + aeronave.fechaAlta);
                 AgregarAeronave(aeronave);
         }

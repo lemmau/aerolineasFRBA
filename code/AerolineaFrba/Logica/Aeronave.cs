@@ -123,9 +123,9 @@ namespace Logica
             }
         }
 
-        public static List<Aeronave> Get(String Matricula, Int32? IdTipoDeServicioSeleccionado, String FabricanteSeleccionado)
+        public static List<Aeronave> Get(String Matricula, Int32? IdTipoDeServicioSeleccionado, String FabricanteSeleccionado, DateTime fechaActual)
         {
-            var dt = Data.Aeronave.Get(Matricula, IdTipoDeServicioSeleccionado, FabricanteSeleccionado);
+            var dt = Data.Aeronave.Get(Matricula, IdTipoDeServicioSeleccionado, FabricanteSeleccionado, fechaActual);
             var aeronaves = new List<Aeronave>(dt.Rows.Count);
             Aeronave aeronave = null;
             Int32 entero;

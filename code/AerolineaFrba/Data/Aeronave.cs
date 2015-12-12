@@ -29,7 +29,7 @@ namespace Data
         private const String SP_TRANSFERIR_PROGRAMADO_Y_BUSCA_ITEMS = "[HAY_TABLA].sp_transferir_programado_y_busca_items";
         private const String SP_TRANSFERIR_PASAJE_ENCOMIENDA = "[HAY_TABLA].sp_transferir_pasaje_encomienda";
 
-        public static DataTable Get(String Matricula, Int32? IdTipoDeServicioSeleccionado, String FabricanteSeleccionado)
+        public static DataTable Get(String Matricula, Int32? IdTipoDeServicioSeleccionado, String FabricanteSeleccionado, DateTime fechaActual)
         {
             var table = new DataTable();
 
@@ -44,6 +44,8 @@ namespace Data
                     cmd.Parameters.Add("@idTipoDeServicio", SqlDbType.Int).Value = IdTipoDeServicioSeleccionado;
                 if (!String.IsNullOrEmpty(FabricanteSeleccionado))
                     cmd.Parameters.Add("@fabricante", SqlDbType.NVarChar).Value = FabricanteSeleccionado;
+                if (!String.IsNullOrEmpty(FabricanteSeleccionado))
+                    cmd.Parameters.Add("@fechaActual", SqlDbType.NVarChar).Value = fechaActual;
 
                 con.Open();
                 table.Load(cmd.ExecuteReader());
