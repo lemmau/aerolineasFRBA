@@ -2188,15 +2188,15 @@ BEGIN
 					inner join HAY_TABLA.SERVICIO ser on ser.ID = ae.ID_SERVICIO
 					where vi.ID = @idviaje and ae.ID = @idAeronave)
 
-	select b.NUMERO, b.TIPO, @importe as 'importe'
-	from  HAY_TABLA.BUTACA b
-	where  b.ID_AERONAVE = @idAeronave 
-	and b.ID not in (select p.ID_BUTACA 
-					from HAY_TABLA.VIAJE v 
-					inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
-					inner join  HAY_TABLA.PASAJE p on p.ID_VIAJE= v.ID 
-					where v.ID = @idviaje  and a.ID = @idAeronave  )
-	ORDER BY 1
+	select 	ID, NUMERO, TIPO, @importe as 'importe'
+	from  	HAY_TABLA.BUTACA
+	where  	ID_AERONAVE = @idAeronave 
+	and 	ID not in (select p.ID_BUTACA 
+						from HAY_TABLA.VIAJE v 
+						inner join HAY_TABLA.AERONAVE a on v.ID_AERONAVE = a.ID
+						inner join  HAY_TABLA.PASAJE p on p.ID_VIAJE= v.ID 
+						where v.ID = @idviaje  and a.ID = @idAeronave  )
+	ORDER BY NUMERO
 END 
 GO
 ------

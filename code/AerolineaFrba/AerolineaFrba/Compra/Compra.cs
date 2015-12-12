@@ -23,6 +23,7 @@ namespace AerolineaFrba.Compra
         Int32 idCompra = 0;
         Int32 idTarjeta = 0 ;
         Int32 idButaca = 0;
+        Int32 nro_butaca = 0;
 
         DateTime f_act = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
 
@@ -72,6 +73,7 @@ namespace AerolineaFrba.Compra
             public int id_compra { get; set; }
             public int id_viaje { get; set; }
             public int id_butaca { get; set; }
+            public int nro_butaca { get; set; }
             public decimal importe { get; set; }
            
 		   public override string ToString()
@@ -242,18 +244,15 @@ namespace AerolineaFrba.Compra
         {
             if (this.idViaje != 0)
             {
-
                 int cantPasaje = int.Parse(cantPa.Text);
                 int cantEncomienda = int.Parse(cantE.Text);
 
                 if (cantPasaje == 0 && cantEncomienda == 0)
                 {
-                    MessageBox.Show("No ingreso la cantidad de Pasaje  y/o  Encomienda  a comprar", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ingrese la cantidad de Pasaje y/o Encomienda a comprar", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-
-
                     if (cantPasaje != 0)
                     {
                         pasAcomprar.Text = cantPa.Text;
@@ -273,17 +272,12 @@ namespace AerolineaFrba.Compra
                     {
                         bcontinuarPasaje.Visible = true;
                     }
-
-
                 }
-
             }
             else
             {
                 MessageBox.Show("Debe seleccionar un viaje para continuar", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
 
 
@@ -342,9 +336,10 @@ namespace AerolineaFrba.Compra
                 {
                     butacasLibres.Rows.Add();
 
-                    butacasLibres.Rows[i].Cells["numero"].Value = DR[0].ToString();
-                    butacasLibres.Rows[i].Cells["tipo"].Value = DR[1].ToString();
-                    butacasLibres.Rows[i].Cells["importe"].Value = DR[2].ToString();
+                    butacasLibres.Rows[i].Cells["id_butaca"].Value = DR[0].ToString();
+                    butacasLibres.Rows[i].Cells["numero"].Value = DR[1].ToString();
+                    butacasLibres.Rows[i].Cells["tipo"].Value = DR[2].ToString();
+                    butacasLibres.Rows[i].Cells["importe"].Value = DR[3].ToString();
 
                     i++;
                 }
@@ -443,18 +438,19 @@ namespace AerolineaFrba.Compra
             {
                 this.idViaje = Convert.ToInt32(viajes.Rows[e.RowIndex].Cells["id_viaje"].Value.ToString());
                 String matricula = viajes.Rows[e.RowIndex].Cells["matricula"].Value.ToString();
-                MessageBox.Show("Usted a seleccionado un viaje con la aeronave ( " + matricula + ")", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Usted a seleccionado un viaje con la aeronave ( " + matricula + " )", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.idAeronave = Convert.ToInt32(viajes.Rows[e.RowIndex].Cells["id_a"].Value.ToString());
             }
         }
 
         private void butacasLibres_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            this.idButaca = Convert.ToInt32(butacasLibres.Rows[e.RowIndex].Cells["numero"].Value.ToString());
+            this.idButaca = Convert.ToInt32(butacasLibres.Rows[e.RowIndex].Cells["id_butaca"].Value.ToString());
+            this.nro_butaca = Convert.ToInt32(butacasLibres.Rows[e.RowIndex].Cells["numero"].Value.ToString());
             this.importeSelec = Convert.ToDecimal(butacasLibres.Rows[e.RowIndex].Cells["importe"].Value.ToString());
 
-            MessageBox.Show("Usted a seleccionado la butaca número: " + this.idButaca, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            butacaSelect.Text = idButaca.ToString();
+            MessageBox.Show("Usted a seleccionado la butaca número: " + this.nro_butaca, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            butacaSelect.Text = nro_butaca.ToString();
         }
 
         private void limpiarDatos()
@@ -484,6 +480,7 @@ namespace AerolineaFrba.Compra
                 pasaje1.dni = int.Parse(doc);
                 pasaje1.id_viaje = idViaje;
                 pasaje1.id_butaca = idButaca;
+                pasaje1.nro_butaca = nro_butaca;
                 pasaje1.importe = importeSelec;
 
                 if (validacionPasajero(pasaje1))
@@ -720,7 +717,7 @@ namespace AerolineaFrba.Compra
             guardarCompra();
             guardarPasajes();
             guardarEncomienda();
-            MessageBox.Show(" Se realizo la compra exitosamente : " + this.idCompra.ToString(),  null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(" Se realizo la compra exitosamente.\n\t PNR: [" + this.idCompra.ToString() + "]",  null, MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
 			 
 		}
@@ -823,7 +820,7 @@ namespace AerolineaFrba.Compra
 
                     try
                     {
-                        var cmd = new SqlCommand("HAY_TABLA.sp_alta_pasaje", con);
+                        var cmd = new SqlCommand("[HAY_TABLA].sp_alta_pasaje", con);
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.Add("@dniCliente", SqlDbType.Int).Value = pasajes.ElementAt(i).dni;

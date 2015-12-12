@@ -33,6 +33,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label41 = new System.Windows.Forms.Label();
             this.btLimpiar = new System.Windows.Forms.Button();
             this.cantE = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -92,10 +93,6 @@
             this.importeP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button5 = new System.Windows.Forms.Button();
             this.butacasLibres = new System.Windows.Forms.DataGridView();
-            this.numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.TabEncomienda = new System.Windows.Forms.TabPage();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
@@ -155,7 +152,11 @@
             this.label30 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.label41 = new System.Windows.Forms.Label();
+            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
+            this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_butaca = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -229,6 +230,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(873, 418);
             this.panel2.TabIndex = 1;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label41.Location = new System.Drawing.Point(348, 30);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(303, 91);
+            this.label41.TabIndex = 17;
+            this.label41.Text = resources.GetString("label41.Text");
             // 
             // btLimpiar
             // 
@@ -765,6 +776,7 @@
             this.butacasLibres.AllowUserToAddRows = false;
             this.butacasLibres.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.butacasLibres.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.id_butaca,
             this.numero,
             this.tipo,
             this.importe,
@@ -774,34 +786,6 @@
             this.butacasLibres.Size = new System.Drawing.Size(395, 307);
             this.butacasLibres.TabIndex = 0;
             this.butacasLibres.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.butacasLibres_CellContentClick);
-            // 
-            // numero
-            // 
-            this.numero.HeaderText = "Nº Butaca";
-            this.numero.Name = "numero";
-            this.numero.ReadOnly = true;
-            this.numero.Width = 50;
-            // 
-            // tipo
-            // 
-            this.tipo.HeaderText = "Tipo";
-            this.tipo.Name = "tipo";
-            this.tipo.ReadOnly = true;
-            // 
-            // importe
-            // 
-            this.importe.HeaderText = "Importe";
-            this.importe.Name = "importe";
-            this.importe.ReadOnly = true;
-            // 
-            // selec
-            // 
-            this.selec.HeaderText = "Seleccionar";
-            this.selec.Image = ((System.Drawing.Image)(resources.GetObject("selec.Image")));
-            this.selec.Name = "selec";
-            this.selec.ReadOnly = true;
-            this.selec.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.selec.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // TabEncomienda
             // 
@@ -1407,15 +1391,39 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // label41
+            // selec
             // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.Location = new System.Drawing.Point(348, 30);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(306, 91);
-            this.label41.TabIndex = 17;
-            this.label41.Text = resources.GetString("label41.Text");
+            this.selec.HeaderText = "Seleccionar";
+            this.selec.Image = ((System.Drawing.Image)(resources.GetObject("selec.Image")));
+            this.selec.Name = "selec";
+            this.selec.ReadOnly = true;
+            this.selec.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.selec.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // importe
+            // 
+            this.importe.HeaderText = "Importe";
+            this.importe.Name = "importe";
+            this.importe.ReadOnly = true;
+            // 
+            // tipo
+            // 
+            this.tipo.HeaderText = "Tipo";
+            this.tipo.Name = "tipo";
+            this.tipo.ReadOnly = true;
+            // 
+            // numero
+            // 
+            this.numero.HeaderText = "Nº Butaca";
+            this.numero.Name = "numero";
+            this.numero.ReadOnly = true;
+            this.numero.Width = 50;
+            // 
+            // id_butaca
+            // 
+            this.id_butaca.HeaderText = "id_butaca";
+            this.id_butaca.Name = "id_butaca";
+            this.id_butaca.Visible = false;
             // 
             // Compra
             // 
@@ -1498,10 +1506,6 @@
         private System.Windows.Forms.TabPage TabEncomienda;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numero;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn importe;
-        private System.Windows.Forms.DataGridViewImageColumn selec;
         private System.Windows.Forms.Button bcontinuarPasaje;
         private System.Windows.Forms.DataGridViewTextBoxColumn dniP;
         private System.Windows.Forms.DataGridViewTextBoxColumn butacaP;
@@ -1584,6 +1588,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn kg;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
         private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_butaca;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numero;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tipo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn importe;
+        private System.Windows.Forms.DataGridViewImageColumn selec;
 
     }
 }

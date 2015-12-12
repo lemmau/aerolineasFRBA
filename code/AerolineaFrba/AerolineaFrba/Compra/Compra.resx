@@ -119,12 +119,12 @@
   </resheader>
   <data name="label41.Text" xml:space="preserve">
     <value>NOTA: 
-Tener en cuenta que sólo se ofrecerán 
-ventas de pasajes y/o encomiendas para
+Tener en cuenta que sólo se ofrecerá la 
+venta de pasajes y/o encomiendas para
 aquellos vuelos futuros (programados)
 con anticipación de compra de HASTA 3 hs
-de horario de despegue, 
-tiempo de mayor tolerancia para realizar el check-in.</value>
+previas del horario de partida, 
+tiempo de mayor tolerancia para realizar el check-in</value>
   </data>
   <metadata name="id_viaje.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -168,6 +168,9 @@ tiempo de mayor tolerancia para realizar el check-in.</value>
     <value>True</value>
   </metadata>
   <metadata name="importeP.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="id_butaca.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="numero.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
