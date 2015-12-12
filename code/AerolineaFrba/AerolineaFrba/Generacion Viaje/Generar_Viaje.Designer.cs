@@ -277,6 +277,7 @@
             // rutas
             // 
             this.rutas.AllowUserToAddRows = false;
+            this.rutas.AllowUserToDeleteRows = false;
             this.rutas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.rutas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_ruta,
@@ -290,6 +291,8 @@
             this.rutas.Location = new System.Drawing.Point(3, 43);
             this.rutas.Name = "rutas";
             this.rutas.RowHeadersVisible = false;
+            this.rutas.RowHeadersWidth = 20;
+            this.rutas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.rutas.Size = new System.Drawing.Size(610, 148);
             this.rutas.TabIndex = 1;
             this.rutas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.rutas_CellContentClick);
