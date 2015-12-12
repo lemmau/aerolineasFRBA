@@ -382,7 +382,7 @@ namespace AerolineaFrba.Compra
                 con.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
-
+                
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -716,7 +716,7 @@ namespace AerolineaFrba.Compra
 
             using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_persona_dni", con);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_persona_dni", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 if (!String.IsNullOrEmpty(f_salida.ToString()))
