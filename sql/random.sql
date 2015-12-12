@@ -1035,7 +1035,7 @@ BEGIN
 			return	
 		end
 	
-	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like '%' + @matricula))
+	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like @matricula))
 		begin
 			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
 			return
