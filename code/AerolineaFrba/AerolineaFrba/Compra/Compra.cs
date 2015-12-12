@@ -508,7 +508,7 @@ namespace AerolineaFrba.Compra
                         DataPasaje.Rows.Add();
 
                         DataPasaje.Rows[i].Cells["dniP"].Value = pasajes.ElementAt(i).dni;
-                        DataPasaje.Rows[i].Cells["butacaP"].Value = pasajes.ElementAt(i).id_butaca;
+                        DataPasaje.Rows[i].Cells["butacaP"].Value = pasajes.ElementAt(i).nro_butaca;
                         DataPasaje.Rows[i].Cells["importeP"].Value = pasajes.ElementAt(i).importe;
 
                         this.importeTotal = this.importeTotal + pasajes.ElementAt(i).importe;
@@ -601,10 +601,8 @@ namespace AerolineaFrba.Compra
                   {
                       return false;
                   }
-
                 }
                 return true;
-
             }
 		
         private void llenarTipoTarjeta()
@@ -620,20 +618,16 @@ namespace AerolineaFrba.Compra
                     conn.Open();
                     SqlDataReader DR = cmd.ExecuteReader();
 
-
                     while (DR.Read())
                     {
-
                         int id_tipo_tarjeta = DR.GetInt32(0);
                         string tipo_tarjeta = DR.GetString(1);
-
 
                         ComboboxItem item = new ComboboxItem();
                         item.Text = tipo_tarjeta;
                         item.Value = id_tipo_tarjeta;
 
-                        ctipoTarjeta.Items.Add(item);
-                       
+                        ctipoTarjeta.Items.Add(item);                       
                     }
                     DR.Close();
                 }
@@ -644,9 +638,6 @@ namespace AerolineaFrba.Compra
                     return;
                 }
             }
-
-
-
         }
 
         private string importeTotalFactura(TextBox pasajesI, TextBox encomiendaI)
@@ -704,9 +695,7 @@ namespace AerolineaFrba.Compra
                     ttelCo.Text = "";
                     temailC.Text = "";
                     f_nacC.Value = this.f_act;
-
                 }
-
                 reader.Close();
             }
         }
@@ -717,18 +706,15 @@ namespace AerolineaFrba.Compra
             guardarCompra();
             guardarPasajes();
             guardarEncomienda();
-            MessageBox.Show(" Se realizo la compra exitosamente.\n\t PNR: [" + this.idCompra.ToString() + "]",  null, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
-			 
+            MessageBox.Show("Se realizó la compra exitosamente\n\tPNR: [" + this.idCompra.ToString() + "]",  null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Close();			 
 		}
 		  private void guardarEncomienda()
         {
             for (int i = 0; i < encomiendas.Count; i++)
             {
-
                 using (var con = DataAccess.GetConnection())
                 {
-
                     try
                     {
                         var cmd = new SqlCommand("HAY_TABLA.sp_alta_encomienda", con);
@@ -750,33 +736,34 @@ namespace AerolineaFrba.Compra
                         return;
                     }
                     con.Close();
-
                 }
-
             }
-
-
         }
 
         private void guardarCompra()
         {
             int dniComprador = int.Parse(tdniComprador.Text);
 
-            int cantCuota = 0;
+            int cantCuotas = 0;
             int idTar = 0;
-          
          
                 if (this.formaPago == 2)
                 {
-                    cantCuota = int.Parse(tcuota.Text);
-                    idTar = this.idTarjeta;
-                    
+                    cantCuotas = int.Parse(tcuota.Text);
+                    idTar = this.idTarjeta;                  
                 }
-
 
             using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_alta_compra", con);
+                f_act = f_act.AddHours(-f_act.Hour);
+                f_act = f_act.AddMinutes(-f_act.Minute);
+                f_act = f_act.AddSeconds(-f_act.Second);
+
+                f_act = f_act.AddHours(DateTime.Now.Hour);
+                f_act = f_act.AddMinutes(DateTime.Now.Minute);
+                f_act = f_act.AddSeconds(DateTime.Now.Second);
+
+                var cmd = new SqlCommand("[HAY_TABLA].sp_alta_compra", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                      if (dniComprador != 0)
@@ -784,12 +771,9 @@ namespace AerolineaFrba.Compra
                     cmd.Parameters.Add("@idTarjeta", SqlDbType.Int).Value = idTar;
                     cmd.Parameters.Add("@idformaPago", SqlDbType.Int).Value = this.formaPago;
                     cmd.Parameters.Add("@fecha", SqlDbType.DateTime).Value = f_act;
-                 
-                     cmd.Parameters.Add("@cantCuota", SqlDbType.Int).Value = cantCuota;
+                    cmd.Parameters.Add("@cantCuotas", SqlDbType.Int).Value = cantCuotas;
                                     
                  con.Open();
-
-
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -797,27 +781,20 @@ namespace AerolineaFrba.Compra
                 {
                     while (reader.Read())
                     {
-                        this.idCompra = reader.GetInt32(0);
-                       
-                    }
-                    
+                        this.idCompra = reader.GetInt32(0);                       
+                    }                   
                 reader.Close();
                 }
-
                 reader.Close();
             }
         }
 
         private void guardarPasajes()
         {
-
-
             for (int i = 0; i < pasajes.Count; i++)
             {
-
                 using (var con = DataAccess.GetConnection())
                 {
-
                     try
                     {
                         var cmd = new SqlCommand("[HAY_TABLA].sp_alta_pasaje", con);
@@ -839,10 +816,7 @@ namespace AerolineaFrba.Compra
                         return;
                     }
                     con.Close();
-
                 }
-
-
             }
         }
 
@@ -990,16 +964,11 @@ namespace AerolineaFrba.Compra
                     {
                         while (reader.Read())
                         {
-
                             this.idTarjeta = reader.GetInt32(0);
                             MessageBox.Show("Error en al guardar los datos de la tarjeta  ", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                         }
                         reader.Close();
                     }
-
-
-
                 }
                 catch (Exception error)
                 {
@@ -1038,19 +1007,15 @@ namespace AerolineaFrba.Compra
                 tdniComprador.ReadOnly = true;
                 datosComprador(true);
             }
-
         }
 
         private void altaPersona(Persona per)
-        {
-
-
+        {            
             using (var con = DataAccess.GetConnection())
             {
                 var cmd = new SqlCommand("HAY_TABLA.sp_alta_persona", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-
-
+                
                 cmd.Parameters.Add("@dni", SqlDbType.Int).Value = per.dni;
                 cmd.Parameters.Add("@nombre", SqlDbType.VarChar).Value = per.nombre;
                 cmd.Parameters.Add("@apellido", SqlDbType.VarChar).Value = per.apellido;
@@ -1058,12 +1023,9 @@ namespace AerolineaFrba.Compra
                 cmd.Parameters.Add("@telefono", SqlDbType.VarChar).Value = per.telefono;
                 cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = per.email;
                 cmd.Parameters.Add("@fechaNac", SqlDbType.DateTime).Value = per.f_nacimiento;
-
-
+                
                 try
                 {
-
-
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -1080,14 +1042,9 @@ namespace AerolineaFrba.Compra
                 tdni.ReadOnly = true;
                 datosPasajero(true);
                 dniSele.Text = tdni.Text;
-
             }
-
-
         }
-
-
-
+        
         private Boolean validacionesDatosPasajero()
         {
             if (tdni.Text.Trim().Equals(""))
@@ -1112,14 +1069,11 @@ namespace AerolineaFrba.Compra
                 MessageBox.Show("La fecha de nacimiento debe ser menor a la actual ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
             return true;
         }
 
         private Boolean validacionesDatosComprador()
-        {
-
-
+        {            
             if (tdniComprador.Text.Trim().Equals(""))
             {
                 MessageBox.Show("Debe ingresar un DNI  ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1141,15 +1095,11 @@ namespace AerolineaFrba.Compra
                 MessageBox.Show("La fecha del nacimiento debe ser menor a la actual ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
             return true;
-
-
         }
 
         private void button4_Click(object sender, EventArgs e)
              {
-
                  if (validacionesDatosPasajero())
                  {
                      Persona pasajero = new Persona();
@@ -1166,14 +1116,10 @@ namespace AerolineaFrba.Compra
                      fechaNacimiento = fechaNacimiento.AddSeconds(-fechaNacimiento.Second);
                      fechaNacimiento = fechaNacimiento.AddMilliseconds(-fechaNacimiento.Millisecond);
 
-
                      pasajero.f_nacimiento = fechaNacimiento;
 
                      altaPersona(pasajero);
                  }   
-
-
-
         }
 
         private void pagarPasaje_Click(object sender, EventArgs e)
@@ -1196,49 +1142,33 @@ namespace AerolineaFrba.Compra
 
                 EcantKg.Text = (int.Parse(EcantKg.Text) - encomienda.peso).ToString();
 
-
                 encomiendas.Add(encomienda);
-
-
 
                 if (encomiendas.Count > 0 && encomiendas.Count == cantEncomienda)
                 {
-
                     button12.Visible = true;
-
                     button11.Visible = false;
                     MessageBox.Show("Usted ha finalizado la cantidad de encomienda a enviar", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-
                 this.importeEnT = 0;
                 for (int i = 0; i < encomiendas.Count && i< cantEncomienda; i++)
                 {
-
-
                     dataEncomienda.Rows.Add();
 
                     dataEncomienda.Rows[i].Cells["kgE"].Value = encomiendas.ElementAt(i).peso;
                     dataEncomienda.Rows[i].Cells["importeE"].Value = encomiendas.ElementAt(i).importe;
 
-
                     this.importeEnT = this.importeEnT + encomiendas.ElementAt(i).importe;
-
-
-
                 }
 
                 this.importeEncomienda.Text = importeEnT.ToString();
-
                 kgAenviar.Text = "";
-
             }
-
         }
 
         private bool validarAddEncomienda()
         {
-
             int kgDisponible = int.Parse(EcantKg.Text);
             int KAenviar = int.Parse(kgAenviar.Text);
             int kgAvalidar = kgDisponible - KAenviar;
@@ -1248,7 +1178,6 @@ namespace AerolineaFrba.Compra
                 MessageBox.Show("Los Kg que quiere enviar supera al Kg disponibles", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;   
             }
-
             return true;
         }
 
@@ -1273,7 +1202,6 @@ namespace AerolineaFrba.Compra
             temail.Text = "";
             ttel.Text = "";
             f_nac.Value = f_act;
-
         }
 
         private void button13_Click(object sender, EventArgs e)
@@ -1287,8 +1215,7 @@ namespace AerolineaFrba.Compra
             temailC.Text = "";
             ttelCo.Text = "";
             f_nacC.Value = f_act;
-        }
-        
+        }     
     }
 
 

@@ -2214,44 +2214,35 @@ CREATE PROCEDURE  [HAY_TABLA].[sp_alta_compra]
 	@dniComprador int ,
 	@idTarjeta  int ,
 	@idformaPago int , 
-	@fecha datetime , 
-	@cantCuota int 
+	@fecha datetime ,
+	@cantCuotas int 
 AS
 BEGIN 
-
 	declare @idComprador int
-	set @idComprador  = (select pe.ID from HAY_TABLA.PERSONA pe where pe.DNI = @dniComprador)
+	set @idComprador  = (select ID from HAY_TABLA.PERSONA where DNI = @dniComprador)
 
-	if @idformaPago = 1 
-
+	if @idformaPago = 1 -- EFECTIVO
 	BEGIN 
-
 		insert into HAY_TABLA.COMPRA 
-		(ID_COMPRADOR , ID_TARJETA, ID_FORMADEPAGO , FECHA ,CANTCUOTAS)
+		(ID_COMPRADOR, ID_TARJETA, ID_FORMADEPAGO, FECHA)
 		values 
-		(@idComprador , null , 1 , @fecha , 0)
+		(@idComprador, null, @idformaPago, @fecha)
 
+		select 	ID 
+		from 	HAY_TABLA.COMPRA
+		where 	ID_COMPRADOR=@idComprador and FECHA=@fecha;
+	END
 
-		select co.ID 
-		from HAY_TABLA.COMPRA co 
-		where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
-	 
-	END 
-
-	if @idformaPago = 2
-
+	if @idformaPago = 2 -- TARJETA
 	BEGIN 
-
 		insert into HAY_TABLA.COMPRA 
-		(ID_COMPRADOR , ID_TARJETA, ID_FORMADEPAGO , FECHA ,CANTCUOTAS)
+		(ID_COMPRADOR, ID_TARJETA, ID_FORMADEPAGO, FECHA, CANTCUOTAS)
 		values 
-		(@idComprador , @idTarjeta , 2 , @fecha , @cantCuota)
+		(@idComprador, @idTarjeta , @idformaPago, @fecha, @cantCuotas)
 
-
-		select co.ID 
-		from HAY_TABLA.COMPRA co 
-		where  co.ID_COMPRADOR=@idComprador and co.FECHA = @fecha ;
-	 
+		select 	ID
+		from 	HAY_TABLA.COMPRA
+		where  	ID_COMPRADOR=@idComprador and FECHA=@fecha;
 	END 
 END
 GO
