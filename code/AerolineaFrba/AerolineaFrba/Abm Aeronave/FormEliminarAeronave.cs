@@ -78,6 +78,11 @@ namespace AerolineaFrba.Abm_Aeronave
             //  SI ES BAJA POR FUERA DE SERVICIO
             if (rbFueraServicio.Checked == true)
             {
+                if (fechaActual == fechaReincorporacion.Value)
+                {
+                    MessageBox.Show("La fecha de reincorporación NO puede ser la misma que la fecha actual.");
+                    return;
+                }
 
                 //Chequea si la aeronave tiene vuelos programados
                 Int32 resultado = _aeronave.ChequeateVuelosProgramados(fechaActual, fechaReincorporacion.Value, 1);
