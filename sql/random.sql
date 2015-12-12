@@ -2385,7 +2385,8 @@ go
 CREATE PROCEDURE [HAY_TABLA].[sp_validar_pasajero_mismo_viaje]
 	@dni int,
 	@id_viaje int
-AS BEGIN
+AS 
+BEGIN
 	DECLARE @boolean int
 
 	SELECT @boolean = 1
@@ -2400,3 +2401,26 @@ AS BEGIN
 	ELSE
 		SELECT 0
 END
+-----
+CREATE PROCEDURE [HAY_TABLA].[sp_validar_pasajero_no_tenga_mas_de_un_viaje_mismo_dia]
+	@dni int,
+	@fechaActual datetime
+AS 
+BEGIN
+	DECLARE @boolean int
+
+	SELECT @boolean = 1
+	FROM [HAY_TABLA].VIAJE V, [HAY_TABLA].PASAJE PA, [HAY_TABLA].PERSONA PE
+	WHERE PE.ID = PA.ID_CLIENTE
+	AND PE.DNI = @dni
+	AND PA.ID_VIAJE = V.ID
+	AND YEAR(v.FECHASALIDA)  = 	YEAR(@fechaActual) 
+	AND MONTH(V.FECHASALIDA) = 	MONTH(@fechaActual) 
+	AND DAY(V.FECHASALIDA)   = 	DAY(@fechaActual)
+
+	IF (@boolean = 1)
+		SELECT 1
+	ELSE
+		SELECT 0
+END
+

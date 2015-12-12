@@ -243,6 +243,11 @@ namespace AerolineaFrba.Compra
         {
             if (this.idViaje != 0)
             {
+                //if (!String.IsNullOrEmpty(cantPa.Text) && !String.IsNullOrEmpty(cantE.Text))
+                //{
+                //    MessageBox.Show("Ingrese la cantidad de Pasaje y/o Encomienda a comprar", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //}
+
                 int cantPasaje = int.Parse(cantPa.Text);
                 int cantEncomienda = int.Parse(cantE.Text);
 
@@ -271,20 +276,24 @@ namespace AerolineaFrba.Compra
                     {
                         bcontinuarPasaje.Visible = true;
                     }
+
+                    Int32 numeroEntero;
+
+                    if (!Int32.TryParse(cantPa.Text, out numeroEntero) && !Int32.TryParse(cantE.Text, out numeroEntero))
+                    {
+                        MessageBox.Show("Los campos deben ser de tipo numérico y sin puntos.");
+                        return;
+                    }
                 }
             }
             else
-            {
+            {           
                 MessageBox.Show("Debe seleccionar un viaje para continuar", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-
-
         private void llenarkgEncomienda()
         {
-
-
             using (var con = DataAccess.GetConnection())
             {
                 var cmd = new SqlCommand("HAY_TABLA.sp_kg_libre_viaje", con);
@@ -297,7 +306,6 @@ namespace AerolineaFrba.Compra
                     cmd.Parameters.Add("@idAeronave", SqlDbType.Int).Value = this.idAeronave;
 
                 con.Open();
-
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -313,8 +321,6 @@ namespace AerolineaFrba.Compra
                 reader.Close();
             }
         }
-
-
 
         private void llenarButacasLibre(int idViaje, int idAeronave)
         {
@@ -409,27 +415,27 @@ namespace AerolineaFrba.Compra
             }
         }
 
- private void datosPasajero (Boolean edit  ){
-            tnombre.ReadOnly = edit;
-            tapellido.ReadOnly = edit;
-            tdirec.ReadOnly = edit;
-            ttel.ReadOnly = edit;
-            temail.ReadOnly = edit;
-            f_nac.Enabled = !edit;
+     private void datosPasajero (Boolean edit  ){
+                tnombre.ReadOnly = edit;
+                tapellido.ReadOnly = edit;
+                tdirec.ReadOnly = edit;
+                ttel.ReadOnly = edit;
+                temail.ReadOnly = edit;
+                f_nac.Enabled = !edit;
 
-        }
+            }
 
 
- private void datosComprador(Boolean edit)
- {
-     tnombreC.ReadOnly = edit;
-     tapellidoC.ReadOnly = edit;
-     tdirecC.ReadOnly = edit;
-     ttelCo.ReadOnly = edit;
-     temailC.ReadOnly = edit;
-     f_nacC.Enabled = !edit;
+     private void datosComprador(Boolean edit)
+     {
+         tnombreC.ReadOnly = edit;
+         tapellidoC.ReadOnly = edit;
+         tdirecC.ReadOnly = edit;
+         ttelCo.ReadOnly = edit;
+         temailC.ReadOnly = edit;
+         f_nacC.Enabled = !edit;
 
- }
+     }
 		
 
         private void viajes_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
@@ -565,7 +571,39 @@ namespace AerolineaFrba.Compra
                 return false;
             }
 
+            if (!validarPasajeroUnicoDestinoMismoDia())
+            {
+                MessageBox.Show("El pasajero tiene asignado OTRO vuelo distinto del actual.\nNo es posible viajar a más de un destino a la vez.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
             return true;
+        }
+
+        private bool validarPasajeroUnicoDestinoMismoDia()
+        {
+            int value = 0;
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand("[HAY_TABLA].sp_validar_pasajero_no_tenga_mas_de_un_viaje_mismo_dia", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@dni", SqlDbType.Int).Value = int.Parse(tdni.Text);
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = f_act;
+
+                con.Open();
+                value = (int)cmd.ExecuteScalar();
+                con.Close();
+            }
+
+            if (value == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private bool validarPasajeroRepetido()
@@ -573,7 +611,7 @@ namespace AerolineaFrba.Compra
             int value = 0;
             using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("[HAY_TABLA].[sp_validar_pasajero_mismo_viaje]", con);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_validar_pasajero_mismo_viaje", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@dni", SqlDbType.Int).Value = int.Parse(tdni.Text);
