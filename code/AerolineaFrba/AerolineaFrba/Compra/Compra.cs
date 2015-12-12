@@ -382,7 +382,27 @@ namespace AerolineaFrba.Compra
                 con.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
-                
+
+                // cod villero
+                int cantRegistros;
+                using (var con2 = DataAccess.GetConnection())
+                {                    
+                    var cmd2 = new SqlCommand("[HAY_TABLA].sp_cualca", con2);
+                    cmd2.CommandType = CommandType.StoredProcedure;
+
+                    cmd2.Parameters.Add("@dni", SqlDbType.Int).Value = dni;
+
+                    con2.Open();
+                    cantRegistros = (int)cmd2.ExecuteScalar();
+                    con2.Close();
+
+                    if (cantRegistros >= 2)
+                    {
+                        MessageBox.Show("Advertencia:\nExiste más de 1 persona con el mismo DNI. Se aconseja: \n1) revisar el ABM de Personas (si lo hubiese) ó \n2) consultar con el DBA a cargo ");
+                    }
+
+                }
+
                 if (reader.HasRows)
                 {
                     while (reader.Read())
