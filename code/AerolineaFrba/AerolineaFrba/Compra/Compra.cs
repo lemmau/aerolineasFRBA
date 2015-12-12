@@ -172,7 +172,7 @@ namespace AerolineaFrba.Compra
             f_act = f_act.AddSeconds(DateTime.Now.Second);
 
             // only for testing
-            MessageBox.Show("fecha salida: " + f_salida.ToString("dd/MM/yyyy") + " y fecha del sistema: " + f_act);
+            //MessageBox.Show("fecha salida: " + f_salida.ToString("dd/MM/yyyy") + " y fecha del sistema: " + f_act);
            using (var con = DataAccess.GetConnection())
             {
                 var cmd = new SqlCommand("[HAY_TABLA].sp_get_buscar_viaje", con);
@@ -492,7 +492,7 @@ namespace AerolineaFrba.Compra
                     {
 
                         groupBox2.Visible = false;
-                        MessageBox.Show("Usted a comprado la cantidad de pasaje selecciondo" + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //MessageBox.Show("id compra" + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         if (cantEncomienda == 0)
                         {
                             pagarPasaje.Visible = true;
@@ -702,6 +702,13 @@ namespace AerolineaFrba.Compra
 
         private void button7_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(tdniComprador.Text))
+            {
+                MessageBox.Show("El campo 'Nro de Documento' del comprador se encuentra vacio.");
+                return;
+            }
+            
+
             this.formaPago = 1;
             guardarCompra();
             guardarPasajes();
