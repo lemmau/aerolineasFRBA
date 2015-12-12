@@ -832,8 +832,6 @@ CREATE PROCEDURE [HAY_TABLA].[sp_get_rutas_generar_viaje]
 	@idservicio varchar(255)
 AS
 BEGIN
-	
-
 	SELECT 	R.ID , R.CODIGO , C1.NOMBRE , C2.NOMBRE ,S.ID,S.NOMBRE 
 	FROM 	HAY_TABLA.RUTA R 
 			JOIN HAY_TABLA.SERVICIOS_RUTA SR ON R.ID = SR.ID_RUTA
@@ -2249,16 +2247,16 @@ GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_alta_pasaje]
 	@dniCliente int ,
-	@idCompra int , 
-	@idViaje int , 
-	@importe int , 
-	@idButaca int
+	@idCompra 	int , 
+	@idViaje 	int , 
+	@importe 	numeric(18,2), 
+	@idButaca 	int
 
 AS
 BEGIN 
 	DECLARE @idPasajero int
 
-	SET @idPasajero= (select per.ID  from HAY_TABLA.PERSONA per where per.DNI = @dniCliente)
+	SET @idPasajero= (select ID  from HAY_TABLA.PERSONA where DNI = @dniCliente)
 
 	insert into HAY_TABLA.PASAJE  
 	(ID_CLIENTE , ID_COMPRA , ID_VIAJE , IMPORTE , ID_BUTACA)
@@ -2419,8 +2417,8 @@ BEGIN
 	AND DAY(V.FECHASALIDA)   = 	DAY(@fechaActual)
 
 	IF (@boolean = 1)
-		SELECT 1
-	ELSE
 		SELECT 0
+	ELSE
+		SELECT 1
 END
 
