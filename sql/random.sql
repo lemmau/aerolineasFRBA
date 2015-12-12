@@ -992,7 +992,8 @@ BEGIN
 	from 
 		HAY_TABLA.AERONAVE A, HAY_TABLA.SERVICIO S
 	where
-		A.ID = @id
+		A.ID_SERVICIO=S.ID AND A.ID = @id
+
 END
 GO
 ----------------
