@@ -247,6 +247,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Compra\Compra.resx">
       <DependentUpon>Compra.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Millas\ConsultaMillas.resx">
       <DependentUpon>ConsultaMillas.cs</DependentUpon>

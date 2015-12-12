@@ -152,11 +152,12 @@
             this.label30 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
-            this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id_butaca = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.piso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -479,7 +480,7 @@
             // 
             this.label40.AutoSize = true;
             this.label40.ForeColor = System.Drawing.Color.Blue;
-            this.label40.Location = new System.Drawing.Point(3, 398);
+            this.label40.Location = new System.Drawing.Point(6, 401);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(136, 13);
             this.label40.TabIndex = 18;
@@ -487,7 +488,7 @@
             // 
             // butacaSelect
             // 
-            this.butacaSelect.Location = new System.Drawing.Point(151, 372);
+            this.butacaSelect.Location = new System.Drawing.Point(174, 372);
             this.butacaSelect.Name = "butacaSelect";
             this.butacaSelect.ReadOnly = true;
             this.butacaSelect.Size = new System.Drawing.Size(43, 20);
@@ -497,7 +498,7 @@
             // 
             this.label39.AutoSize = true;
             this.label39.ForeColor = System.Drawing.Color.Blue;
-            this.label39.Location = new System.Drawing.Point(0, 375);
+            this.label39.Location = new System.Drawing.Point(6, 375);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(107, 13);
             this.label39.TabIndex = 16;
@@ -700,7 +701,7 @@
             // 
             // importePa
             // 
-            this.importePa.Location = new System.Drawing.Point(512, 563);
+            this.importePa.Location = new System.Drawing.Point(440, 566);
             this.importePa.Name = "importePa";
             this.importePa.ReadOnly = true;
             this.importePa.Size = new System.Drawing.Size(100, 20);
@@ -710,7 +711,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(417, 566);
+            this.label8.Location = new System.Drawing.Point(345, 569);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 13);
             this.label8.TabIndex = 5;
@@ -779,6 +780,7 @@
             this.id_butaca,
             this.numero,
             this.tipo,
+            this.piso,
             this.importe,
             this.selec});
             this.butacasLibres.Location = new System.Drawing.Point(3, 53);
@@ -1373,23 +1375,57 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(528, 360);
+            this.button8.Location = new System.Drawing.Point(528, 346);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.Size = new System.Drawing.Size(75, 37);
             this.button8.TabIndex = 4;
-            this.button8.Text = "Tarjeta";
+            this.button8.Text = "  Compra \r\ncon Tarjeta";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(364, 360);
+            this.button7.Location = new System.Drawing.Point(364, 346);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.Size = new System.Drawing.Size(75, 37);
             this.button7.TabIndex = 3;
-            this.button7.Text = "Efectivo";
+            this.button7.Text = "  Compra\r\nen Efectivo";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // id_butaca
+            // 
+            this.id_butaca.HeaderText = "id_butaca";
+            this.id_butaca.Name = "id_butaca";
+            this.id_butaca.Visible = false;
+            // 
+            // numero
+            // 
+            this.numero.HeaderText = "Nº Butaca";
+            this.numero.Name = "numero";
+            this.numero.ReadOnly = true;
+            this.numero.Width = 50;
+            // 
+            // tipo
+            // 
+            this.tipo.HeaderText = "Tipo";
+            this.tipo.Name = "tipo";
+            this.tipo.ReadOnly = true;
+            this.tipo.Width = 80;
+            // 
+            // piso
+            // 
+            this.piso.HeaderText = "Piso";
+            this.piso.Name = "piso";
+            this.piso.ReadOnly = true;
+            this.piso.Width = 50;
+            // 
+            // importe
+            // 
+            this.importe.HeaderText = "Importe";
+            this.importe.Name = "importe";
+            this.importe.ReadOnly = true;
+            this.importe.Width = 50;
             // 
             // selec
             // 
@@ -1399,31 +1435,6 @@
             this.selec.ReadOnly = true;
             this.selec.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.selec.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // importe
-            // 
-            this.importe.HeaderText = "Importe";
-            this.importe.Name = "importe";
-            this.importe.ReadOnly = true;
-            // 
-            // tipo
-            // 
-            this.tipo.HeaderText = "Tipo";
-            this.tipo.Name = "tipo";
-            this.tipo.ReadOnly = true;
-            // 
-            // numero
-            // 
-            this.numero.HeaderText = "Nº Butaca";
-            this.numero.Name = "numero";
-            this.numero.ReadOnly = true;
-            this.numero.Width = 50;
-            // 
-            // id_butaca
-            // 
-            this.id_butaca.HeaderText = "id_butaca";
-            this.id_butaca.Name = "id_butaca";
-            this.id_butaca.Visible = false;
             // 
             // Compra
             // 
@@ -1591,6 +1602,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn id_butaca;
         private System.Windows.Forms.DataGridViewTextBoxColumn numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn piso;
         private System.Windows.Forms.DataGridViewTextBoxColumn importe;
         private System.Windows.Forms.DataGridViewImageColumn selec;
 

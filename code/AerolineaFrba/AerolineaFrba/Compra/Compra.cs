@@ -163,7 +163,6 @@ namespace AerolineaFrba.Compra
 
         private void viajesBuscar(DateTime f_salida, Int32? idCiudadOrigen, Int32? idCiudadDestino)
         {
-            DateTime f_act = f_salida;
             f_act = f_act.AddHours(-f_act.Hour);
             f_act = f_act.AddMinutes(-f_act.Minute);
             f_act = f_act.AddSeconds(-f_act.Second);
@@ -173,7 +172,7 @@ namespace AerolineaFrba.Compra
             f_act = f_act.AddSeconds(DateTime.Now.Second);
 
             // only for testing
-            //MessageBox.Show("fecha salida: " + f_salida.ToString("dd/MM/yyyy") + " y fecha del sistema: " + f_act);
+            MessageBox.Show("fecha salida: " + f_salida.ToString("dd/MM/yyyy") + " y fecha del sistema: " + f_act);
            using (var con = DataAccess.GetConnection())
             {
                 var cmd = new SqlCommand("[HAY_TABLA].sp_get_buscar_viaje", con);
@@ -339,7 +338,8 @@ namespace AerolineaFrba.Compra
                     butacasLibres.Rows[i].Cells["id_butaca"].Value = DR[0].ToString();
                     butacasLibres.Rows[i].Cells["numero"].Value = DR[1].ToString();
                     butacasLibres.Rows[i].Cells["tipo"].Value = DR[2].ToString();
-                    butacasLibres.Rows[i].Cells["importe"].Value = DR[3].ToString();
+                    butacasLibres.Rows[i].Cells["piso"].Value = DR[3].ToString();
+                    butacasLibres.Rows[i].Cells["importe"].Value = DR[4].ToString();
 
                     i++;
                 }
@@ -449,7 +449,7 @@ namespace AerolineaFrba.Compra
             this.nro_butaca = Convert.ToInt32(butacasLibres.Rows[e.RowIndex].Cells["numero"].Value.ToString());
             this.importeSelec = Convert.ToDecimal(butacasLibres.Rows[e.RowIndex].Cells["importe"].Value.ToString());
 
-            MessageBox.Show("Usted a seleccionado la butaca número: " + this.nro_butaca, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Usted a seleccionado la butaca número: [" + this.nro_butaca + "]\nIngrese, a continuación, los datos personales del pasajero.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             butacaSelect.Text = nro_butaca.ToString();
         }
 
@@ -709,7 +709,8 @@ namespace AerolineaFrba.Compra
             MessageBox.Show("Se realizó la compra exitosamente\n\tPNR: [" + this.idCompra.ToString() + "]",  null, MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();			 
 		}
-		  private void guardarEncomienda()
+		
+        private void guardarEncomienda()
         {
             for (int i = 0; i < encomiendas.Count; i++)
             {
@@ -717,7 +718,7 @@ namespace AerolineaFrba.Compra
                 {
                     try
                     {
-                        var cmd = new SqlCommand("HAY_TABLA.sp_alta_encomienda", con);
+                        var cmd = new SqlCommand("[HAY_TABLA].sp_alta_encomienda", con);
                         cmd.CommandType = CommandType.StoredProcedure;
 
 

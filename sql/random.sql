@@ -1172,7 +1172,7 @@ AS BEGIN
 		A.CANTBUTACASVENTANILLA, A.ESPACIOKGENCOMIENDAS, S.ID as 'S_ID', S.NOMBRE as 'S_NOMBRE',
 		(SELECT CASE 
 			WHEN(MAX(HB.ID_TIPOBAJA) IS NULL) THEN 0
-			WHEN(MAX(HB.ID_TIPOBAJA)=1 AND @fechaActual >= MAX(HB.FECHAREINICIO) THEN 0
+			WHEN(MAX(HB.ID_TIPOBAJA)=1 AND @fechaActual >= MAX(HB.FECHAREINICIO)) THEN 0
 			ELSE MAX(HB.ID_TIPOBAJA)
 		END FROM [HAY_TABLA].HISTORIALBAJA_AERONAVE HB WHERE A.ID=HB.ID_AERONAVE) as 'HB_ID',
 		(SELECT CASE 
@@ -2188,7 +2188,7 @@ BEGIN
 					inner join HAY_TABLA.SERVICIO ser on ser.ID = ae.ID_SERVICIO
 					where vi.ID = @idviaje and ae.ID = @idAeronave)
 
-	select 	ID, NUMERO, TIPO, @importe as 'importe'
+	select 	ID, NUMERO, TIPO, PISO, @importe as 'importe'
 	from  	HAY_TABLA.BUTACA
 	where  	ID_AERONAVE = @idAeronave 
 	and 	ID not in (select p.ID_BUTACA 
