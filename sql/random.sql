@@ -644,6 +644,64 @@ BEGIN
 END
 GO
 ------
+CREATE PROCEDURE [HAY_TABLA].[sp_chequear_vuelos_programados_ruta]
+	@idRutaBaja int,
+	@fechaActual datetime
+AS
+BEGIN
+	if (exists(select 1
+			   from HAY_TABLA.RUTA r join HAY_TABLA.VIAJE v on r.ID = v.ID_RUTA
+			   where @idRutaBaja = r.ID and @fechaActual <= v.FECHASALIDA))
+		begin 
+			--La ruta tiene vuelos programados
+			select 1
+		end
+	else
+		begin
+			--La ruta NO tiene vuelos programados
+			select 2
+		end
+END
+GO
+------
+CREATE PROCEDURE [HAY_TABLA].[sp_baja_ruta_y_busca_vuelos_programados]
+	@idRutaBaja int,
+	@fechaActual datetime
+AS
+	DECLARE @ESTADO_RUTA int
+BEGIN
+	
+	SET @ESTADO_RUTA = (select r.STATUS
+						from HAY_TABLA.RUTA r
+						where @idRutaBaja = r.ID)
+	--La ruta esta dada de baja
+	if (@ESTADO_RUTA = 0)
+		begin
+			RAISERROR(N' La ruta ya se encontraba cancelada ', 16, 1)
+			return
+		end
+	else
+		begin
+			--La ruta esta activa
+			if (@ESTADO_RUTA = 1)
+				begin
+					--Concreto la baja
+					UPDATE 
+						[HAY_TABLA].RUTA
+					SET 
+						STATUS = 0
+					WHERE
+						id = @idRutaBaja
+
+					--Busco vuelos programados
+					select v.ID as 'id'
+					from HAY_TABLA.RUTA r join HAY_TABLA.VIAJE v on r.ID = v.ID_RUTA
+					where @idRutaBaja = r.ID and @fechaActual <= v.FECHASALIDA
+				end
+		end
+END
+GO
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_insertar_ruta]
 	@idCiudadOrigen int,
 	@idCiudadDestino int,

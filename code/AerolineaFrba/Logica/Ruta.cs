@@ -191,5 +191,15 @@ namespace Logica
 
             return ruta;
         }
+
+        public static Int32 ChequearVuelosProgramados(Int32 idRutaBaja, DateTime fechaActual)
+        {
+            return Data.Ruta.ChequearVuelosProgramados(idRutaBaja, fechaActual);
+        }
+
+        public static DataTable BajaRutaYBuscaVuelosProgramados(Int32 idRutaBaja, DateTime fechaActual)
+        {
+            return Data.Ruta.BajaRutaYBuscaVuelosProgramados(idRutaBaja, fechaActual);
+        }
     }
 }

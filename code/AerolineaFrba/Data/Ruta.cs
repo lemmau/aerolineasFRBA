@@ -16,7 +16,10 @@ namespace Data
         private const String SP_GET_BY_ID = "[HAY_TABLA].sp_get_ruta_by_id";
         private const String SP_INSERT = "[HAY_TABLA].sp_insertar_ruta";
         private const String SP_UPDATE = "[HAY_TABLA].sp_modificacion_ruta";
+        private const String SP_VUELOS_PROGRAMADOS = "[HAY_TABLA].sp_chequear_vuelos_programados_ruta";
         private const String SP_DELETE = "[HAY_TABLA].sp_baja_ruta";
+        private const String SP_DELETE_Y_BUSCA_PROGRAMADOS = "[HAY_TABLA].sp_baja_ruta_y_busca_vuelos_programados";
+        
 
         public static DataTable Get(Int32 id)
         {
@@ -160,6 +163,51 @@ namespace Data
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
+        }
+
+        public static Int32 ChequearVuelosProgramados(Int32 idRutaBaja, DateTime fechaActual)
+        {
+            Int32 respuesta = -1;
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_VUELOS_PROGRAMADOS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idRutaBaja", SqlDbType.Int).Value = idRutaBaja;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
+
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    respuesta = reader.GetInt32(0);
+                }
+
+                con.Close();
+            }
+
+            return respuesta;
+        }
+
+        public static DataTable BajaRutaYBuscaVuelosProgramados(Int32 idRutaBaja, DateTime fechaActual)
+        {
+            var table = new DataTable();
+
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand(SP_DELETE_Y_BUSCA_PROGRAMADOS, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@idRutaBaja", SqlDbType.Int).Value = idRutaBaja;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.DateTime).Value = fechaActual;
+                
+                con.Open();
+                table.Load(cmd.ExecuteReader());
+                con.Close();
+            }
+            return table;
         }
 
     }
