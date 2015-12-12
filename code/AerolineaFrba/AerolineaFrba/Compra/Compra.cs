@@ -469,7 +469,6 @@ namespace AerolineaFrba.Compra
         private void button5_Click(object sender, EventArgs e)
         {
          if (validarAddPasaje())
-
             {
                 int cantEncomienda = int.Parse(cantE.Text);
                 int cantidadPasajeSel = int.Parse(cantPa.Text);
@@ -485,26 +484,21 @@ namespace AerolineaFrba.Compra
 
                 if (validacionPasajero(pasaje1))
                 {
-
                     pasajes.Add(pasaje1);
 
                     if (pasajes.Count > 0 && pasajes.Count == cantidadPasajeSel)
                     {
-
                         groupBox2.Visible = false;
                         //MessageBox.Show("id compra" + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         if (cantEncomienda == 0)
                         {
                             pagarPasaje.Visible = true;
                         }
-
                     }
 
                     this.importeTotal = 0;
                     for (int i = 0; i < pasajes.Count; i++)
                     {
-
-
                         DataPasaje.Rows.Add();
 
                         DataPasaje.Rows[i].Cells["dniP"].Value = pasajes.ElementAt(i).dni;
@@ -512,8 +506,6 @@ namespace AerolineaFrba.Compra
                         DataPasaje.Rows[i].Cells["importeP"].Value = pasajes.ElementAt(i).importe;
 
                         this.importeTotal = this.importeTotal + pasajes.ElementAt(i).importe;
-
-
                     }
 
                     this.importePa.Text = importeTotal.ToString();
@@ -541,37 +533,65 @@ namespace AerolineaFrba.Compra
         }
 
   
-		    private bool validarAddPasaje()
+        private bool validarAddPasaje()
         {
             if (this.idButaca == 0)
-
-            {
-             
-                MessageBox.Show("Debe seleccionar una  butaca " + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {            
+                MessageBox.Show("Debe seleccionar una butaca ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
-
             }
+
             if (tdni.Text.Trim().Equals("") )
-
-          {
-                MessageBox.Show("Debe completar los datos personales del pasajero " + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {
+                MessageBox.Show("Debe completar los datos personales del pasajero ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
             }
 
             if (!validarPasajeroDoble())
             {
-                MessageBox.Show("El pasajero ya se encuentra con un pasaje asignado para la venta" + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El pasajero ya se encuentra con un pasaje asignado para la venta", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             if (!validarButacaDoble())
             {
-                MessageBox.Show("La butaca ya se encuentra con un pasaje asignado para la venta" + this.idCompra.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("La butaca ya se encuentra con un pasaje asignado para la venta", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+
+            if (!validarPasajeroRepetido())
+            {
+                MessageBox.Show("El pasajero ya se encuentra con un pasaje asignado para la venta", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
             return true;
+        }
+
+        private bool validarPasajeroRepetido()
+        {
+            int value = 0;
+            using (var con = DataAccess.GetConnection())
+            {
+                var cmd = new SqlCommand("[HAY_TABLA].[sp_validar_pasajero_mismo_viaje]", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@dni", SqlDbType.Int).Value = int.Parse(tdni.Text);
+                cmd.Parameters.Add("@id_viaje", SqlDbType.Int).Value = idViaje;
+
+                con.Open();
+                value = (int)cmd.ExecuteScalar();
+                con.Close();
+            }
+
+            if(value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
             private bool validarButacaDoble()
@@ -579,13 +599,11 @@ namespace AerolineaFrba.Compra
                 int cantPasajes = pasajes.Count;
                 for (int i = 0; i < cantPasajes; i++)
                 {
-
                     int butaca = pasajes.ElementAt(i).id_butaca;
                     if (this.idButaca == butaca)
                     {
                         return false;
                     }
-
                 }
                 return true;
             }
@@ -595,7 +613,6 @@ namespace AerolineaFrba.Compra
                 int cantPasajes = pasajes.Count;
                 for (int i = 0 ; i < cantPasajes; i++)
                 {
-
                   int dniB =pasajes.ElementAt(i).dni;
                   if (int.Parse(tdni.Text) == dniB)
                   {

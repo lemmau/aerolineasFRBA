@@ -2146,7 +2146,7 @@ GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_buscar_viaje]
 	@f_salida 			Datetime,
-	@fechaYHoraActual		Datetime,
+	@fechaYHoraActual	Datetime,
 	@idCiudadOrigen 	int = null,
 	@idCiudadDestino 	int = null
 AS
@@ -2381,3 +2381,22 @@ values (@dni , @nombre ,@apellido , @direccion , @telefono , @email , @fechaNac)
 
 end 
 go
+------
+CREATE PROCEDURE [HAY_TABLA].[sp_validar_pasajero_mismo_viaje]
+	@dni int,
+	@id_viaje int
+AS BEGIN
+	DECLARE @boolean int
+
+	SELECT @boolean = 1
+	FROM [HAY_TABLA].VIAJE V, [HAY_TABLA].PASAJE PA, [HAY_TABLA].PERSONA PE
+	WHERE PE.ID = PA.ID_CLIENTE
+	AND PE.DNI = @dni
+	AND PA.ID_VIAJE = V.ID
+	AND V.ID = @id_viaje
+
+	IF (@boolean = 1)
+		SELECT 1
+	ELSE
+		SELECT 0
+END
