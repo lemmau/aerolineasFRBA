@@ -902,7 +902,7 @@ BEGIN
 	IF @id_viaje is null 
 	BEGIN 
 		set @hayErr = 1
-		set @errores = 'No existe ningún Viaje sin registrar su llegada para la ciudades indicadas'
+		set @errores = 'No existe ningún Viaje SIN registrar su llegada para la ciudades indicadas'
 		RETURN
 	END
     	
@@ -2146,6 +2146,7 @@ GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_buscar_viaje]
 	@f_salida 			Datetime,
+	@fechaActual		Datetime,
 	@idCiudadOrigen 	int = null,
 	@idCiudadDestino 	int = null
 AS
@@ -2160,7 +2161,7 @@ BEGIN
 			inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
 	where 	
 			v.STATUS= 1 -- viajes activos
-			and v.FECHALLEGADA IS NULL -- aun no arribaron, claro
+			and v.FECHASALIDA > @fechaActual 
 			and YEAR(v.FECHASALIDA) = YEAR(@f_salida) 
 			and MONTH(V.FECHASALIDA) = MONTH(@f_salida) 
 			and DAY(V.FECHASALIDA)= DAY(@f_salida)

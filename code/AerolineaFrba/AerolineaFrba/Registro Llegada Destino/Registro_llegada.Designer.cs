@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbMatricula = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -37,6 +39,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.cbCiudadDestino = new System.Windows.Forms.ComboBox();
@@ -46,12 +49,9 @@
             this.h_llegada = new System.Windows.Forms.DateTimePicker();
             this.f_llegada = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
-            this.lbMatricula = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -74,6 +74,13 @@
             this.panel1.Size = new System.Drawing.Size(595, 336);
             this.panel1.TabIndex = 0;
             // 
+            // lbMatricula
+            // 
+            this.lbMatricula.Location = new System.Drawing.Point(92, 26);
+            this.lbMatricula.Name = "lbMatricula";
+            this.lbMatricula.Size = new System.Drawing.Size(108, 20);
+            this.lbMatricula.TabIndex = 1;
+            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(222, 26);
@@ -83,6 +90,16 @@
             this.button3.Text = "Buscar";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.panel2);
+            this.groupBox1.Location = new System.Drawing.Point(16, 72);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(567, 104);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Datos de la Aeronave";
             // 
             // panel2
             // 
@@ -149,6 +166,15 @@
             this.label6.Size = new System.Drawing.Size(42, 13);
             this.label6.TabIndex = 1;
             this.label6.Text = "Modelo";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(32, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Matricula";
             // 
             // button2
             // 
@@ -227,32 +253,6 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Fecha de Llegada";
             // 
-            // lbMatricula
-            // 
-            this.lbMatricula.Location = new System.Drawing.Point(92, 26);
-            this.lbMatricula.Name = "lbMatricula";
-            this.lbMatricula.Size = new System.Drawing.Size(108, 20);
-            this.lbMatricula.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(32, 29);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Matricula";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.panel2);
-            this.groupBox1.Location = new System.Drawing.Point(16, 72);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(567, 104);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Datos de la Aeronave";
-            // 
             // Registro_llegada
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,11 +263,12 @@
             this.Name = "Registro_llegada";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro de Llegada de Aeronave";
+            this.Load += new System.EventHandler(this.Registro_llegada_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

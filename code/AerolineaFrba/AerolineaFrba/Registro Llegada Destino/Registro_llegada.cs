@@ -41,7 +41,6 @@ namespace AerolineaFrba.Registro_Llegada_Destino
             {
                 return Text;
             }
-
         }
         public void cargarCombosCiudad()
         {
@@ -121,7 +120,6 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 
                     try
                     {
-
                         conn.Open();
                         cmd.ExecuteNonQuery();
 
@@ -163,12 +161,7 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 
             }
 
-
-
         }
-
-
-
 
 
         private Boolean validar()
@@ -190,9 +183,6 @@ namespace AerolineaFrba.Registro_Llegada_Destino
             {
                 return true;
             }
-
-
-
 
         }
 
@@ -234,13 +224,9 @@ namespace AerolineaFrba.Registro_Llegada_Destino
 
                 try
                 {
-
                     conn.Open();
                     SqlDataReader DR = cmd.ExecuteReader();
 
-                    
-
-                    
                         while (DR.Read())
                         {
 
@@ -281,10 +267,12 @@ namespace AerolineaFrba.Registro_Llegada_Destino
                     return;
                 }
 
-
-
-
             }
+        }
+
+        private void Registro_llegada_Load(object sender, EventArgs e)
+        {
+
         }
 
 

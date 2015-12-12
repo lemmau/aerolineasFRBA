@@ -168,6 +168,7 @@ namespace AerolineaFrba.Compra
 
                 if (!String.IsNullOrEmpty(f_salida.ToString()))
                     cmd.Parameters.Add("@f_salida", SqlDbType.NVarChar).Value = f_salida;
+                cmd.Parameters.Add("@fechaActual", SqlDbType.NVarChar).Value = f_act;
                 if (idCiudadOrigen != 0)
                     cmd.Parameters.Add("@idCiudadOrigen", SqlDbType.Int).Value = idCiudadOrigen;
                 if (idCiudadDestino != 0)
