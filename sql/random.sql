@@ -2152,7 +2152,9 @@ CREATE PROCEDURE [HAY_TABLA].[sp_get_buscar_viaje]
 AS
 BEGIN
 -- consulto por los viajes REALIZADOS en cierta fecha (sin importar el horario) pero controlo que horario del sistema no sea mayor (@fechaYHoraActual)
-	select 	v.ID, a.MATRICULA as 'Matricula', s.NOMBRE  as 'Tipo de servicio',
+	select 	v.ID, 
+			CONVERT(VARCHAR(8), v.FECHASALIDA, 108) as 'Horario Salida',
+			a.MATRICULA as 'Matricula', s.NOMBRE  as 'Tipo de servicio',
 			a.ID, [HAY_TABLA].fn_butacas_libre(a.ID, v.ID) as 'Butacas Libre',
 			[HAY_TABLA].fn_Kg_encomienda_libre(a.ID,v.ID) as 'Kg Encomienda libre'
 	from  

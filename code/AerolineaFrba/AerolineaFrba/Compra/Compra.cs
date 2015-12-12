@@ -193,11 +193,12 @@ namespace AerolineaFrba.Compra
                     viajes.Rows.Add();
 
                     viajes.Rows[i].Cells["id_viaje"].Value = DR[0].ToString();
-                    viajes.Rows[i].Cells["matricula"].Value = DR[1].ToString();
-                    viajes.Rows[i].Cells["servicio"].Value = DR[2].ToString();
-                    viajes.Rows[i].Cells["id_a"].Value = DR[3].ToString();
-                    viajes.Rows[i].Cells["butacas"].Value = DR[4].ToString();
-                    viajes.Rows[i].Cells["kg"].Value = DR[5].ToString();
+                    viajes.Rows[i].Cells["horarioDeSalida"].Value = DR[1].ToString();
+                    viajes.Rows[i].Cells["matricula"].Value = DR[2].ToString();
+                    viajes.Rows[i].Cells["servicio"].Value = DR[3].ToString();
+                    viajes.Rows[i].Cells["id_a"].Value = DR[4].ToString();
+                    viajes.Rows[i].Cells["butacas"].Value = DR[5].ToString();
+                    viajes.Rows[i].Cells["kg"].Value = DR[6].ToString();
                     i++;
                    
                 }
@@ -1092,8 +1093,6 @@ namespace AerolineaFrba.Compra
 
         private Boolean validacionesDatosPasajero()
         {
-
-
             if (tdni.Text.Trim().Equals(""))
             {
                 MessageBox.Show("Debe ingresar un DNI  ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1112,7 +1111,8 @@ namespace AerolineaFrba.Compra
             DateTime fechaNac = f_nac.Value;
             if (fechaNac < this.f_act)
             {
-                MessageBox.Show("La fecha del nacimiento debe ser menor a la actual ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("fec nac " + fechaNac + " fec actual " + this.f_act);
+                MessageBox.Show("La fecha de nacimiento debe ser menor a la actual ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

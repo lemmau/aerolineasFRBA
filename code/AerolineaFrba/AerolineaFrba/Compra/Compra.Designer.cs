@@ -41,6 +41,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.viajes = new System.Windows.Forms.DataGridView();
             this.id_viaje = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.horarioDeSalida = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.matricula = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.servicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id_a = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -154,6 +155,7 @@
             this.label30 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.label41 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -207,6 +209,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label41);
             this.panel2.Controls.Add(this.btLimpiar);
             this.panel2.Controls.Add(this.cantE);
             this.panel2.Controls.Add(this.label9);
@@ -229,7 +232,7 @@
             // 
             // btLimpiar
             // 
-            this.btLimpiar.Location = new System.Drawing.Point(288, 153);
+            this.btLimpiar.Location = new System.Drawing.Point(205, 173);
             this.btLimpiar.Name = "btLimpiar";
             this.btLimpiar.Size = new System.Drawing.Size(99, 23);
             this.btLimpiar.TabIndex = 3;
@@ -239,7 +242,7 @@
             // 
             // cantE
             // 
-            this.cantE.Location = new System.Drawing.Point(754, 298);
+            this.cantE.Location = new System.Drawing.Point(824, 306);
             this.cantE.Name = "cantE";
             this.cantE.Size = new System.Drawing.Size(25, 20);
             this.cantE.TabIndex = 16;
@@ -248,7 +251,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(625, 301);
+            this.label9.Location = new System.Drawing.Point(695, 309);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(111, 13);
             this.label9.TabIndex = 15;
@@ -264,7 +267,7 @@
             // 
             // cantPa
             // 
-            this.cantPa.Location = new System.Drawing.Point(754, 263);
+            this.cantPa.Location = new System.Drawing.Point(824, 271);
             this.cantPa.Name = "cantPa";
             this.cantPa.Size = new System.Drawing.Size(25, 20);
             this.cantPa.TabIndex = 13;
@@ -273,7 +276,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(625, 266);
+            this.label11.Location = new System.Drawing.Point(695, 274);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(84, 13);
             this.label11.TabIndex = 12;
@@ -285,6 +288,7 @@
             this.viajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.viajes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_viaje,
+            this.horarioDeSalida,
             this.matricula,
             this.servicio,
             this.id_a,
@@ -294,7 +298,7 @@
             this.viajes.Location = new System.Drawing.Point(23, 217);
             this.viajes.MultiSelect = false;
             this.viajes.Name = "viajes";
-            this.viajes.Size = new System.Drawing.Size(556, 174);
+            this.viajes.Size = new System.Drawing.Size(654, 174);
             this.viajes.TabIndex = 11;
             this.viajes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.viajes_CellContentClick_1);
             // 
@@ -303,6 +307,13 @@
             this.id_viaje.HeaderText = "Column1";
             this.id_viaje.Name = "id_viaje";
             this.id_viaje.Visible = false;
+            // 
+            // horarioDeSalida
+            // 
+            this.horarioDeSalida.HeaderText = "Horario de Salida";
+            this.horarioDeSalida.Name = "horarioDeSalida";
+            this.horarioDeSalida.ReadOnly = true;
+            this.horarioDeSalida.Width = 80;
             // 
             // matricula
             // 
@@ -343,7 +354,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(438, 153);
+            this.button2.Location = new System.Drawing.Point(355, 173);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(99, 23);
             this.button2.TabIndex = 10;
@@ -1396,6 +1407,16 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label41.Location = new System.Drawing.Point(348, 30);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(306, 91);
+            this.label41.TabIndex = 17;
+            this.label41.Text = resources.GetString("label41.Text");
+            // 
             // Compra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1477,13 +1498,6 @@
         private System.Windows.Forms.TabPage TabEncomienda;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id_viaje;
-        private System.Windows.Forms.DataGridViewTextBoxColumn matricula;
-        private System.Windows.Forms.DataGridViewTextBoxColumn servicio;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id_a;
-        private System.Windows.Forms.DataGridViewTextBoxColumn butacas;
-        private System.Windows.Forms.DataGridViewTextBoxColumn kg;
-        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipo;
         private System.Windows.Forms.DataGridViewTextBoxColumn importe;
@@ -1561,6 +1575,15 @@
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_viaje;
+        private System.Windows.Forms.DataGridViewTextBoxColumn horarioDeSalida;
+        private System.Windows.Forms.DataGridViewTextBoxColumn matricula;
+        private System.Windows.Forms.DataGridViewTextBoxColumn servicio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_a;
+        private System.Windows.Forms.DataGridViewTextBoxColumn butacas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn kg;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
+        private System.Windows.Forms.Label label41;
 
     }
 }
