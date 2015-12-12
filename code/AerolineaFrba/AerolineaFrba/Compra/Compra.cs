@@ -25,6 +25,7 @@ namespace AerolineaFrba.Compra
         Int32 idButaca = 0;
 
         DateTime f_act = Convert.ToDateTime(ConfigurationManager.AppSettings["FechaDelSistema"]);
+
         List<Encomienda> encomiendas = new List<Encomienda>();
 
         Persona persona = new Persona();
@@ -101,7 +102,6 @@ namespace AerolineaFrba.Compra
                public override string ToString()
                {
                    return "ENCOMIENDA";
-
                }
 
            }
@@ -161,14 +161,25 @@ namespace AerolineaFrba.Compra
 
         private void viajesBuscar(DateTime f_salida, Int32? idCiudadOrigen, Int32? idCiudadDestino)
         {
+            DateTime f_act = f_salida;
+            f_act = f_act.AddHours(-f_act.Hour);
+            f_act = f_act.AddMinutes(-f_act.Minute);
+            f_act = f_act.AddSeconds(-f_act.Second);
+
+            f_act = f_act.AddHours(DateTime.Now.Hour);
+            f_act = f_act.AddMinutes(DateTime.Now.Minute);
+            f_act = f_act.AddSeconds(DateTime.Now.Second);
+
+            // only for testing
+            //MessageBox.Show("fecha salida: " + f_salida.ToString("dd/MM/yyyy") + " y fecha del sistema: " + f_act);
            using (var con = DataAccess.GetConnection())
             {
-                var cmd = new SqlCommand("HAY_TABLA.sp_get_buscar_viaje", con);
+                var cmd = new SqlCommand("[HAY_TABLA].sp_get_buscar_viaje", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 if (!String.IsNullOrEmpty(f_salida.ToString()))
-                    cmd.Parameters.Add("@f_salida", SqlDbType.NVarChar).Value = f_salida;
-                cmd.Parameters.Add("@fechaActual", SqlDbType.NVarChar).Value = f_act;
+                    cmd.Parameters.Add("@f_salida", SqlDbType.DateTime).Value = f_salida;
+                cmd.Parameters.Add("@fechaYHoraActual", SqlDbType.DateTime).Value = f_act;
                 if (idCiudadOrigen != 0)
                     cmd.Parameters.Add("@idCiudadOrigen", SqlDbType.Int).Value = idCiudadOrigen;
                 if (idCiudadDestino != 0)
@@ -201,7 +212,6 @@ namespace AerolineaFrba.Compra
             if (validarComboCiudadOrigen() && validarComboCiudadDestino())
             {
                 DateTime salida = f_salida.Value;
-
                 int idCiudadOrigenSelec = ((ComboboxItem)ciudadOrigen.SelectedItem).Value;
                 int idCiudadDestinoSelec = ((ComboboxItem)ciudadDestino.SelectedItem).Value;
                 viajesBuscar(salida, idCiudadOrigenSelec, idCiudadDestinoSelec);
@@ -308,9 +318,6 @@ namespace AerolineaFrba.Compra
 
                 reader.Close();
             }
-
-
-
         }
 
 

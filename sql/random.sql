@@ -2146,11 +2146,12 @@ GO
 ------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_buscar_viaje]
 	@f_salida 			Datetime,
-	@fechaActual		Datetime,
+	@fechaYHoraActual		Datetime,
 	@idCiudadOrigen 	int = null,
 	@idCiudadDestino 	int = null
 AS
 BEGIN
+-- consulto por los viajes REALIZADOS en cierta fecha (sin importar el horario) pero controlo que horario del sistema no sea mayor (@fechaYHoraActual)
 	select 	v.ID, a.MATRICULA as 'Matricula', s.NOMBRE  as 'Tipo de servicio',
 			a.ID, [HAY_TABLA].fn_butacas_libre(a.ID, v.ID) as 'Butacas Libre',
 			[HAY_TABLA].fn_Kg_encomienda_libre(a.ID,v.ID) as 'Kg Encomienda libre'
@@ -2161,7 +2162,8 @@ BEGIN
 			inner join HAY_TABLA.SERVICIO s on  s.ID = a.ID_SERVICIO
 	where 	
 			v.STATUS= 1 -- viajes activos
-			and DATEADD(HH,-3, @f_salida) >= @fechaActual -- la venta puede hacerse hasta 3 hs antes de que parta la aeronave (fechasalida)
+			and v.FECHASALIDA >= @fechaYHoraActual
+			and DATEADD(HH, -3, v.FECHASALIDA) >= @fechaYHoraActual -- la venta puede hacerse hasta 3 hs antes de que parta la aeronave (fechasalida)
 			and YEAR(v.FECHASALIDA) = YEAR(@f_salida) 
 			and MONTH(V.FECHASALIDA) = MONTH(@f_salida) 
 			and DAY(V.FECHASALIDA)= DAY(@f_salida)

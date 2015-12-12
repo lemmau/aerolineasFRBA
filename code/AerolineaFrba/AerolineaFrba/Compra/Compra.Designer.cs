@@ -56,6 +56,12 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.tabPasaje = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
+            this.dniSele = new System.Windows.Forms.TextBox();
+            this.label40 = new System.Windows.Forms.Label();
+            this.butacaSelect = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.pagarPasaje = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
@@ -90,6 +96,21 @@
             this.importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.selec = new System.Windows.Forms.DataGridViewImageColumn();
             this.TabEncomienda = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.importeEncomienda = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.dataEncomienda = new System.Windows.Forms.DataGridView();
+            this.kgE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.importeE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.kgAenviar = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.Eimporte = new System.Windows.Forms.TextBox();
+            this.EcantKg = new System.Windows.Forms.TextBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cantEncomiendaSelec = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label33 = new System.Windows.Forms.Label();
@@ -107,6 +128,7 @@
             this.tnumero = new System.Windows.Forms.TextBox();
             this.tcodigo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button13 = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
             this.registrarC = new System.Windows.Forms.Button();
             this.label36 = new System.Windows.Forms.Label();
@@ -132,28 +154,6 @@
             this.label30 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.label18 = new System.Windows.Forms.Label();
-            this.cantEncomiendaSelec = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.EcantKg = new System.Windows.Forms.TextBox();
-            this.Eimporte = new System.Windows.Forms.TextBox();
-            this.kgAenviar = new System.Windows.Forms.TextBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.dataEncomienda = new System.Windows.Forms.DataGridView();
-            this.importeEncomienda = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
-            this.pagarPasaje = new System.Windows.Forms.Button();
-            this.kgE = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.importeE = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label39 = new System.Windows.Forms.Label();
-            this.butacaSelect = new System.Windows.Forms.TextBox();
-            this.dniSele = new System.Windows.Forms.TextBox();
-            this.label40 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -164,11 +164,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.DataPasaje)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.butacasLibres)).BeginInit();
             this.TabEncomienda.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataEncomienda)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataEncomienda)).BeginInit();
             this.SuspendLayout();
             // 
             // TabControl
@@ -434,6 +434,63 @@
             this.tabPasaje.TabIndex = 1;
             this.tabPasaje.Text = "Pasaje";
             this.tabPasaje.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(483, 388);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 20;
+            this.button6.Text = "Cancelar";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // dniSele
+            // 
+            this.dniSele.Location = new System.Drawing.Point(174, 398);
+            this.dniSele.Name = "dniSele";
+            this.dniSele.ReadOnly = true;
+            this.dniSele.Size = new System.Drawing.Size(116, 20);
+            this.dniSele.TabIndex = 19;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.ForeColor = System.Drawing.Color.Blue;
+            this.label40.Location = new System.Drawing.Point(3, 398);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(136, 13);
+            this.label40.TabIndex = 18;
+            this.label40.Text = "DNI Pasajero seleccionado";
+            // 
+            // butacaSelect
+            // 
+            this.butacaSelect.Location = new System.Drawing.Point(151, 372);
+            this.butacaSelect.Name = "butacaSelect";
+            this.butacaSelect.ReadOnly = true;
+            this.butacaSelect.Size = new System.Drawing.Size(43, 20);
+            this.butacaSelect.TabIndex = 17;
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.ForeColor = System.Drawing.Color.Blue;
+            this.label39.Location = new System.Drawing.Point(0, 375);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(107, 13);
+            this.label39.TabIndex = 16;
+            this.label39.Text = "Butaca seleccionada";
+            // 
+            // pagarPasaje
+            // 
+            this.pagarPasaje.Location = new System.Drawing.Point(704, 566);
+            this.pagarPasaje.Name = "pagarPasaje";
+            this.pagarPasaje.Size = new System.Drawing.Size(97, 47);
+            this.pagarPasaje.TabIndex = 15;
+            this.pagarPasaje.Text = "Pagar ->";
+            this.pagarPasaje.UseVisualStyleBackColor = true;
+            this.pagarPasaje.Visible = false;
+            this.pagarPasaje.Click += new System.EventHandler(this.pagarPasaje_Click);
             // 
             // groupBox2
             // 
@@ -758,6 +815,137 @@
             this.TabEncomienda.Text = "Encomienda";
             this.TabEncomienda.UseVisualStyleBackColor = true;
             // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(402, 161);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 12;
+            this.button11.Text = "Agregar";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(570, 390);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(97, 47);
+            this.button12.TabIndex = 11;
+            this.button12.Text = "Siguiente ->";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Visible = false;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // importeEncomienda
+            // 
+            this.importeEncomienda.Location = new System.Drawing.Point(421, 301);
+            this.importeEncomienda.Name = "importeEncomienda";
+            this.importeEncomienda.ReadOnly = true;
+            this.importeEncomienda.Size = new System.Drawing.Size(100, 20);
+            this.importeEncomienda.TabIndex = 10;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(327, 304);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(78, 13);
+            this.label38.TabIndex = 9;
+            this.label38.Text = "Importe Total  :";
+            // 
+            // dataEncomienda
+            // 
+            this.dataEncomienda.AllowUserToAddRows = false;
+            this.dataEncomienda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataEncomienda.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.kgE,
+            this.importeE});
+            this.dataEncomienda.Location = new System.Drawing.Point(22, 221);
+            this.dataEncomienda.Name = "dataEncomienda";
+            this.dataEncomienda.RowHeadersVisible = false;
+            this.dataEncomienda.ShowRowErrors = false;
+            this.dataEncomienda.Size = new System.Drawing.Size(203, 150);
+            this.dataEncomienda.TabIndex = 8;
+            // 
+            // kgE
+            // 
+            this.kgE.HeaderText = "KG";
+            this.kgE.Name = "kgE";
+            this.kgE.ReadOnly = true;
+            // 
+            // importeE
+            // 
+            this.importeE.HeaderText = "Costo";
+            this.importeE.Name = "importeE";
+            // 
+            // kgAenviar
+            // 
+            this.kgAenviar.Location = new System.Drawing.Point(162, 149);
+            this.kgAenviar.Name = "kgAenviar";
+            this.kgAenviar.Size = new System.Drawing.Size(100, 20);
+            this.kgAenviar.TabIndex = 7;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(26, 152);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(122, 13);
+            this.label37.TabIndex = 6;
+            this.label37.Text = "Cantidad de Kg a Enviar";
+            // 
+            // Eimporte
+            // 
+            this.Eimporte.Location = new System.Drawing.Point(421, 90);
+            this.Eimporte.Name = "Eimporte";
+            this.Eimporte.ReadOnly = true;
+            this.Eimporte.Size = new System.Drawing.Size(100, 20);
+            this.Eimporte.TabIndex = 5;
+            // 
+            // EcantKg
+            // 
+            this.EcantKg.Location = new System.Drawing.Point(162, 90);
+            this.EcantKg.Name = "EcantKg";
+            this.EcantKg.ReadOnly = true;
+            this.EcantKg.Size = new System.Drawing.Size(100, 20);
+            this.EcantKg.TabIndex = 4;
+            this.EcantKg.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(26, 93);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(130, 13);
+            this.label34.TabIndex = 3;
+            this.label34.Text = "Cantidad de Kg disponible";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(318, 93);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(81, 13);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "Importe por KG ";
+            // 
+            // cantEncomiendaSelec
+            // 
+            this.cantEncomiendaSelec.Location = new System.Drawing.Point(225, 21);
+            this.cantEncomiendaSelec.Name = "cantEncomiendaSelec";
+            this.cantEncomiendaSelec.ReadOnly = true;
+            this.cantEncomiendaSelec.Size = new System.Drawing.Size(27, 20);
+            this.cantEncomiendaSelec.TabIndex = 1;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(26, 21);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(166, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Cantidad de encomienda a enviar";
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.groupBox3);
@@ -970,6 +1158,16 @@
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Comprador";
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(326, 231);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(75, 23);
+            this.button13.TabIndex = 16;
+            this.button13.Text = "Cancelar";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // panel8
             // 
@@ -1198,204 +1396,6 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(26, 21);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(166, 13);
-            this.label18.TabIndex = 0;
-            this.label18.Text = "Cantidad de encomienda a enviar";
-            // 
-            // cantEncomiendaSelec
-            // 
-            this.cantEncomiendaSelec.Location = new System.Drawing.Point(225, 21);
-            this.cantEncomiendaSelec.Name = "cantEncomiendaSelec";
-            this.cantEncomiendaSelec.ReadOnly = true;
-            this.cantEncomiendaSelec.Size = new System.Drawing.Size(27, 20);
-            this.cantEncomiendaSelec.TabIndex = 1;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(318, 93);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(81, 13);
-            this.label19.TabIndex = 2;
-            this.label19.Text = "Importe por KG ";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(26, 93);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(130, 13);
-            this.label34.TabIndex = 3;
-            this.label34.Text = "Cantidad de Kg disponible";
-            // 
-            // EcantKg
-            // 
-            this.EcantKg.Location = new System.Drawing.Point(162, 90);
-            this.EcantKg.Name = "EcantKg";
-            this.EcantKg.ReadOnly = true;
-            this.EcantKg.Size = new System.Drawing.Size(100, 20);
-            this.EcantKg.TabIndex = 4;
-            this.EcantKg.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // Eimporte
-            // 
-            this.Eimporte.Location = new System.Drawing.Point(421, 90);
-            this.Eimporte.Name = "Eimporte";
-            this.Eimporte.ReadOnly = true;
-            this.Eimporte.Size = new System.Drawing.Size(100, 20);
-            this.Eimporte.TabIndex = 5;
-            // 
-            // kgAenviar
-            // 
-            this.kgAenviar.Location = new System.Drawing.Point(162, 149);
-            this.kgAenviar.Name = "kgAenviar";
-            this.kgAenviar.Size = new System.Drawing.Size(100, 20);
-            this.kgAenviar.TabIndex = 7;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(26, 152);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(122, 13);
-            this.label37.TabIndex = 6;
-            this.label37.Text = "Cantidad de Kg a Enviar";
-            // 
-            // dataEncomienda
-            // 
-            this.dataEncomienda.AllowUserToAddRows = false;
-            this.dataEncomienda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataEncomienda.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.kgE,
-            this.importeE});
-            this.dataEncomienda.Location = new System.Drawing.Point(22, 221);
-            this.dataEncomienda.Name = "dataEncomienda";
-            this.dataEncomienda.RowHeadersVisible = false;
-            this.dataEncomienda.ShowRowErrors = false;
-            this.dataEncomienda.Size = new System.Drawing.Size(203, 150);
-            this.dataEncomienda.TabIndex = 8;
-            // 
-            // importeEncomienda
-            // 
-            this.importeEncomienda.Location = new System.Drawing.Point(421, 301);
-            this.importeEncomienda.Name = "importeEncomienda";
-            this.importeEncomienda.ReadOnly = true;
-            this.importeEncomienda.Size = new System.Drawing.Size(100, 20);
-            this.importeEncomienda.TabIndex = 10;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(327, 304);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(78, 13);
-            this.label38.TabIndex = 9;
-            this.label38.Text = "Importe Total  :";
-            // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(570, 390);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(97, 47);
-            this.button12.TabIndex = 11;
-            this.button12.Text = "Siguiente ->";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Visible = false;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(402, 161);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(75, 23);
-            this.button11.TabIndex = 12;
-            this.button11.Text = "Agregar";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
-            // pagarPasaje
-            // 
-            this.pagarPasaje.Location = new System.Drawing.Point(704, 566);
-            this.pagarPasaje.Name = "pagarPasaje";
-            this.pagarPasaje.Size = new System.Drawing.Size(97, 47);
-            this.pagarPasaje.TabIndex = 15;
-            this.pagarPasaje.Text = "Pagar ->";
-            this.pagarPasaje.UseVisualStyleBackColor = true;
-            this.pagarPasaje.Visible = false;
-            this.pagarPasaje.Click += new System.EventHandler(this.pagarPasaje_Click);
-            // 
-            // kgE
-            // 
-            this.kgE.HeaderText = "KG";
-            this.kgE.Name = "kgE";
-            this.kgE.ReadOnly = true;
-            // 
-            // importeE
-            // 
-            this.importeE.HeaderText = "Costo";
-            this.importeE.Name = "importeE";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.ForeColor = System.Drawing.Color.Blue;
-            this.label39.Location = new System.Drawing.Point(0, 375);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(107, 13);
-            this.label39.TabIndex = 16;
-            this.label39.Text = "Butaca seleccionada";
-            // 
-            // butacaSelect
-            // 
-            this.butacaSelect.Location = new System.Drawing.Point(151, 372);
-            this.butacaSelect.Name = "butacaSelect";
-            this.butacaSelect.ReadOnly = true;
-            this.butacaSelect.Size = new System.Drawing.Size(43, 20);
-            this.butacaSelect.TabIndex = 17;
-            // 
-            // dniSele
-            // 
-            this.dniSele.Location = new System.Drawing.Point(174, 398);
-            this.dniSele.Name = "dniSele";
-            this.dniSele.ReadOnly = true;
-            this.dniSele.Size = new System.Drawing.Size(116, 20);
-            this.dniSele.TabIndex = 19;
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.ForeColor = System.Drawing.Color.Blue;
-            this.label40.Location = new System.Drawing.Point(3, 398);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(136, 13);
-            this.label40.TabIndex = 18;
-            this.label40.Text = "DNI Pasajero seleccionado";
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(483, 388);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "Cancelar";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(326, 231);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(75, 23);
-            this.button13.TabIndex = 16;
-            this.button13.Text = "Cancelar";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
-            // 
             // Compra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1421,6 +1421,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.butacasLibres)).EndInit();
             this.TabEncomienda.ResumeLayout(false);
             this.TabEncomienda.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataEncomienda)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1429,7 +1430,6 @@
             this.groupBox1.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataEncomienda)).EndInit();
             this.ResumeLayout(false);
 
         }
