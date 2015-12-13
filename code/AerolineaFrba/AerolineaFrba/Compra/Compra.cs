@@ -51,6 +51,7 @@ namespace AerolineaFrba.Compra
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            button8.Visible = false;
             CargarCiudad();
         }
 
@@ -1217,6 +1218,15 @@ namespace AerolineaFrba.Compra
 
         private void pagarPasaje_Click(object sender, EventArgs e)
         {
+            if (instanciaSuperior.currentRolId == 1)
+            {
+                button8.Visible = true;
+            }
+            else
+            {
+                button8.Visible = false;
+            }
+
             pasajesI.Text = importeTotal.ToString();
 
             total.Text = importeTotalFactura(pasajesI, encomiendaI);
