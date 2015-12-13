@@ -2142,6 +2142,38 @@ BEGIN
 END 
 GO
 ------
+create procedure [HAY_TABLA].[sp_kg_libre_viaje]
+	@idviaje int ,
+	@idAeronave int
+AS 
+BEGIN
+	DECLARE @cantidadKgOcupadas int,
+			@cantidadKgTotal int,
+			@cantidadKgLibre int,
+			@precioKG numeric(18,2)
+		
+	SET @cantidadKgOcupadas = (	SELECT SUM(PESO) FROM HAY_TABLA.ENCOMIENDA	WHERE ID_VIAJE = @idviaje)
+
+	IF (@cantidadKgOcupadas IS NULL)
+	BEGIN
+		SET @cantidadKgOcupadas = 0
+	END 
+
+	SET @cantidadKgTotal = (select ESPACIOKGENCOMIENDAS from HAY_TABLA.AERONAVE where ID = @idAeronave)
+	SET @cantidadKgLibre = @cantidadKgTotal - @cantidadKgOcupadas
+
+	SET @precioKG = (select ru.PRECIOBASEPASAJE 
+					from HAY_TABLA.VIAJE vi 
+					inner join HAY_TABLA.AERONAVE a  on vi.ID_AERONAVE = a.ID 
+					inner join HAY_TABLA.RUTA ru on vi.ID_RUTA = ru.ID
+					where  a.ID = @idAeronave 
+					and vi.ID = @idviaje)
+
+	select @cantidadKgLibre, @precioKG
+
+END 
+GO 
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_buscar_viaje]
 	@f_salida 			Datetime,
 	@fechaYHoraActual	Datetime,
@@ -2265,30 +2297,6 @@ BEGIN
 END
 GO
 ------
-create procedure [HAY_TABLA].[sp_kg_libre_viaje]
-@idviaje int ,
-@idAeronave int
-AS 
-BEGIN
-declare @kgAeronave int
-declare @precioKG decimal 
-
-set @kgAeronave = (select ae.ESPACIOKGENCOMIENDAS from HAY_TABLA.AERONAVE ae where ae.ID = @idAeronave)
-
-set @precioKG =( select ru.PRECIOBASEPASAJE from HAY_TABLA.VIAJE vi inner join HAY_TABLA.AERONAVE a  on vi.ID_AERONAVE = a.ID 
-inner join HAY_TABLA.RUTA ru on vi.ID_RUTA = ru.ID
-where  a.ID = @idAeronave and vi.ID = @idviaje)
-
-select isnull (@kgAeronave - sum(PESO) ,0) , @precioKG from 
- HAY_TABLA.ENCOMIENDA e 
-
-where e.ID_VIAJE = @idviaje
-
-
-END 
-
-GO 
---------
 create procedure [HAY_TABLA].[sp_tipo_tarjeta] 
 
 as 
