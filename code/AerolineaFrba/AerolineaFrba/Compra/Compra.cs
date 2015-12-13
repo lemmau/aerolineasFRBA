@@ -46,7 +46,7 @@ namespace AerolineaFrba.Compra
             f_salida.Value = f_act;
 
             instanciaSuperior = instancia;
-            MessageBox.Show("rol: " + instancia.currentRolId);
+            //MessageBox.Show("debug: " + instancia.currentRolId);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -754,9 +754,18 @@ namespace AerolineaFrba.Compra
 
         private void button10_Click(object sender, EventArgs e)
         {
+            Int32 numeroEntero;
+            
             if (String.IsNullOrEmpty(tdniComprador.Text))
             {
                 MessageBox.Show("El campo 'Nro de Documento' se encuentra vacio.");
+                return;
+            }
+                        
+            if (!String.IsNullOrEmpty(tdniComprador.Text)
+                && !Int32.TryParse(tdniComprador.Text, out numeroEntero))
+            {
+                MessageBox.Show("Los campos deben ser de tipo numérico y sin puntos.");
                 return;
             }
 
@@ -806,9 +815,18 @@ namespace AerolineaFrba.Compra
 
         private void button7_Click(object sender, EventArgs e)
         {
+            Int32 numeroEntero;
+
             if (String.IsNullOrEmpty(tdniComprador.Text))
             {
                 MessageBox.Show("El campo 'Nro de Documento' del comprador se encuentra vacio.");
+                return;
+            }
+
+            if (!String.IsNullOrEmpty(tdniComprador.Text) 
+                && !Int32.TryParse(tdniComprador.Text, out numeroEntero))
+            {
+                MessageBox.Show("Los campos deben ser de tipo numérico y sin puntos.");
                 return;
             }
             

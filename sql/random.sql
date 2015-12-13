@@ -2342,15 +2342,21 @@ begin
 		values 
 		(@idTipoTarjeta , @idComprador , @numero  , @clave , @fechaV)
 
-		select ta.ID from HAY_TABLA.TARJETA ta where ta.ID_COMPRADOR = @idComprador 
-		and ta.ID_TIPOTARJETA = @idTipoTarjeta and ta.NUMERO = @numero
+		select ID from HAY_TABLA.TARJETA where ID_COMPRADOR = @idComprador 
+		and ID_TIPOTARJETA = @idTipoTarjeta and NUMERO = @numero
 	end 
 	else 
 	begin
-		update HAY_TABLA.TARJETA set CLAVE = @clave where ID_COMPRADOR = @idComprador and NUMERO = @numero
-		update HAY_TABLA.TARJETA set FECHAVTO =@fechaV   where ID_COMPRADOR = @idComprador and NUMERO = @numero
-		select ta.ID from HAY_TABLA.TARJETA ta where ta.ID_COMPRADOR = @idComprador 
-		and ta.ID_TIPOTARJETA = @idTarjeta and ta.NUMERO = @numero
+		update HAY_TABLA.TARJETA 
+		set CLAVE = @clave 
+		where ID_COMPRADOR = @idComprador and NUMERO = @numero
+		
+		update HAY_TABLA.TARJETA 
+		set FECHAVTO = @fechaV 
+		where ID_COMPRADOR = @idComprador and NUMERO = @numero
+		
+		select ID from HAY_TABLA.TARJETA where ID_COMPRADOR = @idComprador 
+		and ID_TIPOTARJETA = @idTarjeta and NUMERO = @numero
 	end 
 end 
 go 
