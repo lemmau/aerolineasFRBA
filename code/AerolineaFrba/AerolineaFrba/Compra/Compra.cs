@@ -1157,7 +1157,7 @@ namespace AerolineaFrba.Compra
                 return false;
             }
             DateTime fechaNac = f_nac.Value;
-            if (fechaNac < this.f_act)
+            if (this.f_act < fechaNac)
             {
                 //MessageBox.Show("fec nac " + fechaNac + " fec actual " + this.f_act);
                 MessageBox.Show("La fecha de nacimiento debe ser menor a la actual ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1184,7 +1184,7 @@ namespace AerolineaFrba.Compra
                 return false;
             }
             DateTime fechaNac = f_nacC.Value;
-            if (fechaNac < this.f_act)
+            if (this.f_act <fechaNac )
             {
                 MessageBox.Show("La fecha del nacimiento debe ser menor a la actual ", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
