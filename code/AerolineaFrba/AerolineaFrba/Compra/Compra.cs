@@ -843,7 +843,7 @@ namespace AerolineaFrba.Compra
                     }
                     catch (Exception error)
                     {
-                        MessageBox.Show("Error en al guardar la encomienda  " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Error al guardar la encomienda  " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         con.Close();
                         return;
                     }
@@ -1077,14 +1077,14 @@ namespace AerolineaFrba.Compra
                         while (reader.Read())
                         {
                             this.idTarjeta = reader.GetInt32(0);
-                            MessageBox.Show("Error en al guardar los datos de la tarjeta  ", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+//                            MessageBox.Show("Error en al guardar los datos de la tarjeta  ", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         reader.Close();
                     }
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Error en al guardar los datos de la tarjeta  " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error al guardar los datos de la tarjeta " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     con.Close();
                     return;
                 }
@@ -1143,13 +1143,13 @@ namespace AerolineaFrba.Compra
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Error en al guardar los Datos Persona  " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("Error al guardar los Datos de la persona " + error.ToString(), null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     con.Close();
                     return;
                 }
                 con.Close();
 
-                MessageBox.Show("Se registrado  los datos correctamente  ", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Se han registrado los datos correctamente ", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 button4.Visible = false;
                 tdni.ReadOnly = true;
                 datosPasajero(true);
