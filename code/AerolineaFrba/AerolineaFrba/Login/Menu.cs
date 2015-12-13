@@ -145,7 +145,7 @@ namespace AerolineaFrba.Login
 
         private void compraDePasajeEncomiendaToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Compra.Compra compra = new Compra.Compra();
+            Compra.Compra compra = new Compra.Compra(SharedData.Instance());
             compra.Show();
         }
 

@@ -9,11 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Configuracion;
 
 namespace AerolineaFrba.Compra
 {
     public partial class Compra : Form
     {
+        SharedData instanciaSuperior;
+
         Int32 idViaje = 0;
         Int32 idAeronave = 0;
 //Pasaje
@@ -37,10 +40,13 @@ namespace AerolineaFrba.Compra
   //encomienda
         decimal importeEnT = 0;
 
-        public Compra()
+        public Compra(SharedData instancia)
         {
             InitializeComponent();
             f_salida.Value = f_act;
+
+            instanciaSuperior = instancia;
+            MessageBox.Show("rol: " + instancia.currentRolId);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -396,9 +402,13 @@ namespace AerolineaFrba.Compra
                     cantRegistros = (int)cmd2.ExecuteScalar();
                     con2.Close();
 
-                    if (cantRegistros >= 2)
+                    if (cantRegistros >= 2 && instanciaSuperior.currentRolId == 1)
                     {
-                        MessageBox.Show("Advertencia:\nExiste más de 1 persona con el mismo DNI. Se aconseja: \n1) revisar el ABM de Personas (si lo hubiese) ó \n2) consultar con el DBA a cargo ");
+                        MessageBox.Show("Advertencia (para el Adminisitrativo):\nExiste más de 1 persona con el mismo DNI. Se aconseja: \n1) revisar el ABM de Personas (si lo hubiese) ó \n2) consultar con el DBA a cargo ");
+                    }
+                    else if (cantRegistros >= 2 && instanciaSuperior.currentRolId == 2)
+                    {
+                        MessageBox.Show("Advertencia (para el Cliente):\nExiste más de 1 persona con el mismo DNI.");
                     }
 
                 }

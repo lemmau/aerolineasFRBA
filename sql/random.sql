@@ -2362,20 +2362,20 @@ end
 go 
 -------------
 create procedure [HAY_TABLA].[sp_alta_persona] 
-@dni int , 
-@nombre varchar(255),
-@apellido varchar(255),
-@direccion varchar(255),
-@telefono varchar(255),
-@email varchar(255),
-@fechaNac datetime 
-
+	@dni int , 
+	@nombre varchar(255),
+	@apellido varchar(255),
+	@direccion varchar(255),
+	@telefono varchar(255),
+	@email varchar(255),
+	@fechaNac datetime 
 as 
-
 begin 
 
-insert into HAY_TABLA.PERSONA (DNI,NOMBRE , APELLIDO , DIRECCION , TELEFONO , MAIL , FECHANACIMIENTO)
-values (@dni , @nombre ,@apellido , @direccion , @telefono , @email , @fechaNac)
+	insert into HAY_TABLA.PERSONA 
+	(DNI, NOMBRE, APELLIDO, DIRECCION, TELEFONO, MAIL, FECHANACIMIENTO)
+	values 
+	(@dni , @nombre ,@apellido , @direccion , @telefono , @email , @fechaNac)
 
 end 
 go
