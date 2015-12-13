@@ -310,6 +310,7 @@
             this.viajes.Location = new System.Drawing.Point(23, 217);
             this.viajes.MultiSelect = false;
             this.viajes.Name = "viajes";
+            this.viajes.RowHeadersWidth = 4;
             this.viajes.Size = new System.Drawing.Size(654, 174);
             this.viajes.TabIndex = 11;
             this.viajes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.viajes_CellContentClick_1);
@@ -740,6 +741,7 @@
             this.DataPasaje.Location = new System.Drawing.Point(6, 427);
             this.DataPasaje.Name = "DataPasaje";
             this.DataPasaje.RowHeadersVisible = false;
+            this.DataPasaje.RowHeadersWidth = 4;
             this.DataPasaje.Size = new System.Drawing.Size(316, 159);
             this.DataPasaje.TabIndex = 3;
             this.DataPasaje.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataPasaje_CellContentClick);
@@ -785,6 +787,7 @@
             this.selec});
             this.butacasLibres.Location = new System.Drawing.Point(3, 53);
             this.butacasLibres.Name = "butacasLibres";
+            this.butacasLibres.RowHeadersWidth = 10;
             this.butacasLibres.Size = new System.Drawing.Size(395, 307);
             this.butacasLibres.TabIndex = 0;
             this.butacasLibres.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.butacasLibres_CellContentClick);
@@ -883,6 +886,7 @@
             this.importeEncomienda.ReadOnly = true;
             this.importeEncomienda.Size = new System.Drawing.Size(100, 20);
             this.importeEncomienda.TabIndex = 10;
+            this.importeEncomienda.Text = "0";
             // 
             // label38
             // 
@@ -941,6 +945,7 @@
             this.Eimporte.ReadOnly = true;
             this.Eimporte.Size = new System.Drawing.Size(100, 20);
             this.Eimporte.TabIndex = 5;
+            this.Eimporte.Text = "0";
             // 
             // EcantKg
             // 
@@ -949,6 +954,7 @@
             this.EcantKg.ReadOnly = true;
             this.EcantKg.Size = new System.Drawing.Size(100, 20);
             this.EcantKg.TabIndex = 4;
+            this.EcantKg.Text = "0";
             this.EcantKg.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label34
@@ -976,6 +982,7 @@
             this.cantEncomiendaSelec.ReadOnly = true;
             this.cantEncomiendaSelec.Size = new System.Drawing.Size(27, 20);
             this.cantEncomiendaSelec.TabIndex = 1;
+            this.cantEncomiendaSelec.Text = "0";
             // 
             // label18
             // 

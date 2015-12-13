@@ -254,6 +254,15 @@ namespace AerolineaFrba.Compra
                 //{
                 //    MessageBox.Show("Ingrese la cantidad de Pasaje y/o Encomienda a comprar", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //}
+                if (cantPa.Text.Trim().Equals(""))
+                {
+                    cantPa.Text = "0";
+                }
+
+                if (cantE.Text.Trim().Equals(""))
+                {
+                    cantE.Text = "0";
+                }
 
                 int cantPasaje = int.Parse(cantPa.Text);
                 int cantEncomienda = int.Parse(cantE.Text);
@@ -506,7 +515,16 @@ namespace AerolineaFrba.Compra
         private void button5_Click(object sender, EventArgs e)
         {
          if (validarAddPasaje())
-            {
+             {
+                 if (cantE.Text.Trim().Equals(""))
+                 {
+                     cantE.Text = "0";
+                 }
+                 if (cantPa.Text.Trim().Equals(""))
+                 {
+                     cantPa.Text = "0";
+                 }
+                 
                 int cantEncomienda = int.Parse(cantE.Text);
                 int cantidadPasajeSel = int.Parse(cantPa.Text);
 
@@ -1236,8 +1254,18 @@ namespace AerolineaFrba.Compra
         private void button11_Click(object sender, EventArgs e)
         {
             if (validarAddEncomienda())
+
             {
+                if (cantE.Text.Trim().Equals(""))
+                {
+                    cantE.Text = "0";
+                }
+
                 int cantEncomienda = int.Parse(cantE.Text);
+                if (kgAenviar.Text.Trim().Equals(""))
+                {
+                    kgAenviar.Text = "0";
+                }
 
                 Encomienda encomienda = new Encomienda();
                 encomienda.peso = int.Parse(kgAenviar.Text);
@@ -1272,6 +1300,11 @@ namespace AerolineaFrba.Compra
 
         private bool validarAddEncomienda()
         {
+            if (kgAenviar.Text == "")
+            {
+                kgAenviar.Text = "0";
+            }
+
             int kgDisponible = int.Parse(EcantKg.Text);
             int KAenviar = int.Parse(kgAenviar.Text);
             int kgAvalidar = kgDisponible - KAenviar;
