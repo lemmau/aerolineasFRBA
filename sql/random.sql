@@ -1,27 +1,3 @@
-/*
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_1]
-	@desde DATETIME,
-	@hasta DATETIME
-AS
-BEGIN	
-	SELECT 	TOP 5 
-			CD.NOMBRE, COUNT(*)
-	FROM 	gd_esquema.Maestra, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD, [HAY_TABLA].RUTA R, [HAY_TABLA].PASAJE_ENCOMIENDA P_E, [HAY_TABLA].COMPRA C, [HAY_TABLA].VIAJE V
-	WHERE 	
-			P_E.ID_COMPRA = C.ID AND P_E.ID_BUTACA_PASAJE IS NOT NULL -- porque pide por "pasajes" y NO "encomiendas"
-			AND C.ID_VIAJE = V.ID AND V.STATUS = 1 
-			AND C.FECHA BETWEEN @desde AND @hasta
-			AND V.ID_RUTA = R.ID AND R.ID_CDADDESTINO = CD.ID 
-			-- AND R.ID_CDADORIGEN = CO.ID
-	GROUP BY 
-			CD.NOMBRE
-	ORDER BY 
-			2 ASC
-END
-GO
-
------ */
-
 CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_1]
 	@desde DATETIME,
 	@hasta DATETIME
@@ -42,40 +18,8 @@ inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE
 where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta) )
 group by ci.NOMBRE order by COUNT(p.ID)  desc
 
-
 END
-
 GO
-----------
-
-
-
-/*
-CREATE PROCEDURE [HAY_TABLA].[sp_listado_2]
-	@desde DATETIME,
-	@hasta DATETIME
-AS
-BEGIN	
-	SELECT 	TOP 5 
-			CD.NOMBRE, COUNT(*)
-	FROM 	gd_esquema.Maestra, [HAY_TABLA].CIUDAD CO, [HAY_TABLA].CIUDAD CD, [HAY_TABLA].RUTA R, [HAY_TABLA].PASAJE_ENCOMIENDA P_E, [HAY_TABLA].COMPRA C, [HAY_TABLA].VIAJE V
-	WHERE 	
-			P_E.ID_COMPRA = C.ID AND P_E.ID_BUTACA_PASAJE IS NOT NULL -- porque pide por "pasajes" y NO "encomiendas"
-			AND C.ID_VIAJE = V.ID AND V.STATUS = 1 
-			AND C.FECHA BETWEEN @desde AND @hasta
-			AND V.ID_RUTA = R.ID AND R.ID_CDADDESTINO = CD.ID 
-			-- AND R.ID_CDADORIGEN = CO.ID
-	GROUP BY 
-			CD.NOMBRE
-
-
-	SELECT 	TOP 5 
-			A.MATRICULA
-			GROUP BY 
-			HAVING COUNT(*)
-
-END
-GO*/
 ---------------------
 CREATE FUNCTION  [HAY_TABLA].[fn_cant_butacas] (@idAeronave  int)
 		RETURNS  int
@@ -139,16 +83,13 @@ join HAY_TABLA.VIAJE v on v.ID = en.ID_VIAJE
 where  YEAR(v.FECHALLEGADA)= YEAR (@desde) and MONTH (@desde) between MONTH (@desde) and MONTH(@hasta)
 and en.ID not in (select ie.ID_ENCOMIENDA from HAY_TABLA.ITEMSDEVOLUCIONENCOMIENDA ie)
 group by C.ID_COMPRADOR ) T 
-
 join HAY_TABLA.PERSONA  per  on per.ID = T.cliente 
-
 group by per.ID ,per.DNI , per.APELLIDO , per.NOMBRE ,per.MAIL
-
 order by 5 desc ;
+
 END
-
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_4]
 	@desde DATETIME,
 	@hasta DATETIME
@@ -167,12 +108,11 @@ inner join HAY_TABLA.ITEMSDEVOLUCIONPASAJE i on d.ID= i.ID_DEVOLUCION
 inner join HAY_TABLA.COMPRA co on co.ID = i.ID_COMPRA
 inner join HAY_TABLA.PASAJE pa on pa.ID = i.ID_PASAJE 
 where YEAR( co.FECHA ) = YEAR (@desde) and MONTH (co.FECHA)  between MONTH (@desde) and MONTH (@hasta))
-
 group by ci.NOMBRE  order by 2 desc
+
 END 
 GO
-
-
+-----
 CREATE PROCEDURE [HAY_TABLA].[sp_get_listado_5]
 	@desde DATETIME,
 	@hasta DATETIME
@@ -185,8 +125,6 @@ BEGIN
       where ae.ID = a.ID 
 ) as 'Cantidad de dias fuera de servicio'
  
- 
- 
  from HAY_TABLA.AERONAVE a
 inner join HAY_TABLA.HISTORIALBAJA_AERONAVE h on a.ID = h.ID_AERONAVE
 
@@ -198,7 +136,7 @@ and YEAR (h.FECHAREINICIO) = YEAR (@hasta) and MONTH(h.FECHAREINICIO) between MO
 
 END
 GO
-
+------
 CREATE PROCEDURE [HAY_TABLA].[sp_get_rol_by_id]
 	@id int
 AS
@@ -900,7 +838,7 @@ BEGIN
 	IF @id_viaje is null 
 	BEGIN 
 		set @hayErr = 1
-		set @errores = 'No existe ningún Viaje SIN registrar su llegada para la ciudades indicadas'
+		set @errores = 'No existe ningÃºn Viaje SIN registrar su llegada para la ciudades indicadas'
 		RETURN
 	END
     	
@@ -920,7 +858,6 @@ BEGIN
 END
 GO
 /*-------------   SP  PARA AERONAVES   -------------*/
-
 CREATE PROCEDURE [HAY_TABLA].[sp_baja_fuera_de_servicio]
 	@id int,
 	@fechaActual datetime,
@@ -1035,7 +972,7 @@ BEGIN
 	
 	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like @matricula))
 		begin
-			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
+			RAISERROR(N' Ya existe una aeronave con esa matrÃ­cula ', 16, 1)
 			return
 		end		
 
@@ -1115,7 +1052,7 @@ BEGIN
 
 	if (exists(select ID from [HAY_TABLA].AERONAVE where MATRICULA like '%' + @matricula and @matriculaAnterior <> @matricula))
 		begin
-			RAISERROR(N' Ya existe una aeronave con esa matrícula ', 16, 1)
+			RAISERROR(N' Ya existe una aeronave con esa matrÃ­cula ', 16, 1)
 			return
 		end	
 
@@ -1274,7 +1211,7 @@ BEGIN
 		
 			--Cancelacion de vuelos programados			
 			--agarrar cada vuelo y setear status en 0 (cancelado)
-			--Paso los que busque a la app y llamará a otro sp para cancelarlos
+			--Paso los que busque a la app y llamarÃ¡ a otro sp para cancelarlos
 		end	
 
 	--Baja por fuera de servicio
@@ -1317,7 +1254,7 @@ BEGIN
 		
 			--Cancelacion de vuelos programados			
 			--agarrar cada vuelo y setear status en 0 (cancelado)
-			--Paso los que busque a la app y llamará a otro sp para cancelarlos
+			--Paso los que busque a la app y llamarÃ¡ a otro sp para cancelarlos
 		end
 END
 GO
@@ -1335,9 +1272,9 @@ BEGIN
 	WHERE 
 		@idVuelo = ID
 
-	--Busco todos los pasajes y encomiendas pertenecientes al viaje que estoy cancelando y que no estén ya cancelados previamente
+	--Busco todos los pasajes y encomiendas pertenecientes al viaje que estoy cancelando y que no estÃ©n ya cancelados previamente
 
-	select  p.ID_COMPRA as 'idCompra', 'Pasaje' as 'tipoItem', p.ID as 'idPasajeEncomienda', 'Cancelación del vuelo por motivos internos de la empresa' as 'motivoDevolucion'
+	select  p.ID_COMPRA as 'idCompra', 'Pasaje' as 'tipoItem', p.ID as 'idPasajeEncomienda', 'CancelaciÃ³n del vuelo por motivos internos de la empresa' as 'motivoDevolucion'
 	from HAY_TABLA.VIAJE v join HAY_TABLA.PASAJE p on v.ID = p.ID_VIAJE
 	where @idVuelo = v.ID and (not exists(select 1
 										  from HAY_TABLA.VIAJE v2 join HAY_TABLA.PASAJE p2 on v.ID = p2.ID_VIAJE
@@ -1346,7 +1283,7 @@ BEGIN
 
 	UNION ALL
 
-	select  e.ID_COMPRA as 'idCompra', 'Encomienda' as 'tipoItem', e.ID as 'idPasajeEncomienda', 'Cancelación del vuelo por motivos internos de la empresa' as 'motivoDevolucion'
+	select  e.ID_COMPRA as 'idCompra', 'Encomienda' as 'tipoItem', e.ID as 'idPasajeEncomienda', 'CancelaciÃ³n del vuelo por motivos internos de la empresa' as 'motivoDevolucion'
 	from HAY_TABLA.VIAJE v join HAY_TABLA.ENCOMIENDA e on v.ID = e.ID_VIAJE
 	where @idVuelo = v.ID and (not exists(select 1
 										  from HAY_TABLA.VIAJE v2 join HAY_TABLA.ENCOMIENDA e2 on v.ID = e2.ID_VIAJE
@@ -1426,7 +1363,7 @@ BEGIN
 						  from HAY_TABLA.AERONAVE a
 						  where @idAeronaveAReemplazar = a.ID)
 
-	--Busca las aeronaves que tienen mismo modelo, fabricante y tipo de servicio, y que NO tenga baja por fin de vida útil.
+	--Busca las aeronaves que tienen mismo modelo, fabricante y tipo de servicio, y que NO tenga baja por fin de vida Ãºtil.
 	select a.ID
 	from HAY_TABLA.AERONAVE a
 	where a.ID_SERVICIO = @TIPO_SERVICIO and 
@@ -1577,7 +1514,7 @@ BEGIN
 	WHERE 
 		@idVuelo = ID
 
-	--Busco todos los pasajes y encomiendas pertenecientes al viaje que estoy transfiriendo y que no estén ya cancelados previamente
+	--Busco todos los pasajes y encomiendas pertenecientes al viaje que estoy transfiriendo y que no estÃ©n ya cancelados previamente
 
 	select p.ID as 'idPasajeEncomienda', 'Pasaje' as 'tipoItem'
 	from HAY_TABLA.VIAJE v join HAY_TABLA.PASAJE p on v.ID = p.ID_VIAJE
@@ -1711,7 +1648,7 @@ BEGIN
 		end		
 	else
 		begin
-			RAISERROR(N' El DNI ingresado no pertenece a ningún cliente existente ', 16, 1)
+			RAISERROR(N' El DNI ingresado no pertenece a ningÃºn cliente existente ', 16, 1)
 			return
 		end
 
@@ -1797,7 +1734,7 @@ CREATE PROCEDURE [HAY_TABLA].[sp_select_items]
 AS
 BEGIN
 --Caso 1--------------------------------------------------------------------------------------------------------------------------------------------------------
-	-- Si ingresó sólo el id de compra
+	-- Si ingresÃ³ sÃ³lo el id de compra
 	if ((@idCompra <> -1) and (@idPasaje = -1) and (@idEncomienda = -1))
 		begin
 			-- Busco pasajes existentes para esta compra
@@ -1837,7 +1774,7 @@ BEGIN
 --Caso 2--------------------------------------------------------------------------------------------------------------------------------------------------------
 	else
 		begin
-			-- Si ingresó sólo el id de compra y de pasaje
+			-- Si ingresÃ³ sÃ³lo el id de compra y de pasaje
 			if ((@idCompra <> -1) and (@idPasaje <> -1) and (@idEncomienda = -1))
 				begin
 					-- Busco pasajes existentes para esta compra
@@ -1861,7 +1798,7 @@ BEGIN
 --Caso 3--------------------------------------------------------------------------------------------------------------------------------------------------------
 			else
 				begin
-					-- Si ingresó sólo el id de compra y de encomienda
+					-- Si ingresÃ³ sÃ³lo el id de compra y de encomienda
 					if ((@idCompra <> -1) and (@idPasaje = -1) and (@idEncomienda <> -1))
 						begin
 							SELECT e.ID_COMPRA as 'idCompra', 
@@ -1884,7 +1821,7 @@ BEGIN
 --Caso 4--------------------------------------------------------------------------------------------------------------------------------------------------------
 					else
 						begin
-							-- Si ingresó sólo el id de encomienda
+							-- Si ingresÃ³ sÃ³lo el id de encomienda
 							if ((@idCompra = -1) and (@idPasaje = -1) and (@idEncomienda <> -1))
 								begin
 									SELECT e.ID_COMPRA as 'idCompra', 
@@ -1905,7 +1842,7 @@ BEGIN
 								end
 --Caso 5--------------------------------------------------------------------------------------------------------------------------------------------------------
 							else
-								-- Si ingresó sólo el id de pasaje
+								-- Si ingresÃ³ sÃ³lo el id de pasaje
 								if ((@idCompra = -1) and (@idPasaje <> -1) and (@idEncomienda = -1))
 									begin
 										SELECT pa.ID_COMPRA as 'idCompra', 

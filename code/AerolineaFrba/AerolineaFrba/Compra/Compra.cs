@@ -830,7 +830,6 @@ namespace AerolineaFrba.Compra
                 return;
             }
             
-
             this.formaPago = 1;
             guardarCompra();
             guardarPasajes();
