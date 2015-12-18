@@ -11,10 +11,18 @@
 ![alt tag](https://github.com/lemmau/aerolineasFRBA/blob/master/images/HAY_TABLA.png)
 
 
-## Datos de Contacto
+## Notas
 
-Legajo | Apellido, Nombre | 
- ------------- | ------------- 
-138.822-8 | Mauro, Leandro 
-117.197-5 | Safran, Maximiliano 
-137.791-7 | Pomajulca Gonzales, Melyna 
+Para correr la App, recordar tener la DB arriba y en ejecución !
+
+En caso de errores, revisar la siguiente configuración:
+
+
+* Login MS SQL Server: 
+ Server Name: `SQLSERVER2012`
+ Username: `gd`
+ Password: `gd2015`
+* code > AerolineaFrba > AerolineaFrba > App.config
+línea: `<add connectionString="Server=.\SQLSERVER2012;Database=GD2C2015;User Id=gd; Password=gd2015;" providerName="" name="gdd"></add>`
+* sql > script_creacion_inicial.sql
+ línea: `USE [GD2C2015]`
