@@ -1,15 +1,12 @@
-# GDD-2C2015
+# [UTN-FRBA] AerolineasFRBA - GDD-2C2015
 ## Directorios
  
-* `code`: codigo C# , proyectos del VS , etc.
-* `doc`: documentacion, DERs, enunciado, etc.
-* `sql`: scripts de creacrion de tablas, stored procedures, etc.
-* `entrega`: struct con estrategia y demas (según se especifica en enunciado).
+* `code`: codigo C#, proyectos del VS , etc.
+* `doc`: DB a migrar, documentación, diagramas, enunciado, estrategia de resolución, etc.
+* `sql`: scripts de creación de tablas, stored procedures, functions, etc.
 
 > DER: https://drive.draw.io/#G0B9xE2Vns3l-xUFJMWDNWX3lGYlk
-> Estategia: https://docs.google.com/document/d/1AjoszqWdv3zT3axVAbKgupsuNvsaTkfhm6TypVOuRP0
 
-¡solicitar acceso!
 
 ![alt tag](https://github.com/lemmau/aerolineasFRBA/blob/master/images/HAY_TABLA.png)
 
